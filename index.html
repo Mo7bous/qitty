@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="fr">
 <head>
+<!-- QITTY_VERSION: V96 - user links preserved, updated base -->
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Qitty — Arrêtez de répéter. Automatisez.</title>
@@ -4276,6 +4277,536 @@ header img[src*="mascot"]{
 }
 </style>
 
+
+<style id="qitty-v90-extra-platforms-style">
+[data-section="solutions"] .qitty-v90-platform-card h3{
+  min-height:44px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+}
+[data-section="solutions"] .qitty-v90-platform-card p{
+  min-height:96px !important;
+}
+@media(max-width:760px){
+  [data-section="solutions"] .qitty-v90-platform-card h3,
+  [data-section="solutions"] .qitty-v90-platform-card p{
+    min-height:0 !important;
+  }
+}
+</style>
+
+
+
+
+<style id="qitty-v97-platforms-split-demo-links-style">
+/* Outils & plateformes : séparation pro / autres */
+[data-section="solutions"] .qitty-platform-subsection{
+  margin:26px 0 38px !important;
+}
+
+[data-section="solutions"] .qitty-platform-subhead{
+  margin:0 0 18px !important;
+  padding:18px 20px !important;
+  border-radius:22px !important;
+  background:linear-gradient(135deg,#ffffff,#f5f8ff) !important;
+  border:1px solid #dce6ff !important;
+  box-shadow:0 12px 28px rgba(21,48,122,.06) !important;
+}
+
+[data-section="solutions"] .qitty-platform-subhead span{
+  display:block !important;
+  color:#071b55 !important;
+  font-size:22px !important;
+  font-weight:950 !important;
+  line-height:1.15 !important;
+  letter-spacing:-.02em !important;
+}
+
+[data-section="solutions"] .qitty-platform-subhead p{
+  margin:7px 0 0 !important;
+  color:#607098 !important;
+  font-size:14px !important;
+  line-height:1.5 !important;
+  text-align:left !important;
+}
+
+[data-section="solutions"] .qitty-platform-subsection-pro .qitty-platform-subhead{
+  background:
+    radial-gradient(circle at 92% 18%, rgba(36,88,255,.13), transparent 30%),
+    linear-gradient(135deg,#ffffff,#eef4ff) !important;
+}
+
+[data-section="solutions"] .qitty-platform-subsection-other .qitty-platform-subhead{
+  background:
+    radial-gradient(circle at 92% 18%, rgba(111,155,255,.13), transparent 30%),
+    linear-gradient(135deg,#ffffff,#f7f9ff) !important;
+}
+
+[data-section="solutions"] .qitty-platform-card-title,
+[data-section="solutions"] .solutions-category[data-solution-group="platforms"] article h3{
+  text-align:center !important;
+  display:flex !important;
+  justify-content:center !important;
+  align-items:center !important;
+  width:100% !important;
+  min-height:46px !important;
+  padding-left:14px !important;
+  padding-right:14px !important;
+  box-sizing:border-box !important;
+}
+
+/* Boutons démo : bleu foncé + vrais liens */
+[data-section="solutions"] .solutions-category[data-solution-group="platforms"] .demo-btn{
+  background:linear-gradient(90deg,#071b55,#123c98) !important;
+  color:#fff !important;
+  border:0 !important;
+  box-shadow:0 14px 28px rgba(7,27,85,.24) !important;
+}
+
+[data-section="solutions"] .solutions-category[data-solution-group="platforms"] .technical-spec-btn{
+  background:linear-gradient(90deg,#6f9bff,#9bb8ff) !important;
+  color:#fff !important;
+  border:0 !important;
+  box-shadow:0 10px 22px rgba(83,132,255,.20) !important;
+}
+
+@media(max-width:760px){
+  [data-section="solutions"] .qitty-platform-subsection{
+    margin:22px 0 30px !important;
+  }
+
+  [data-section="solutions"] .qitty-platform-subhead{
+    padding:15px 16px !important;
+    border-radius:18px !important;
+  }
+
+  [data-section="solutions"] .qitty-platform-subhead span{
+    font-size:18px !important;
+  }
+
+  [data-section="solutions"] .qitty-platform-subhead p{
+    font-size:13px !important;
+  }
+
+  [data-section="solutions"] .qitty-platform-card-title,
+  [data-section="solutions"] .solutions-category[data-solution-group="platforms"] article h3{
+    min-height:0 !important;
+  }
+}
+</style>
+
+
+<style id="qitty-v98-demo-links-open-fix-style">
+[data-section="solutions"] .demo-btn{
+  pointer-events:auto !important;
+  cursor:pointer !important;
+}
+[data-section="solutions"] .demo-btn.no-external-action{
+  pointer-events:auto !important;
+  cursor:pointer !important;
+}
+</style>
+
+
+<style id="qitty-v99-remove-about-top-image-style">
+/* Qui sommes-nous : retirer l'image au-dessus */
+[data-section="about"] .about-left-image,
+[data-section="about"] .about-custom-visual,
+[data-section="about"] img[src*="quisommesnous"],
+[data-section="about"] img[src*="qui-sommes-nous"],
+[data-section="about"] img[alt*="Qui sommes-nous"]{
+  display:none !important;
+}
+</style>
+
+
+<style id="qitty-v100-remove-b2b-extra-service-img-style">
+/* B2B : retirer les sections/images extra de type service-img */
+[data-section="b2b"] .service-img{
+  display:none !important;
+}
+</style>
+
+
+<style id="qitty-v101-contact-email-target-style">
+/* Contact/devis : adresse cible unique */
+[data-contact-email]::after{
+  content:"";
+}
+</style>
+
+
+<style id="qitty-v102-hide-outil-n-m-style">
+/* Temporaire : Outil N et Outil M retirés de l'affichage */
+[data-section="solutions"] article:has(h3.qitty-platform-card-title),
+[data-section="solutions"] article:has(h3){
+}
+</style>
+
+
+<style id="qitty-v103-chatbot-premium-v2-style">
+/* Qitty Chatbot Premium V2 */
+.chat-modal{backdrop-filter:blur(12px) !important;}
+.chat-modal.open{display:flex !important;}
+.chat-panel{
+  border:1px solid rgba(222,230,255,.95) !important;
+  box-shadow:0 38px 110px rgba(7,27,85,.32) !important;
+  background:linear-gradient(180deg,#fff,#f7f9ff) !important;
+}
+.chat-head{
+  background:
+    radial-gradient(circle at 16% 0%, rgba(111,155,255,.24), transparent 29%),
+    linear-gradient(135deg,#ffffff 0%,#f4f7ff 100%) !important;
+  color:#071b55 !important;
+  border-bottom:1px solid #e1e9ff !important;
+}
+.chat-head h3{color:#071b55 !important;}
+.chat-head p{color:#647497 !important;font-size:12.5px !important;}
+.chat-reset,.chat-close{
+  background:#eef4ff !important;
+  color:#071b55 !important;
+  border:1px solid #dce6ff !important;
+}
+.chat-message.bot{
+  max-width:min(93%,820px) !important;
+  line-height:1.64 !important;
+  font-size:14px !important;
+  text-align:left !important;
+  background:#fff !important;
+  border:1px solid #e2e9ff !important;
+  box-shadow:0 10px 28px rgba(16,45,120,.07) !important;
+}
+.chat-message.user{
+  max-width:82% !important;
+  background:linear-gradient(135deg,#2458ff,#071b55) !important;
+}
+.qitty-ai-v2{
+  display:block !important;
+  color:#31456f !important;
+}
+.qitty-ai-v2 h4{
+  margin:0 0 8px !important;
+  color:#071b55 !important;
+  font-size:15.5px !important;
+  line-height:1.25 !important;
+  letter-spacing:-.01em !important;
+}
+.qitty-ai-v2 p{
+  margin:0 0 9px !important;
+  text-align:left !important;
+}
+.qitty-ai-v2 .qitty-context-note{
+  margin:10px 0 0 !important;
+  padding:10px 12px !important;
+  border-radius:14px !important;
+  background:#f3f7ff !important;
+  border:1px solid #dce6ff !important;
+  color:#53668d !important;
+  font-size:12px !important;
+  line-height:1.42 !important;
+}
+.qitty-ai-v2 .qitty-followup{
+  margin-top:10px !important;
+  color:#68799c !important;
+  font-size:11.8px !important;
+  line-height:1.42 !important;
+}
+.qitty-v2-links{
+  display:flex !important;
+  flex-wrap:wrap !important;
+  gap:8px !important;
+  margin-top:13px !important;
+}
+.qitty-v2-link{
+  border:1px solid #dce6ff !important;
+  background:#f3f7ff !important;
+  color:#071b55 !important;
+  border-radius:999px !important;
+  padding:9px 12px !important;
+  font-size:12px !important;
+  font-weight:850 !important;
+  cursor:pointer !important;
+  text-decoration:none !important;
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  transition:transform .18s ease, box-shadow .18s ease, background .18s ease !important;
+}
+.qitty-v2-link:hover{
+  transform:translateY(-1px) !important;
+  box-shadow:0 10px 22px rgba(36,88,255,.13) !important;
+}
+.qitty-v2-link.primary{
+  background:linear-gradient(90deg,#071b55,#123c98) !important;
+  color:#fff !important;
+  border-color:transparent !important;
+}
+.qitty-v2-link.quote{
+  background:linear-gradient(90deg,#2458ff,#7fa5ff) !important;
+  color:#fff !important;
+  border-color:transparent !important;
+}
+.qitty-v2-link.demo{
+  background:linear-gradient(90deg,#6f9bff,#9bb8ff) !important;
+  color:#fff !important;
+  border-color:transparent !important;
+}
+.qitty-mini-chips{
+  display:flex !important;
+  flex-wrap:wrap !important;
+  gap:6px !important;
+  margin-top:8px !important;
+}
+.qitty-mini-chip{
+  display:inline-flex !important;
+  padding:5px 8px !important;
+  border-radius:999px !important;
+  background:#eef4ff !important;
+  color:#2458ff !important;
+  border:1px solid #dce6ff !important;
+  font-size:10.5px !important;
+  font-weight:850 !important;
+}
+.chat-suggestions,
+.qitty-chat-actions,
+.chat-next-actions,
+.chat-answer-actions,
+.qitty-chat-link-grid,
+.qitty-suggestion-cards{
+  display:none !important;
+}
+@media(max-width:760px){
+  .chat-message.bot{max-width:95% !important;font-size:13.5px !important;}
+  .qitty-v2-links{display:grid !important;grid-template-columns:1fr !important;}
+  .qitty-v2-link{width:100% !important;}
+}
+</style>
+
+
+<style id="qitty-v104-home-card-backgrounds-style">
+/* Accueil : backgrounds demandés pour les 3 cards */
+[data-section="accueil"] .cards .card:nth-child(1)::after{
+  background-image:url("analyse.png") !important;
+}
+
+[data-section="accueil"] .cards .card:nth-child(2)::after{
+  background-image:url("automat.png") !important;
+}
+
+[data-section="accueil"] .cards .card:nth-child(3)::after{
+  background-image:url("suivi.png") !important;
+}
+</style>
+
+
+<style id="qitty-v105-home-ia-and-cards-position-style">
+/* Accueil : bloc IA replacé juste après le hero / CTA principal */
+[data-section="accueil"] .qitty-v105-ethical-note{
+  margin:28px auto 28px !important;
+  padding:24px 26px !important;
+  border-radius:26px !important;
+  background:
+    radial-gradient(circle at 92% 14%, rgba(111,155,255,.18), transparent 34%),
+    linear-gradient(135deg,#ffffff 0%,#f4f7ff 100%) !important;
+  border:1px solid #dce6ff !important;
+  box-shadow:0 20px 45px rgba(7,27,85,.08) !important;
+  max-width:980px !important;
+}
+
+[data-section="accueil"] .qitty-v105-ethical-note h3{
+  margin:0 0 12px !important;
+  color:#071b55 !important;
+  font-size:clamp(26px,3.2vw,42px) !important;
+  line-height:1.08 !important;
+  letter-spacing:-.04em !important;
+  font-weight:950 !important;
+}
+
+[data-section="accueil"] .qitty-v105-ethical-note h3 span{
+  background:linear-gradient(90deg,#2458ff,#7fa5ff) !important;
+  -webkit-background-clip:text !important;
+  background-clip:text !important;
+  color:transparent !important;
+}
+
+[data-section="accueil"] .qitty-v105-ethical-note p{
+  margin:0 !important;
+  color:#4b5d82 !important;
+  font-size:15.5px !important;
+  line-height:1.72 !important;
+  text-align:left !important;
+}
+
+[data-section="accueil"] .qitty-home-cards-under-potential{
+  margin-top:24px !important;
+  width:100% !important;
+  grid-column:1 / -1 !important;
+}
+
+[data-section="accueil"] .qitty-home-cards-under-potential .cards{
+  margin:0 !important;
+  display:grid !important;
+  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  gap:16px !important;
+}
+
+[data-section="accueil"] .qitty-home-cards-under-potential .card{
+  min-height:150px !important;
+}
+
+@media(max-width:900px){
+  [data-section="accueil"] .qitty-home-cards-under-potential .cards{
+    grid-template-columns:1fr !important;
+  }
+}
+
+@media(max-width:760px){
+  [data-section="accueil"] .qitty-v105-ethical-note{
+    margin:20px auto 24px !important;
+    padding:19px 18px !important;
+    border-radius:22px !important;
+  }
+
+  [data-section="accueil"] .qitty-v105-ethical-note p{
+    font-size:14px !important;
+    line-height:1.62 !important;
+  }
+}
+</style>
+
+
+<style id="qitty-v106-home-cta-buttons-cards-line-style">
+/* Accueil : dans "Prêt à libérer votre potentiel", boutons côte à côte */
+[data-section="accueil"] .cta-block .cta-buttons{
+  display:grid !important;
+  grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  gap:14px !important;
+  align-items:stretch !important;
+  width:100% !important;
+}
+
+[data-section="accueil"] .cta-block .cta-option{
+  width:100% !important;
+  min-width:0 !important;
+  margin:0 !important;
+}
+
+/* Accueil : les 3 cards Analyse / Automatisation / Suivi sur la même ligne */
+[data-section="accueil"] .qitty-home-cards-under-potential{
+  margin-top:24px !important;
+  width:100% !important;
+  grid-column:1 / -1 !important;
+}
+
+[data-section="accueil"] .qitty-home-cards-under-potential .cards{
+  display:grid !important;
+  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  gap:16px !important;
+  width:100% !important;
+  margin:0 !important;
+  align-items:stretch !important;
+}
+
+[data-section="accueil"] .qitty-home-cards-under-potential .card{
+  width:100% !important;
+  min-width:0 !important;
+  min-height:150px !important;
+  margin:0 !important;
+}
+
+/* Mobile : garder lisible, les cards passent en colonne uniquement sur petit écran */
+@media(max-width:760px){
+  [data-section="accueil"] .cta-block .cta-buttons{
+    grid-template-columns:1fr !important;
+  }
+
+  [data-section="accueil"] .qitty-home-cards-under-potential .cards{
+    grid-template-columns:1fr !important;
+  }
+}
+</style>
+
+
+<style id="qitty-v107-home-cards-outside-cta-clean-style">
+/* Accueil : les 3 cards sortent du grand card bleu "Prêt à libérer" */
+[data-section="accueil"] .qitty-home-cards-under-potential{
+  display:none !important;
+}
+
+[data-section="accueil"] .qitty-home-cards-outside-cta{
+  margin:24px 0 0 !important;
+  width:100% !important;
+}
+
+[data-section="accueil"] .qitty-home-cards-outside-cta .cards{
+  margin:0 !important;
+  display:grid !important;
+  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  gap:16px !important;
+  width:100% !important;
+  align-items:stretch !important;
+}
+
+[data-section="accueil"] .qitty-home-cards-outside-cta .card{
+  width:100% !important;
+  min-width:0 !important;
+  min-height:150px !important;
+  margin:0 !important;
+}
+
+/* Accueil : boutons Particulier et B2B propres, sans éléments vides entre eux */
+[data-section="accueil"] .cta-block .cta-buttons{
+  display:grid !important;
+  grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  gap:14px !important;
+  width:100% !important;
+}
+
+[data-section="accueil"] .cta-block .cta-buttons > *:empty{
+  display:none !important;
+}
+
+[data-section="accueil"] .cta-block .cta-option{
+  width:100% !important;
+  min-width:0 !important;
+  margin:0 !important;
+}
+
+@media(max-width:760px){
+  [data-section="accueil"] .cta-block .cta-buttons,
+  [data-section="accueil"] .qitty-home-cards-outside-cta .cards{
+    grid-template-columns:1fr !important;
+  }
+}
+</style>
+
+
+<style id="qitty-v108-remove-home-card-arrows-style">
+/* Accueil : retirer les flèches/redirections des cards Analyse, Automatisation, Suivi */
+[data-section="accueil"] .qitty-home-cards-outside-cta .card .arrow,
+[data-section="accueil"] .qitty-home-cards-under-potential .card .arrow{
+  display:none !important;
+  pointer-events:none !important;
+}
+</style>
+
+
+<style id="qitty-v109-home-card-text-smaller-style">
+/* Accueil : réduire de 30% les textes des 3 cards Analyse / Automatisation / Suivi */
+[data-section="accueil"] .qitty-home-cards-outside-cta .card h3,
+[data-section="accueil"] .qitty-home-cards-under-potential .card h3{
+  font-size:70% !important;
+  line-height:1.18 !important;
+}
+
+[data-section="accueil"] .qitty-home-cards-outside-cta .card p,
+[data-section="accueil"] .qitty-home-cards-under-potential .card p{
+  font-size:70% !important;
+  line-height:1.45 !important;
+}
+</style>
+
 </head>
 <body>
 
@@ -4290,7 +4821,14 @@ header img[src*="mascot"]{
   <header class="site-header"><div class="container topbar"><button class="burger" id="openSidebar"><span></span><span></span><span></span></button><a class="brand" href="#accueil"><div class="header-video"><video autoplay muted loop playsinline><source src="visual_generic.png" type="video/mp4"></video></div><div class="header-image"><img src="logo.png" alt="Qitty"></div></a></div></header>
 
   <main id="app-content">
-    <section class="page-section active" data-section="accueil"><section class="hero"><div class="container"><div style="display:flex;justify-content:flex-start;margin-bottom:14px;padding-left:2%"><div style="display:flex;flex-direction:column;align-items:flex-start"><h1 class="section-title" style="margin:0;text-align:left;color:#061a52">Automatisation <span style="display:block;background:linear-gradient(90deg,#315dff,#8a8fff);-webkit-background-clip:text;color:transparent">Éthique</span></h1><div style="width:58px;height:4px;border-radius:999px;background:linear-gradient(90deg,#2458ff,#7d8dff);margin:12px auto 0 0"></div></div></div><div class="hero-grid"><div class="hero-art"><div class="blob"></div><div class="hero-visual" style="width:min(420px,100%);aspect-ratio:auto"><img src="robot-automation.png" alt="Robot d’automatisation Qitty" class="qitty-hero-cat"></div></div><div class="hero-content"><p class="lead" style="text-align:justify">Qitty aide particuliers et PME à <span style="background:linear-gradient(90deg,#2458ff,#071b55);-webkit-background-clip:text;color:transparent;font-weight:800">automatiser</span> leurs tâches, structurer leurs <span style="background:linear-gradient(90deg,#2458ff,#071b55);-webkit-background-clip:text;color:transparent;font-weight:800">workflows</span> et gagner du temps grâce à des solutions <span style="background:linear-gradient(90deg,#2458ff,#071b55);-webkit-background-clip:text;color:transparent;font-weight:800">IA</span> simples, concrètes et adaptées à leurs besoins.</p><div class="checks"><div class="check"><b>✓</b> Moins de tâches à faible valeur</div><div class="check"><b>✓</b> Moins d’inefficiences invisibles</div><div class="check"><b>✓</b> Plus de temps pour l’essentiel</div></div></div></div></div></section><section class="container"><div class="cards"><article class="card"><h3>Analyse des tâches</h3><p>Nous identifions ce qui compte vraiment et ce qui vous ralentit.</p><a class="arrow" href="#solutions">→</a></article><article class="card"><h3>Automatisation sur mesure</h3><p>Des solutions adaptées à vos processus et outils métiers.</p><a class="arrow" href="#particuliers">→</a></article><article class="card"><h3>Suivi et gains mesurables</h3><p>Nous pilotons les résultats et maximisons votre retour sur investissement.</p><a class="arrow" href="#b2b">→</a></article></div><div class="cta-block">
+    <section class="page-section active" data-section="accueil"><section class="hero"><div class="container"><div style="display:flex;justify-content:flex-start;margin-bottom:14px;padding-left:2%"><div style="display:flex;flex-direction:column;align-items:flex-start"><h1 class="section-title" style="margin:0;text-align:left;color:#061a52">Automatisation <span style="display:block;background:linear-gradient(90deg,#315dff,#8a8fff);-webkit-background-clip:text;color:transparent">Éthique</span></h1><div style="width:58px;height:4px;border-radius:999px;background:linear-gradient(90deg,#2458ff,#7d8dff);margin:12px auto 0 0"></div></div></div><div class="hero-grid"><div class="hero-art"><div class="blob"></div><div class="hero-visual" style="width:min(420px,100%);aspect-ratio:auto"><img src="robot-automation.png" alt="Robot d’automatisation Qitty" class="qitty-hero-cat"></div></div><div class="hero-content"><p class="lead" style="text-align:justify">Qitty aide particuliers et PME à <span style="background:linear-gradient(90deg,#2458ff,#071b55);-webkit-background-clip:text;color:transparent;font-weight:800">automatiser</span> leurs tâches, structurer leurs <span style="background:linear-gradient(90deg,#2458ff,#071b55);-webkit-background-clip:text;color:transparent;font-weight:800">workflows</span> et gagner du temps grâce à des solutions <span style="background:linear-gradient(90deg,#2458ff,#071b55);-webkit-background-clip:text;color:transparent;font-weight:800">IA</span> simples, concrètes et adaptées à leurs besoins.</p><div class="checks"><div class="check"><b>✓</b> Moins de tâches à faible valeur</div><div class="check"><b>✓</b> Moins d’inefficiences invisibles</div><div class="check"><b>✓</b> Plus de temps pour l’essentiel</div></div></div></div></div></section>
+<div class="ethical-note qitty-v105-ethical-note">
+  <h3>Une IA pensée pour <span>aider, pas remplacer</span></h3>
+  <p>
+    Chez Qitty, nous pensons que l’<strong>intelligence artificielle</strong> doit rester un outil au service de l’humain. Nos solutions sont conçues pour réduire la charge mentale, automatiser les tâches répétitives et améliorer le confort de travail sans enlever le contrôle aux utilisateurs. Nous privilégions une approche <strong>progressive</strong>, <strong>transparente</strong> et rassurante afin que chacun puisse intégrer ces outils à son rythme, avec compréhension, accompagnement et maîtrise des décisions importantes.
+  </p>
+</div>
+<section class="container"><div class="cta-block">
 <div class="cta-content">
   <div class="cta-text">
     <h2>Prêt à libérer votre potentiel&nbsp;?</h2>
@@ -4304,7 +4842,7 @@ header img[src*="mascot"]{
           <span>Emploi, IA et automatisation du quotidien</span>
         </div>
       </div>
-      <span class="arrow">→</span>
+<span class="arrow">→</span>
     </a>
     <a class="cta-option" href="#b2b">
       <div class="left">
@@ -4316,8 +4854,12 @@ header img[src*="mascot"]{
       <span class="arrow">→</span>
     </a>
   </div>
-</div></div></div>
-<div class="ethical-note"><h3>Une IA pensée pour <span style="background:linear-gradient(90deg,#2458ff,#071b55);-webkit-background-clip:text;color:transparent;font-weight:900">aider</span>, pas remplacer</h3><p>Chez Qitty, nous pensons que l’<span style="background:linear-gradient(90deg,#2458ff,#071b55);-webkit-background-clip:text;color:transparent;font-weight:800">intelligence artificielle</span> doit rester un outil au service de l’humain. Nos solutions sont conçues pour réduire la charge mentale, automatiser les tâches répétitives et améliorer le confort de travail sans enlever le contrôle aux utilisateurs. Nous privilégions une approche <span style="background:linear-gradient(90deg,#2458ff,#071b55);-webkit-background-clip:text;color:transparent;font-weight:800">progressive</span>, <span style="background:linear-gradient(90deg,#2458ff,#071b55);-webkit-background-clip:text;color:transparent;font-weight:800">transparente</span> et rassurante afin que chacun puisse intégrer ces outils à son rythme, avec compréhension, accompagnement et maîtrise des décisions importantes.</p></div><div class="trust-row"></div></section></section>
+</div></div>
+<div class="qitty-home-cards-outside-cta">
+<div class="cards"><article class="card"><h3>Analyse des tâches</h3><p>Nous identifions ce qui compte vraiment et ce qui vous ralentit.</p></article><article class="card"><h3>Automatisation sur mesure</h3><p>Des solutions adaptées à vos processus et outils métiers.</p></article><article class="card"><h3>Suivi et gains mesurables</h3><p>Nous pilotons les résultats et maximisons votre retour sur investissement.</p></article></div>
+</div>
+</div>
+<div class="trust-row"></div></section></section>
 
     <section class="page-section" data-section="about">
       <div class="about-left-image">
@@ -4350,7 +4892,7 @@ header img[src*="mascot"]{
     </div>
   </article>
 </div>
-</div></div><div class="about-method"><div><h3>Notre méthode</h3><p>Nous analysons, structurons, automatisons puis accompagnons l’adoption pour que les gains soient durables.</p></div><ul style="margin-top:2px;padding-top:0"><li>Identifier les tâches à faible valeur ajoutée</li><li>Structurer les données</li><li>Créer des workflows réutilisables</li><li>Mesurer les résultats</li></ul><div class="about-method-video"><video autoplay muted loop playsinline><source src="chatbox.mp4" type="video/mp4"></video></div></div>
+</div></div><div class="about-method"><div><h3>Notre méthode</h3><p>Nous analysons, structurons, automatisons puis accompagnons l’adoption pour que les gains soient durables.</p></div><ul style="margin-top:2px;padding-top:0"><li>Identifier les tâches à faible valeur ajoutée</li><li>Structurer les données</li><li>Créer des workflows réutilisables</li><li>Mesurer les résultats</li></ul><div class="about-method-video"><video autoplay muted loop playsinline><source src="Qitty Ai/chatbox.mp4" type="video/mp4"></video></div></div>
 </div></section></section>
 
     <section class="page-section" data-section="particuliers"><section class="section"><div class="container"><h2 class="section-title">Services<br><span>Particuliers</span></h2><div style="width:58px;height:4px;border-radius:999px;background:linear-gradient(90deg,#2458ff,#7d8dff);margin:12px 0 18px"></div><p class="section-subtitle">Nous accompagnons les personnes qui souhaitent <span style="background:linear-gradient(90deg,#2458ff,#071b55);-webkit-background-clip:text;color:transparent;font-weight:800">automatiser leur quotidien</span>, mieux organiser leurs tâches et utiliser les outils <span style="background:linear-gradient(90deg,#2458ff,#071b55);-webkit-background-clip:text;color:transparent;font-weight:800">IA</span> de manière concrète dans leur vie professionnelle. Notre approche repose avant tout sur un <span style="background:linear-gradient(90deg,#2458ff,#071b55);-webkit-background-clip:text;color:transparent;font-weight:800">accompagnement personnalisé</span>, des outils concrets et des conseils pratiques afin d’aider chaque profil à <span style="background:linear-gradient(90deg,#2458ff,#071b55);-webkit-background-clip:text;color:transparent;font-weight:800">gagner du temps</span>, simplifier ses démarches, structurer ses <span style="background:linear-gradient(90deg,#2458ff,#071b55);-webkit-background-clip:text;color:transparent;font-weight:800">workflows</span> et mettre en place des méthodes de travail plus efficaces au quotidien.</p><div class="services-grid"><article class="service-card">
@@ -4371,19 +4913,16 @@ header img[src*="mascot"]{
               </div>
 <h3>Automatisation sur mesure et personnalisée</h3><p>Identification des tâches répétitives et parasites, workflows simples et personnalisés pour automatiser votre quotidien efficacement.</p><div class="service-meta"><div class="service-meta-row"><div class="meta-group"><span class="meta-badge"><span class="meta-icon">◷</span>12h</span><span class="meta-badge"><span class="meta-icon">◈</span><span class="old-price-599">599€</span> 499€</span></div></div></div><div class="service-actions" style="justify-content:flex-end"><button class="btn blue" data-modal="auto">En savoir plus →</button></div></article></div></div></section></section>
 
-    <section class="page-section" data-section="b2b"><section class="section light"><div class="container"><h2 class="section-title"><br><span>PME et B2B</span></h2><div style="width:58px;height:4px;border-radius:999px;background:linear-gradient(90deg,#2458ff,#7d8dff);margin:12px 0 18px"></div><p class="section-subtitle">Qitty accompagne les <span style="background:linear-gradient(90deg,#2458ff,#071b55);-webkit-background-clip:text;color:transparent;font-weight:800">entreprises</span>, équipes et PME dans la modernisation des opérations grâce à des solutions d’<span style="background:linear-gradient(90deg,#2458ff,#071b55);-webkit-background-clip:text;color:transparent;font-weight:800">automatisation</span>, d’intégration IA et d’optimisation des workflows métiers. Nous travaillons avec les équipes pour analyser les processus existants, identifier les inefficiences et mettre en place des systèmes adaptés aux besoins réels du terrain.</p><div class="services-grid"><article class="service-card">
+    <section class="page-section" data-section="b2b"><section class="section light"><div class="container"><h2 class="section-title">Qitty pour<br><span>PME and B2B</span></h2><div style="width:58px;height:4px;border-radius:999px;background:linear-gradient(90deg,#2458ff,#7d8dff);margin:12px 0 18px"></div><p class="section-subtitle">Qitty accompagne les <span style="background:linear-gradient(90deg,#2458ff,#071b55);-webkit-background-clip:text;color:transparent;font-weight:800">entreprises</span>, équipes et PME dans la modernisation des opérations grâce à des solutions d’<span style="background:linear-gradient(90deg,#2458ff,#071b55);-webkit-background-clip:text;color:transparent;font-weight:800">automatisation</span>, d’intégration IA et d’optimisation des workflows métiers. Nous travaillons avec les équipes pour analyser les processus existants, identifier les inefficiences et mettre en place des systèmes adaptés aux besoins réels du terrain.</p><div class="services-grid"><article class="service-card">
             <div class="b2b-card-image">
               <img src="transformer.png" alt="Transformer les processus">
-            </div>
-<h3>Transformer son métier avec l’automatisation</h3><p>Repensez vos activités, identifiez les tâches automatisables et déployez des workflows performants.</p><div class="service-meta"><div class="service-meta-row" style="justify-content:space-between;align-items:center"><div class="meta-group"></div><button class="btn blue" data-modal="b2b-auto">En savoir plus →</button></div></div></article><article class="service-card">
+            </div><h3>Transformer son métier avec l’automatisation</h3><p>Repensez vos activités, identifiez les tâches automatisables et déployez des workflows performants.</p><div class="service-meta"><div class="service-meta-row" style="justify-content:space-between;align-items:center"><div class="meta-group"></div><button class="btn blue" data-modal="b2b-auto">En savoir plus →</button></div></div></article><article class="service-card">
             <div class="b2b-card-image">
               <img src="optimisation.png" alt="Optimisation des processus">
-            </div>
-<h3>Optimisation des opérations</h3><p>Identifier les gains d’efficacité, automatiser les processus métiers et intégrer l’IA.</p><div class="service-meta"><div class="service-meta-row" style="justify-content:space-between;align-items:center"><div class="meta-group"></div><button class="btn dark" data-modal="b2b-ops">En savoir plus →</button></div></div></article><article class="service-card">
+            </div><h3>Optimisation des opérations</h3><p>Identifier les gains d’efficacité, automatiser les processus métiers et intégrer l’IA.</p><div class="service-meta"><div class="service-meta-row" style="justify-content:space-between;align-items:center"><div class="meta-group"></div><button class="btn dark" data-modal="b2b-ops">En savoir plus →</button></div></div></article><article class="service-card">
             <div class="b2b-card-image">
               <img src="integration.png" alt="Intégration outils et APIs">
-            </div>
-<h3>Intégration IA & workflows</h3><p>Flux automatisés, outils connectés, APIs, dashboards et systèmes IA.</p><div class="service-meta"><div class="service-meta-row" style="justify-content:space-between;align-items:center"><div class="meta-group"></div><button class="btn blue" data-modal="b2b-workflow">En savoir plus →</button></div></div></article></div></div></section></section>
+            </div><h3>Intégration IA & workflows</h3><p>Flux automatisés, outils connectés, APIs, dashboards et systèmes IA.</p><div class="service-meta"><div class="service-meta-row" style="justify-content:space-between;align-items:center"><div class="meta-group"></div><button class="btn blue" data-modal="b2b-workflow">En savoir plus →</button></div></div></article></div></div></section></section>
 
 <section class="page-section" data-section="solutions">
   <section class="section">
@@ -4435,60 +4974,13 @@ header img[src*="mascot"]{
 <div class="solutions-category" data-solution-group="platforms">
         <h3 class="solutions-category-title">Outils et plateformes</h3>
 
-        <div class="services-grid solutions-row-3 invest-grid">
-
-          <article class="service-card invest-card">
-            <div class="qitty-card-carousel-wrap">
-              <div class="qitty-auto-carousel" data-carousel-delay="3000">
-                <img class="qitty-carousel-slide active" src="EA1.png" alt="Easy Apply Qitty 1">
-                <img class="qitty-carousel-slide" src="EA2.png" alt="Easy Apply Qitty 2">
-                <img class="qitty-carousel-slide" src="EA3.png" alt="Easy Apply Qitty 3">
-                <div class="qitty-carousel-dots">
-                <span class="qitty-carousel-dot active"></span>
-                <span class="qitty-carousel-dot"></span>
-                <span class="qitty-carousel-dot"></span>
-                </div>
-              </div>
-            </div>
-<h3 style="text-align:center">Easy Apply — plateforme candidature IA</h3>
-<p style="text-align:center">
-              Solution prête à commercialiser pour générer des CV, lettres et candidatures adaptées aux offres d’emploi avec logique ATS, automatisation et accompagnement utilisateur.
-            </p>
-<div class="service-actions"><a class="btn blue solution-action-btn demo-btn" href="https://www.google.com" target="_blank" rel="noopener">Consulter Démo →</a><button class="btn blue-light solution-action-btn technical-spec-btn" type="button" data-tech-key="Easy Apply">Spécificités techniques →</button></div>
-          </article>
-
-          
-
-          
-
-        
-          
-          <!-- qitty-v80-added-platforms-start -->
-
-          <article class="service-card invest-card qitty-added-platform-card">
-            <div class="qitty-card-carousel-wrap">
-              <div class="qitty-auto-carousel" data-carousel-delay="3000">
-                <img class="qitty-carousel-slide active" src="quboor1.png" alt="Quboor plateforme mémoire 1">
-                <img class="qitty-carousel-slide" src="quboor2.png" alt="Quboor plateforme mémoire 2">
-                <img class="qitty-carousel-slide" src="quboor3.png" alt="Quboor plateforme mémoire 3">
-                <div class="qitty-carousel-dots">
-                  <span class="qitty-carousel-dot active"></span>
-                  <span class="qitty-carousel-dot"></span>
-                  <span class="qitty-carousel-dot"></span>
-                </div>
-              </div>
-            </div>
-            <h3 style="text-align:center">Quboor</h3>
-            <p style="text-align:center">
-              Plateforme de répertorisation des tombes, lieux de mémoire et données associées, avec fiches, recherche, carte et consultation simplifiée.
-            </p>
-            <div class="service-actions">
-              <a class="btn blue solution-action-btn demo-btn" href="https://www.google.com" target="_blank" rel="noopener">Consulter Démo →</a>
-              <button class="btn blue-light solution-action-btn technical-spec-btn" type="button" data-tech-key="Quboor">Spécificités techniques →</button>
-            </div>
-          </article>
-
-          <article class="service-card invest-card qitty-added-platform-card">
+        <div class="qitty-platform-subsection qitty-platform-subsection-pro">
+          <div class="qitty-platform-subhead">
+            <span>Plateformes professionnelles</span>
+            <p>CRM, ERP, planning, candidatures et outils directement exploitables pour une activité professionnelle.</p>
+          </div>
+          <div class="services-grid solutions-row-3 invest-grid qitty-platform-grid qitty-professional-platform-grid">
+            <article class="service-card invest-card qitty-added-platform-card">
             <div class="qitty-card-carousel-wrap">
               <div class="qitty-auto-carousel" data-carousel-delay="3000">
                 <img class="qitty-carousel-slide active" src="asbl1.png" alt="CRM FEAD ASBL 1">
@@ -4501,17 +4993,16 @@ header img[src*="mascot"]{
                 </div>
               </div>
             </div>
-            <h3 style="text-align:center">CRM FEAD & gestion ASBL</h3>
+            <h3 style="text-align:center" class="qitty-platform-card-title">CRM & gestion ASBL</h3>
             <p style="text-align:center">
-              CRM opérationnel pour bénéficiaires, stocks FEAD, distributions, bénévoles, conformité et indicateurs de suivi terrain.
+              CRM opérationnel pour bénéficiaires, stocks , distributions, bénévoles, conformité et indicateurs de suivi terrain.
             </p>
             <div class="service-actions">
-              <a class="btn blue solution-action-btn demo-btn" href="https://www.google.com" target="_blank" rel="noopener">Consulter Démo →</a>
+              <a class="btn blue solution-action-btn demo-btn" href="https://www.qitty.space/crm.html" target="_blank" rel="noopener">Consulter Démo →</a>
               <button class="btn blue-light solution-action-btn technical-spec-btn" type="button" data-tech-key="CRM FEAD">Spécificités techniques →</button>
             </div>
           </article>
-
-          <article class="service-card invest-card qitty-added-platform-card">
+<article class="service-card invest-card qitty-added-platform-card">
             <div class="qitty-card-carousel-wrap">
               <div class="qitty-auto-carousel" data-carousel-delay="3000">
                 <img class="qitty-carousel-slide active" src="iso1.png" alt="ERP certifications 1">
@@ -4524,39 +5015,16 @@ header img[src*="mascot"]{
                 </div>
               </div>
             </div>
-            <h3 style="text-align:center">ERP Certifications</h3>
+            <h3 style="text-align:center" class="qitty-platform-card-title">ERP Certifications</h3>
             <p style="text-align:center">
               ERP premium pour gérer clients, dossiers de certification, audits, documents, facturation, suivi conformité et fiches techniques.
             </p>
             <div class="service-actions">
-              <a class="btn blue solution-action-btn demo-btn" href="https://www.google.com" target="_blank" rel="noopener">Consulter Démo →</a>
+              <a class="btn blue solution-action-btn demo-btn" href="https://www.qitty.space/erp.html" target="_blank" rel="noopener">Consulter Démo →</a>
               <button class="btn blue-light solution-action-btn technical-spec-btn" type="button" data-tech-key="ERP Certifications">Spécificités techniques →</button>
             </div>
           </article>
-
-          <!-- qitty-v80-added-platforms-end -->
-
-          <article class="service-card invest-card">
-            <div class="qitty-card-carousel-wrap">
-              <div class="qitty-auto-carousel" data-carousel-delay="3000">
-                <img class="qitty-carousel-slide active" src="ornicar1.png" alt="Ornicar Qitty 1">
-                <img class="qitty-carousel-slide" src="ornicar2.png" alt="Ornicar Qitty 2">
-                <img class="qitty-carousel-slide" src="ornicar3.png" alt="Ornicar Qitty 3">
-                <div class="qitty-carousel-dots">
-                <span class="qitty-carousel-dot active"></span>
-                <span class="qitty-carousel-dot"></span>
-                <span class="qitty-carousel-dot"></span>
-                </div>
-              </div>
-            </div>
-<h3 style="text-align:center">Ornicar</h3>
-            <p style="text-align:center">
-              Outil communautaire pour répertorier les contrôles, signalements et informations utiles sur les trajets de transport afin d’aider les usagers à mieux anticiper leurs déplacements.
-            </p>
-<div class="service-actions"><a class="btn blue solution-action-btn demo-btn" href="https://www.google.com" target="_blank" rel="noopener">Consulter Démo →</a><button class="btn blue-light solution-action-btn technical-spec-btn" type="button" data-tech-key="Ornicar">Spécificités techniques →</button></div>
-          </article>
-
-          <article class="service-card invest-card">
+<article class="service-card invest-card">
             <div class="qitty-card-carousel-wrap">
               <div class="qitty-auto-carousel" data-carousel-delay="3000">
                 <img class="qitty-carousel-slide active" src="pm1.png" alt="Planning Management Qitty 1">
@@ -4569,14 +5037,174 @@ header img[src*="mascot"]{
                 </div>
               </div>
             </div>
-<h3 style="text-align:center">Planning Management</h3>
+<h3 style="text-align:center" class="qitty-platform-card-title">Planning Management</h3>
             <p style="text-align:center">
               Outil de gestion de planning pour organiser les équipes, les shifts, les disponibilités, les tâches, les exceptions et les besoins opérationnels du quotidien.
             </p>
-<div class="service-actions"><a class="btn blue solution-action-btn demo-btn" href="https://www.google.com" target="_blank" rel="noopener">Consulter Démo →</a><button class="btn blue-light solution-action-btn technical-spec-btn" type="button" data-tech-key="Planning Management">Spécificités techniques →</button></div>
+<div class="service-actions"><a class="btn blue solution-action-btn demo-btn" href="https://www.qitty.space/planning-management.html" target="_blank" rel="noopener">Consulter Démo →</a><button class="btn blue-light solution-action-btn technical-spec-btn" type="button" data-tech-key="Planning Management">Spécificités techniques →</button></div>
+          </article>
+<article class="service-card invest-card">
+            <div class="qitty-card-carousel-wrap">
+              <div class="qitty-auto-carousel" data-carousel-delay="3000">
+                <img class="qitty-carousel-slide active" src="EA1.png" alt="Easy Apply Qitty 1">
+                <img class="qitty-carousel-slide" src="EA2.png" alt="Easy Apply Qitty 2">
+                <img class="qitty-carousel-slide" src="EA3.png" alt="Easy Apply Qitty 3">
+                <div class="qitty-carousel-dots">
+                <span class="qitty-carousel-dot active"></span>
+                <span class="qitty-carousel-dot"></span>
+                <span class="qitty-carousel-dot"></span>
+                </div>
+              </div>
+            </div>
+<h3 style="text-align:center" class="qitty-platform-card-title">Easy Apply — Candidature IA</h3>
+<p style="text-align:center">
+              Solution prête à commercialiser pour générer des CV, lettres et candidatures adaptées aux offres d’emploi avec logique ATS, automatisation et accompagnement utilisateur.
+            </p>
+<div class="service-actions"><a class="btn blue solution-action-btn demo-btn" href="https://www.qitty.space/easyapply.html" target="_blank" rel="noopener">Consulter Démo →</a><button class="btn blue-light solution-action-btn technical-spec-btn" type="button" data-tech-key="Easy Apply">Spécificités techniques →</button></div>
+          </article>
+          </div>
+        </div>
+
+        <div class="qitty-platform-subsection qitty-platform-subsection-other">
+          <div class="qitty-platform-subhead">
+            <span>Autres</span>
+            <p>Prototypes, jeux, applications thématiques, concepts scientifiques et démonstrateurs moins orientés business direct.</p>
+          </div>
+          <div class="services-grid solutions-row-3 invest-grid qitty-platform-grid qitty-other-platform-grid">
+            <article class="service-card invest-card qitty-added-platform-card">
+            <div class="qitty-card-carousel-wrap">
+              <div class="qitty-auto-carousel" data-carousel-delay="3000">
+                <img class="qitty-carousel-slide active" src="quboor1.png" alt="Quboor plateforme mémoire 1">
+                <img class="qitty-carousel-slide" src="quboor2.png" alt="Quboor plateforme mémoire 2">
+                <img class="qitty-carousel-slide" src="quboor3.png" alt="Quboor plateforme mémoire 3">
+                <div class="qitty-carousel-dots">
+                  <span class="qitty-carousel-dot active"></span>
+                  <span class="qitty-carousel-dot"></span>
+                  <span class="qitty-carousel-dot"></span>
+                </div>
+              </div>
+            </div>
+            <h3 style="text-align:center" class="qitty-platform-card-title">Quboor</h3>
+            <p style="text-align:center">
+              Plateforme de répertorisation des tombes, lieux de mémoire et données associées, avec fiches, recherche, carte et consultation simplifiée.
+            </p>
+            <div class="service-actions">
+              <a class="btn blue solution-action-btn demo-btn" href="https://www.qitty.space/quboor.html" target="_blank" rel="noopener">Consulter Démo →</a>
+              <button class="btn blue-light solution-action-btn technical-spec-btn" type="button" data-tech-key="Quboor">Spécificités techniques →</button>
+            </div>
+          </article>
+<article class="service-card invest-card">
+            <div class="qitty-card-carousel-wrap">
+              <div class="qitty-auto-carousel" data-carousel-delay="3000">
+                <img class="qitty-carousel-slide active" src="ornicar1.png" alt="Ornicar Qitty 1">
+                <img class="qitty-carousel-slide" src="ornicar2.png" alt="Ornicar Qitty 2">
+                <img class="qitty-carousel-slide" src="ornicar3.png" alt="Ornicar Qitty 3">
+                <div class="qitty-carousel-dots">
+                <span class="qitty-carousel-dot active"></span>
+                <span class="qitty-carousel-dot"></span>
+                <span class="qitty-carousel-dot"></span>
+                </div>
+              </div>
+            </div>
+<h3 style="text-align:center" class="qitty-platform-card-title">Ornicar</h3>
+            <p style="text-align:center">
+              Outil communautaire pour répertorier les contrôles, signalements et informations utiles sur les trajets de transport afin d’aider les usagers à mieux anticiper leurs déplacements.
+            </p>
+<div class="service-actions"><a class="btn blue solution-action-btn demo-btn" href="https://www.qitty.space/ornicar.html" target="_blank" rel="noopener">Consulter Démo →</a><button class="btn blue-light solution-action-btn technical-spec-btn" type="button" data-tech-key="Ornicar">Spécificités techniques →</button></div>
+          </article>
+<article class="service-card invest-card qitty-added-platform-card qitty-v90-platform-card">
+            <div class="qitty-card-carousel-wrap">
+              <div class="qitty-auto-carousel" data-carousel-delay="3000">
+                <img class="qitty-carousel-slide active" src="dobon1.png" alt="DOBON — jeu japonais de cartes 1">
+                <img class="qitty-carousel-slide" src="dobon2.png" alt="DOBON — jeu japonais de cartes 2">
+                <img class="qitty-carousel-slide" src="dobon3.png" alt="DOBON — jeu japonais de cartes 3">
+                <div class="qitty-carousel-dots">
+                  <span class="qitty-carousel-dot active"></span>
+                  <span class="qitty-carousel-dot"></span>
+                  <span class="qitty-carousel-dot"></span>
+                </div>
+              </div>
+            </div>
+            <h3 style="text-align:center" class="qitty-platform-card-title">Jeu de cartes </h3>
+            <p style="text-align:center">Jeu de cartes digital inspiré de l’univers asiatique, avec modes de jeu, interface immersive, logique de manches, règles spéciales, sons et visuels personnalisés.</p>
+            <div class="service-actions">
+              <a class="btn blue solution-action-btn demo-btn" href="https://www.qitty.space/dobon.html" target="_blank" rel="noopener">Consulter Démo →</a>
+              <button class="btn blue-light solution-action-btn technical-spec-btn" type="button" data-tech-key="DOBON">Spécificités techniques →</button>
+            </div>
+          </article>
+<article class="service-card invest-card qitty-added-platform-card qitty-v90-platform-card">
+            <div class="qitty-card-carousel-wrap">
+              <div class="qitty-auto-carousel" data-carousel-delay="3000">
+                <img class="qitty-carousel-slide active" src="deli1.png" alt="Application livraison & partage de plats 1">
+                <img class="qitty-carousel-slide" src="deli2.png" alt="Application livraison & partage de plats 2">
+                <img class="qitty-carousel-slide" src="deli3.png" alt="Application livraison & partage de plats 3">
+                <div class="qitty-carousel-dots">
+                  <span class="qitty-carousel-dot active"></span>
+                  <span class="qitty-carousel-dot"></span>
+                  <span class="qitty-carousel-dot"></span>
+                </div>
+              </div>
+            </div>
+            <h3 style="text-align:center" class="qitty-platform-card-title">Application Partage de plats</h3>
+            <p style="text-align:center">Plateforme entre particuliers pour proposer, commander, réserver ou livrer des plats faits maison, avec profils vendeurs, panier, catégories, paiements et suivi de commande.</p>
+            <div class="service-actions">
+              <a class="btn blue solution-action-btn demo-btn" href="https://www.qitty.space/partage-plats.html" target="_blank" rel="noopener">Consulter Démo →</a>
+              <button class="btn blue-light solution-action-btn technical-spec-btn" type="button" data-tech-key="Food Sharing App">Spécificités techniques →</button>
+            </div>
+          </article>
+<article class="service-card invest-card qitty-added-platform-card qitty-v90-platform-card">
+            <div class="qitty-card-carousel-wrap">
+              <div class="qitty-auto-carousel" data-carousel-delay="3000">
+                <img class="qitty-carousel-slide active" src="mal1.png" alt="Assistance Alzheimer — Mémoire & Moi 1">
+                <img class="qitty-carousel-slide" src="mal2.png" alt="Assistance Alzheimer — Mémoire & Moi 2">
+                <img class="qitty-carousel-slide" src="mal3.png" alt="Assistance Alzheimer — Mémoire & Moi 3">
+                <div class="qitty-carousel-dots">
+                  <span class="qitty-carousel-dot active"></span>
+                  <span class="qitty-carousel-dot"></span>
+                  <span class="qitty-carousel-dot"></span>
+                </div>
+              </div>
+            </div>
+            <h3 style="text-align:center" class="qitty-platform-card-title">Assistance Alzheimer</h3>
+            <p style="text-align:center">Plateforme d’accompagnement pour personnes malades d’Alzheimer et leurs proches : rappels, médicaments, souvenirs, documents, bien-être, contacts et assistance quotidienne.</p>
+            <div class="service-actions">
+              <a class="btn blue solution-action-btn demo-btn" href="https://www.qitty.space/alzheimer.html" target="_blank" rel="noopener">Consulter Démo →</a>
+              <button class="btn blue-light solution-action-btn technical-spec-btn" type="button" data-tech-key="Mémoire & Moi Alzheimer">Spécificités techniques →</button>
+            </div>
+          </article>
+<article class="service-card invest-card qitty-added-platform-card qitty-v90-platform-card">
+            <div class="qitty-card-carousel-wrap">
+              <div class="qitty-auto-carousel" data-carousel-delay="3000">
+                <img class="qitty-carousel-slide active" src="div1.png" alt="Assistance parents divorcés — garde 1">
+                <img class="qitty-carousel-slide" src="div2.png" alt="Assistance parents divorcés — garde 2">
+                <img class="qitty-carousel-slide" src="div3.png" alt="Assistance parents divorcés — garde 3">
+                <div class="qitty-carousel-dots">
+                  <span class="qitty-carousel-dot active"></span>
+                  <span class="qitty-carousel-dot"></span>
+                  <span class="qitty-carousel-dot"></span>
+                </div>
+              </div>
+            </div>
+            <h3 style="text-align:center" class="qitty-platform-card-title">Assistance parents divorcés</h3>
+            <p style="text-align:center">Outil de gestion de garde parentale avec calendrier, enfants, documents, factures, communications, charges, notifications et organisation partagée jusqu’à long terme.</p>
+            <div class="service-actions">
+              <a class="btn blue solution-action-btn demo-btn" href="https://www.qitty.space/garde-parentale.html" target="_blank" rel="noopener">Consulter Démo →</a>
+              <button class="btn blue-light solution-action-btn technical-spec-btn" type="button" data-tech-key="Parents Divorcés Garde">Spécificités techniques →</button>
+            </div>
           </article>
 
-</div>
+<!-- qitty-v102-removed-outil-n-m-start -->
+<!-- Temporarily removed card: Outil N — plateforme scientifique -->
+<!-- qitty-v102-removed-outil-n-m-end -->
+
+
+<!-- qitty-v102-removed-outil-n-m-start -->
+<!-- Temporarily removed card: Outil M — laboratoire & recherche -->
+<!-- qitty-v102-removed-outil-n-m-end -->
+
+          </div>
+        </div>
+
       </div>
 
 <div class="solutions-category" data-solution-group="service">
@@ -4950,21 +5578,23 @@ header img[src*="mascot"]{
     </div>
   </section>
 </section>
-<section class="page-section" data-section="contact"><section class="section light"><div class="container"><div class="section-head"><h2 class="section-title">Contact &<br><span>partenariats</span></h2><div style="width:58px;height:4px;border-radius:999px;background:linear-gradient(90deg,#2458ff,#7d8dff);margin:12px 0 18px"></div></div><p class="section-subtitle" style="margin-bottom:12px">Qitty accompagne particuliers, PME et organisations dans leurs projets d’<span style="background:linear-gradient(90deg,#2458ff,#071b55);-webkit-background-clip:text;color:transparent;font-weight:800">automatisation</span>, d’intégration <span style="background:linear-gradient(90deg,#2458ff,#071b55);-webkit-background-clip:text;color:transparent;font-weight:800">IA</span> et d’optimisation des processus. Décrivez votre besoin, votre activité ou votre projet : nous reviendrons vers vous avec une approche claire, structurée et adaptée à vos objectifs.</p><div class="contact-wrapper"><div class="contact-info"></div><form class="contact-form" id="contactForm"><div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:24px"><div><h3 style="margin:0;font-size:20px;color:var(--dark)">Envoyer une demande</h3><p style="margin:4px 0 0;font-size:12px;color:var(--muted)">Expliquez-nous votre besoin et votre contexte.</p></div><div style="width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,#2458ff,#7182ff);display:grid;place-items:center;color:#fff;font-size:20px">✉</div></div><div class="form-grid"><div class="form-group"><label>Nom complet</label><input required placeholder="Votre nom ou entreprise"></div><div class="form-group"><label>Email professionnel</label><input type="email" required placeholder="contact@entreprise.com"></div><div class="form-group"><label>Type de profil</label><select><option>Particulier</option><option>PME</option><option>B2B</option><option>Organisation</option><option>Partenariat</option></select></div><div class="form-group"><label>Sujet du projet</label><input placeholder="Automatisation, CRM, IA, reporting..."></div><div class="form-group full"><label>Description du besoin</label><textarea placeholder="Décrivez votre activité, vos objectifs, vos outils actuels et les problématiques rencontrées..."></textarea></div><div class="form-group full"><button class="btn blue" type="submit" style="width:100%;padding:16px;font-size:15px;border-radius:16px">Envoyer la demande →</button></div></div></form></div></div></section></section>
+<section class="page-section" data-section="contact"><section class="section light"><div class="container"><div class="section-head"><h2 class="section-title">Contact &<br><span>partenariats</span></h2><div style="width:58px;height:4px;border-radius:999px;background:linear-gradient(90deg,#2458ff,#7d8dff);margin:12px 0 18px"></div></div><p class="section-subtitle" style="margin-bottom:12px">Qitty accompagne particuliers, PME et organisations dans leurs projets d’<span style="background:linear-gradient(90deg,#2458ff,#071b55);-webkit-background-clip:text;color:transparent;font-weight:800">automatisation</span>, d’intégration <span style="background:linear-gradient(90deg,#2458ff,#071b55);-webkit-background-clip:text;color:transparent;font-weight:800">IA</span> et d’optimisation des processus. Décrivez votre besoin, votre activité ou votre projet : nous reviendrons vers vous avec une approche claire, structurée et adaptée à vos objectifs.</p><div class="contact-wrapper"><div class="contact-info"></div><form class="contact-form" id="contactForm" data-contact-email="bouhlal.achraf@gmail.com">
+<input type="hidden" name="to" value="bouhlal.achraf@gmail.com"><div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:24px"><div><h3 style="margin:0;font-size:20px;color:var(--dark)">Envoyer une demande</h3><p style="margin:4px 0 0;font-size:12px;color:var(--muted)">Expliquez-nous votre besoin et votre contexte.</p></div><div style="width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,#2458ff,#7182ff);display:grid;place-items:center;color:#fff;font-size:20px">✉</div></div><div class="form-grid"><div class="form-group"><label>Nom complet</label><input required placeholder="Votre nom ou entreprise"></div><div class="form-group"><label>Email professionnel</label><input type="email" required placeholder="contact@entreprise.com"></div><div class="form-group"><label>Type de profil</label><select><option>Particulier</option><option>PME</option><option>B2B</option><option>Organisation</option><option>Partenariat</option></select></div><div class="form-group"><label>Sujet du projet</label><input placeholder="Automatisation, CRM, IA, reporting..."></div><div class="form-group full"><label>Description du besoin</label><textarea placeholder="Décrivez votre activité, vos objectifs, vos outils actuels et les problématiques rencontrées..."></textarea></div><div class="form-group full"><button class="btn blue" type="submit" style="width:100%;padding:16px;font-size:15px;border-radius:16px">Envoyer la demande →</button></div></div></form></div></div></section></section>
   </main>
 
   <div class="modal" id="modal"><div class="modal-card"><button class="modal-close" id="modalClose">×</button><h2 id="modalTitle"></h2><div id="modalBody"></div></div></div>
   <div class="chat-modal" id="chatModal">
     <div class="chat-panel">
       <div class="chat-head">
-        <div class="chat-identity"><div class="chat-avatar"><video autoplay muted loop playsinline><source src="chatbox.mp4" type="video/mp4"></video></div><div><h3>Assistant Qitty</h3><p>Posez une question sur Easy Apply, l’automatisation, l’IA ou nos services.</p></div></div>
+        <div class="chat-identity"><div class="chat-avatar"><video autoplay muted loop playsinline><source src="Qitty Ai/chatbox.mp4" type="video/mp4"></video></div><div><h3>Assistant Qitty</h3><p>Assistant Premium V2 : support, sales, conseil projet et navigation intelligente.</p></div></div>
         <div class="chat-actions"><button class="chat-close" id="chatClose">Fermer</button><button class="chat-reset" id="chatReset" type="button">Reset</button></div>
       </div>
       <div class="chat-body" id="chatBody">
         <div class="chat-stage"></div>
       </div>
       <div class="chat-suggestions" id="chatSuggestions"></div>
-      <form class="chat-input-wrap" id="chatForm"><input id="chatInput" placeholder="Posez une question : Easy Apply, CV, B2B, documents, contact, prix..." autocomplete="off"><button type="submit">Envoyer</button></form>
+      <form class="chat-input-wrap" id="chatForm">
+<input type="hidden" name="to" value="bouhlal.achraf@gmail.com"><input id="chatInput" placeholder="Écrivez naturellement : projet, devis, support, IA, CRM, automatisation, prix..." autocomplete="off"><button type="submit">Envoyer</button></form>
     </div>
   </div>
   <script>
@@ -4980,7 +5610,7 @@ header img[src*="mascot"]{
         cv:{title:'Diagnostic automatisation du quotidien',section:'particuliers',tags:['automatisation','quotidien','tâches','organisation','gain de temps','no-code','ia'],summary:'Session d’une heure pour identifier les tâches répétitives et choisir les premières automatisations utiles.',details:'Nous analysons l’organisation, les tâches récurrentes et les irritants afin de prioriser des automatisations simples, utiles et adaptées à votre quotidien.'},
         job:{title:'Recherche d’emploi & IA',section:'particuliers',tags:['emploi','travail','job','recherche','postuler','prospection'],summary:'Accompagnement moderne pour utiliser l’IA, comprendre les ATS et organiser sa recherche d’emploi.',details:'Le chatbot peut expliquer les ATS, proposer Easy Apply, recommander les documents, guider vers les articles et aider l’utilisateur à comprendre comment structurer sa démarche.'},
         personalAuto:{title:'Automatisation personnelle',section:'particuliers',tags:['quotidien','personnel','automatisation personnelle','routine'],summary:'Pack structuré pour analyser le quotidien et identifier les tâches automatisables.',details:'On analyse les routines, outils, pertes de temps et objectifs. Ensuite on construit un plan personnalisé d’automatisation, avec apprentissage de l’IA au quotidien.'},
-        b2b:{title:'PME and B2B & PME',section:'b2b',tags:['b2b','pme','entreprise','audit','devis','kpi','operation','opération'],summary:'Audit, optimisation des opérations, intégration IA, dashboards, workflows et automatisation sur mesure.',details:'Pour les PME, Qitty part du terrain : processus existants, contraintes, données, outils et objectifs. Ensuite on priorise les cas d’usage à fort impact, on prototype, on mesure et on accompagne l’adoption.'},
+        b2b:{title:'Qitty pour PME and B2B & PME',section:'b2b',tags:['b2b','pme','entreprise','audit','devis','kpi','operation','opération'],summary:'Audit, optimisation des opérations, intégration IA, dashboards, workflows et automatisation sur mesure.',details:'Pour les PME, Qitty part du terrain : processus existants, contraintes, données, outils et objectifs. Ensuite on priorise les cas d’usage à fort impact, on prototype, on mesure et on accompagne l’adoption.'},
         process:{title:'Workflows & optimisation des processus',section:'solutions',tags:['workflow','process','processus','tâche','tache','automatiser'],summary:'Cartographie des tâches, réduction des inefficiences et création de workflows plus fluides.',details:'Qitty identifie les tâches répétitives, les doubles saisies, les étapes à faible valeur et les points de friction pour concevoir des workflows fiables, simples et mesurables.'},
         vba:{title:'Excel VBA & automatisation',section:'solutions',tags:['excel','vba','macro','outlook'],summary:'Automatisation Excel/Outlook : macros, reporting, imports, exports et relances.',details:'Idéal pour automatiser des fichiers Excel, générer des emails, consolider des données, produire des reportings ou créer des outils internes sans plateforme lourde.'},
         crm:{title:'CRM & plateformes clients',section:'solutions',tags:['crm','client','juridique','legal','légal','dossier'],summary:'Création de plateformes CRM et outils de suivi pour clients, dossiers, statuts et actions.',details:'Qitty peut structurer un CRM léger ou une plateforme métier adaptée à un cabinet, une PME, une activité juridique ou administrative.'},
@@ -5052,7 +5682,7 @@ Email : ${email}
 Type de profil : ${profil}
 
 Description du besoin :
-${description}`);window.location.href=`mailto:a.bouhlal@qitty.org?subject=${mailSubject}&body=${body}`;});
+${description}`);window.location.href=`mailto:bouhlal.achraf@gmail.com?subject=${mailSubject}&body=${body}`;});
   </script>
 
 <script>
@@ -5149,475 +5779,6 @@ document.addEventListener('DOMContentLoaded', function(){
 });
 </script>
 
-
-
-<script id="chatbot-tree-suggestions-v2-script">
-document.addEventListener('DOMContentLoaded', function(){
-  const chatModal = document.getElementById('chatModal');
-  const chatClose = document.getElementById('chatClose');
-  const chatBody = document.getElementById('chatBody');
-  const chatForm = document.getElementById('chatForm');
-  const chatInput = document.getElementById('chatInput');
-  const suggestions = document.getElementById('chatSuggestions');
-
-  const state = {
-    lastIntent: 'home',
-    lastSection: getActiveSection(),
-    turns: 0
-  };
-
-  const sectionInfo = {
-    accueil: {
-      label:'Accueil',
-      summary:'Vous êtes sur l’accueil. Cette page présente Qitty, ses promesses principales, les bénéfices de l’IA et les chemins rapides vers Particuliers, B2B et Solutions.',
-      redirects:['particuliers','b2b','solutions','contact']
-    },
-    about: {
-      label:'Qui sommes-nous',
-      summary:'Cette page explique l’approche Qitty : moderniser les pratiques professionnelles avec les outils IA, l’automatisation et la structuration des processus.',
-      redirects:['processus','ethique','solutions','contact']
-    },
-    particuliers: {
-      label:'Particuliers',
-      summary:'Cette page s’adresse aux personnes qui veulent automatiser leur quotidien, organiser leur recherche d’emploi, améliorer leurs candidatures ou utiliser l’IA avec méthode.',
-      redirects:['diagnostic','emploi','automatisation','contact']
-    },
-    b2b: {
-      label:'B2B / PME',
-      summary:'Cette page s’adresse aux entreprises, PME et organisations qui veulent moderniser leurs opérations, automatiser leurs workflows, connecter leurs outils et mieux piloter leurs données.',
-      redirects:['audit','workflows','dashboards','contact']
-    },
-    solutions: {
-      label:'Nos solutions',
-      summary:'Cette page regroupe les outils, plateformes et services : Easy Apply, CRM ASBL, Assistant automatisation, Workflow artiste IA, automatisation de workflows, dashboards, optimisation des processus, intégration APIs et formations.',
-      redirects:['outils','services','easyapply','contact']
-    },
-    articles: {
-      label:'Articles',
-      summary:'Cette page regroupe des ressources sur l’IA, l’automatisation, le recrutement, le no-code, les PME et la productivité. La recherche permet de filtrer les articles par mots-clés.',
-      redirects:['ia','recrutement','automatisation','contact']
-    },
-    contact: {
-      label:'Contact',
-      summary:'Cette page permet d’envoyer une demande. L’idéal est de préciser votre profil, vos outils actuels, votre besoin, vos objectifs et le niveau d’urgence.',
-      redirects:['solutions','b2b','particuliers','devis']
-    }
-  };
-
-  const nodes = {
-    home:{
-      title:'Bonjour 👋',
-      text:'Je peux vous guider naturellement dans le site Qitty. Je peux expliquer la page où vous êtes, comparer les services, orienter vers la bonne section ou préparer une demande de contact.',
-      next:['page','solutions','particuliers','b2b','contact']
-    },
-    page:{
-      title:'Page actuelle',
-      text:()=> {
-        const sec = getActiveSection();
-        const info = sectionInfo[sec] || sectionInfo.accueil;
-        return 'Vous êtes dans la section <strong>'+info.label+'</strong>.<br>'+info.summary;
-      },
-      next:()=> {
-        const sec = getActiveSection();
-        return (sectionInfo[sec] || sectionInfo.accueil).redirects;
-      }
-    },
-    solutions:{
-      title:'Nos solutions',
-      text:'La section Solutions est divisée en deux grands chemins : <strong>Outils et plateforme</strong> pour les projets/produits, et <strong>Nos services</strong> pour les accompagnements opérationnels. Le bon choix dépend de votre besoin : utiliser un outil existant, financer un projet, automatiser un processus ou demander un accompagnement.',
-      section:'solutions',
-      next:['outils','services','easyapply','contact']
-    },
-    outils:{
-      title:'Outils et plateforme',
-      text:'Les outils et plateformes regroupent les projets structurés Qitty : Easy Apply pour les candidatures, CRM ASBL pour les opérations associatives, Assistant automatisation personnelle et Workflow artiste IA. Chaque projet peut être expliqué, adapté ou présenté en détail.',
-      section:'solutions',
-      next:['easyapply','crm','ornicar','quboor','planning','contact']
-    },
-    services:{
-      title:'Nos services',
-      text:'Nos services couvrent l’automatisation de workflows, les dashboards, l’optimisation des processus, l’intégration outils & APIs, la formation IA au quotidien et Excel VBA. L’approche consiste à partir des tâches réelles, puis construire une solution simple et utile.',
-      section:'solutions',
-      next:['workflows','dashboards','processus','apis','formation','contact']
-    },
-    particuliers:{
-      title:'Particuliers',
-      text:'Pour les particuliers, Qitty aide à organiser le quotidien professionnel : diagnostic automatisation, accompagnement recherche d’emploi & IA, optimisation CV/lettres ATS et automatisation personnalisée.',
-      section:'particuliers',
-      next:['diagnostic','emploi','easyapply','automatisation','contact']
-    },
-    b2b:{
-      title:'B2B / PME',
-      text:'Pour les entreprises, équipes, PME et organisations, Qitty aide à moderniser les opérations : audit des processus, automatisation des tâches répétitives, dashboards, intégration IA, APIs et accompagnement des équipes.',
-      section:'b2b',
-      next:['audit','workflows','dashboards','apis','contact']
-    },
-    diagnostic:{
-      title:'Diagnostic automatisation',
-      text:'Le diagnostic sert à identifier les tâches répétitives ou parasites, comprendre votre organisation actuelle, prioriser les automatisations utiles et construire un premier plan d’action simple.',
-      section:'particuliers',
-      next:['automatisation','particuliers','contact']
-    },
-    emploi:{
-      title:'Recherche d’emploi & IA',
-      text:'Qitty peut aider à structurer la recherche d’emploi : analyse d’offres, mots-clés ATS, CV, lettres, suivi des candidatures, relances et préparation des réponses. L’IA accélère la méthode, mais la relecture humaine reste centrale.',
-      section:'particuliers',
-      next:['easyapply','ats','articles','contact']
-    },
-    easyapply:{
-      title:'Easy Apply',
-      text:'Easy Apply transforme une offre d’emploi en candidature structurée : CV, lettre, mots-clés, arguments et adaptation au poste. C’est utile pour gagner du temps tout en gardant une candidature cohérente.',
-      section:'solutions',
-      next:['emploi','ats','particuliers','contact']
-    },
-    ats:{
-      title:'ATS',
-      text:'Un ATS est un système qui aide les recruteurs à trier les candidatures. Un CV compatible ATS doit être clair, bien structuré, sans mise en page trop complexe et aligné avec les mots-clés de l’offre.',
-      section:'articles',
-      next:['easyapply','emploi','articles','contact']
-    },
-    automatisation:{
-      title:'Automatisation',
-      text:'Automatiser signifie supprimer ou réduire les tâches manuelles répétitives : copier-coller, relances, reporting, classement, emails, imports, exports ou synchronisations. Qitty privilégie des automatisations progressives et contrôlables.',
-      section:'solutions',
-      next:['workflows','processus','apis','contact']
-    },
-    workflows:{
-      title:'Workflows',
-      text:'Un workflow décrit les étapes d’un processus. Qitty aide à cartographier ces étapes, repérer les blocages, supprimer les doublons et automatiser ce qui peut l’être sans perdre le contrôle humain.',
-      section:'solutions',
-      next:['processus','automatisation','apis','contact']
-    },
-    processus:{
-      title:'Optimisation des processus',
-      text:'L’optimisation des processus vise à rendre une méthode plus claire, plus rapide et plus fiable. On commence par comprendre l’existant, puis on simplifie, standardise, automatise et mesure les gains.',
-      section:'solutions',
-      next:['workflows','dashboards','b2b','contact']
-    },
-    dashboards:{
-      title:'Dashboards & reporting',
-      text:'Les dashboards permettent de suivre les indicateurs importants, centraliser les données et éviter les reportings manuels. Ils sont utiles pour piloter l’activité avec des données plus propres et plus visibles.',
-      section:'solutions',
-      next:['b2b','processus','apis','contact']
-    },
-    apis:{
-      title:'Intégration outils & APIs',
-      text:'L’intégration outils & APIs permet de connecter plusieurs systèmes entre eux. L’objectif est d’éviter les doubles saisies, synchroniser les données et créer des flux plus fluides entre les plateformes.',
-      section:'solutions',
-      next:['workflows','dashboards','b2b','contact']
-    },
-    formation:{
-      title:'Formation IA',
-      text:'Les formations Qitty aident à comprendre les outils IA, structurer les usages, écrire de meilleurs prompts et intégrer l’IA dans le quotidien sans dépendre d’un outil incompris.',
-      section:'solutions',
-      next:['ia','particuliers','b2b','contact']
-    },
-    crm:{
-      title:'CRM ASBL',
-      text:'Le CRM ASBL vise à suivre bénéficiaires, stocks, distributions, bénévoles et conformité. Il aide les organisations de terrain à fiabiliser les données et mieux suivre leurs opérations.',
-      section:'solutions',
-      next:['outils','b2b','contact']
-    },
-    assistantauto:{
-      title:'Assistant automatisation personnelle',
-      text:'Cet assistant aide à repérer les tâches répétitives, structurer des routines et proposer des automatisations simples dans le quotidien professionnel ou personnel.',
-      section:'solutions',
-      next:['automatisation','diagnostic','contact']
-    },
-    workflowartiste:{
-      title:'Workflow artiste IA',
-      text:'Ce projet organise la création de contenus artistiques ou éducatifs avec IA : prompts, direction artistique, génération sonore, bibliothèque de contenus et diffusion.',
-      section:'solutions',
-      next:['outils','ia','contact']
-    },
-
-    ornicar:{
-      title:'Ornicar',
-      text:'Ornicar est un outil communautaire destiné à répertorier les contrôles, signalements et informations utiles sur les trajets de transport. L’objectif est d’aider les usagers à mieux comprendre ce qui se passe sur le terrain et à anticiper leurs déplacements.',
-      section:'solutions',
-      next:['outils','contact','solutions']
-    },
-    quboor:{
-      title:'Quboor',
-      text:'Quboor est une plateforme de répertorisation des tombes, tombeaux et lieux de mémoire. Elle vise à faciliter les visites des proches, la localisation des sépultures et la transmission d’informations familiales ou patrimoniales.',
-      section:'solutions',
-      next:['outils','contact','solutions']
-    },
-    planning:{
-      title:'Planning Management',
-      text:'Planning Management est un outil de gestion de planning pour organiser les équipes, les shifts, les disponibilités, les tâches et les exceptions. Il peut aider à produire un planning plus clair, plus fiable et plus facile à ajuster.',
-      section:'solutions',
-      next:['outils','services','contact']
-    },
-    ia:{
-      title:'IA au quotidien',
-      text:'L’IA peut aider à rédiger, analyser, classer, synthétiser, préparer des documents et automatiser certaines décisions simples. Le plus important est de garder une méthode claire et un contrôle humain.',
-      section:'articles',
-      next:['formation','automatisation','articles','contact']
-    },
-    recrutement:{
-      title:'IA & recrutement',
-      text:'L’IA intervient dans la recherche d’emploi, les candidatures, les ATS, les lettres, les mots-clés et l’organisation des relances. Qitty peut aider à rendre cette démarche plus structurée.',
-      section:'articles',
-      next:['emploi','easyapply','ats','contact']
-    },
-    audit:{
-      title:'Audit opérationnel',
-      text:'L’audit sert à comprendre comment l’équipe travaille vraiment : outils utilisés, étapes du processus, données manipulées, irritants, tâches répétitives et risques. Ensuite, on priorise les solutions.',
-      section:'b2b',
-      next:['b2b','processus','dashboards','contact']
-    },
-    devis:{
-      title:'Demande de devis',
-      text:'Pour demander un devis utile, indiquez votre profil, votre activité, les outils utilisés, le problème principal, l’objectif attendu, le volume de travail et l’urgence. Qitty pourra alors proposer une approche adaptée.',
-      section:'contact',
-      next:['contact','b2b','particuliers']
-    },
-    contact:{
-      title:'Contact',
-      text:'Le formulaire de contact permet de décrire votre besoin. Je recommande d’indiquer le contexte, le type de profil, les outils actuels, ce que vous voulez automatiser ou améliorer, et le résultat attendu.',
-      section:'contact',
-      next:['devis','solutions','b2b','particuliers']
-    },
-    ethique:{
-      title:'Approche humaine et éthique',
-      text:'Qitty considère l’IA comme un outil d’aide, pas comme un remplacement du jugement humain. Les solutions doivent rester compréhensibles, progressives, contrôlables et utiles.',
-      section:'about',
-      next:['about','ia','solutions','contact']
-    }
-  };
-
-  const labels = {
-    home:'Accueil', page:'Expliquer cette page', solutions:'Solutions', outils:'Outils et plateforme', services:'Nos services',
-    particuliers:'Particuliers', b2b:'B2B / PME', diagnostic:'Diagnostic', emploi:'Recherche emploi', easyapply:'Easy Apply',
-    ats:'ATS', automatisation:'Automatisation', workflows:'Workflows', processus:'Processus', dashboards:'Dashboards',
-    apis:'APIs', formation:'Formation IA', crm:'CRM ASBL', assistantauto:'Assistant automatisation', workflowartiste:'Workflow artiste IA', ornicar:'Ornicar', quboor:'Quboor', planning:'Planning Management',
-    ia:'IA au quotidien', recrutement:'Recrutement', audit:'Audit', devis:'Devis', contact:'Contact', ethique:'Éthique', articles:'Articles'
-  };
-
-  const synonyms = [
-    ['b2b',['b2b','pme','entreprise','organisation','pro','professionnel','business']],
-    ['particuliers',['particulier','personne','perso','quotidien','independant','indépendant']],
-    ['solutions',['solution','solutions','nos solutions']],
-    ['outils',['outil','outils','plateforme','platform','projet','produit']],
-    ['services',['service','services','accompagnement','mission']],
-    ['easyapply',['easy','apply','cv','lettre','ats','candidature','postuler']],
-    ['emploi',['emploi','job','travail','recherche d emploi','recherche emploi','candidat']],
-    ['automatisation',['automatisation','automatiser','automatique','tache repetitive','tâche répétitive','parasite']],
-    ['workflows',['workflow','workflows','flux','process']],
-    ['processus',['processus','optimisation','optimiser','methode','méthode']],
-    ['dashboards',['dashboard','reporting','kpi','tableau de bord','données','data']],
-    ['apis',['api','apis','connecter','integration','intégration','synchronisation']],
-    ['formation',['formation','apprendre','former','cours','prompt']],
-    ['crm',['crm','asbl','beneficiaire','bénéficiaire','stock','distribution']],
-    ['ornicar',['ornicar','controle transport','contrôle transport','stib','metro','tram','bus','signalement transport']],
-    ['quboor',['quboor','tombe','tombes','tombeaux','cimetiere','cimetière','sepulture','sépulture']],
-    ['planning',['planning','planning management','shift','shifts','horaire','horaires','equipe','équipe','planification']],
-    ['ia',['ia','intelligence artificielle','chatgpt','prompt']],
-    ['recrutement',['recrutement','recruteur','rh']],
-    ['audit',['audit','diagnostic entreprise','analyse terrain']],
-    ['devis',['devis','prix','tarif','combien','budget']],
-    ['contact',['contact','contacter','email','demande']],
-    ['articles',['article','articles','ressource','blog']],
-    ['page',['page','ou suis','où suis','cette page','explique la page','section actuelle']],
-    ['ethique',['ethique','éthique','humain','controle','contrôle']]
-  ];
-
-  function getActiveSection(){
-    const active = document.querySelector('.page-section.active');
-    if(active && active.dataset.section) return active.dataset.section;
-    return 'accueil';
-  }
-
-  function scrollChat(){
-    if(chatBody) chatBody.scrollTop = chatBody.scrollHeight;
-  }
-
-  function openChat(){
-    if(!chatModal) return;
-    chatModal.classList.add('open');
-    chatModal.removeAttribute('aria-hidden');
-    setTimeout(()=>{ if(chatInput) chatInput.focus(); }, 80);
-    ensureSuggestions();
-  }
-
-  function closeChat(){
-    if(!chatModal) return;
-    chatModal.classList.remove('open');
-    chatModal.setAttribute('aria-hidden','true');
-  }
-
-  window.qittyCleanOpenChat = openChat;
-  window.qittyCleanCloseChat = closeChat;
-
-  function addBubble(html, role){
-    if(typeof addChatBubble === 'function'){
-      addChatBubble(html, role || 'bot');
-    }else{
-      const stage = document.querySelector('.chat-stage');
-      if(!stage) return;
-      const bubble = document.createElement('div');
-      bubble.className = 'chat-message ' + (role || 'bot');
-      bubble.innerHTML = '<span>'+html+'</span>';
-      stage.appendChild(bubble);
-    }
-    scrollChat();
-  }
-
-  function inferIntent(message){
-    const q = (message || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
-    let best = null, bestScore = 0;
-    for(const [intent, words] of synonyms){
-      let score = 0;
-      for(const w of words){
-        const normalized = w.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
-        if(q.includes(normalized)) score += normalized.length > 5 ? 2 : 1;
-      }
-      if(score > bestScore){ best = intent; bestScore = score; }
-    }
-    if(best) return best;
-
-    const sec = getActiveSection();
-    if(sec === 'b2b') return 'b2b';
-    if(sec === 'particuliers') return 'particuliers';
-    if(sec === 'solutions') return 'solutions';
-    if(sec === 'articles') return 'articles';
-    if(sec === 'contact') return 'contact';
-    return 'home';
-  }
-
-  function resolveNext(nodeKey){
-    const node = nodes[nodeKey] || nodes.home;
-    let next = typeof node.next === 'function' ? node.next() : (node.next || []);
-    const sec = getActiveSection();
-    const contextual = (sectionInfo[sec] && sectionInfo[sec].redirects) ? sectionInfo[sec].redirects : [];
-    const merged = [...next, ...contextual, 'contact'];
-    return [...new Set(merged)].filter(k=>nodes[k] || labels[k]).slice(0,6);
-  }
-
-  function renderSuggestionBar(nodeKey){
-    /* External suggestion bar removed. Suggestions are now only displayed inside the bot message. */
-    if(!suggestions) return;
-    suggestions.innerHTML = '';
-    suggestions.classList.remove('show');
-    suggestions.removeAttribute('data-visible');
-  }
-
-  function inlineActions(nodeKey){
-    return '<div class="chat-next-actions">'+resolveNext(nodeKey).slice(0,4).map(key =>
-      '<button type="button" data-key="'+key+'">'+(labels[key] || key)+'</button>'
-    ).join('')+'</div>';
-  }
-
-  function bindInlineActions(){
-    document.querySelectorAll('.chat-next-actions button').forEach(btn=>{
-      if(btn.dataset.bound === '1') return;
-      btn.dataset.bound = '1';
-      btn.addEventListener('click', function(e){
-        e.preventDefault();
-        e.stopPropagation();
-        answerIntent(btn.dataset.key, btn.textContent);
-      });
-    });
-  }
-
-  function answerIntent(intent, userLabel){
-    const key = nodes[intent] ? intent : inferIntent(intent);
-    const node = nodes[key] || nodes.home;
-    state.lastIntent = key;
-    state.lastSection = getActiveSection();
-    state.turns += 1;
-
-    if(userLabel) addBubble(userLabel, 'user');
-
-    const text = typeof node.text === 'function' ? node.text() : node.text;
-    const body = '<strong>'+node.title+'</strong><br>'+text+'<br>'+inlineActions(key);
-    setTimeout(()=>{
-      addBubble(body, 'bot');
-      bindInlineActions();
-      renderSuggestionBar(key);
-      openChat();
-    }, userLabel ? 220 : 0);
-  }
-
-  function ensureSuggestions(){
-    if(!suggestions) return;
-    suggestions.innerHTML = '';
-    suggestions.classList.remove('show');
-    suggestions.removeAttribute('data-visible');
-  }
-
-  if(chatClose){
-    chatClose.onclick = function(e){
-      e.preventDefault();
-      e.stopPropagation();
-      closeChat();
-      return false;
-    };
-  }
-
-  if(chatModal){
-    chatModal.addEventListener('click', function(e){
-      if(e.target === chatModal){
-        e.preventDefault();
-        closeChat();
-      }
-    });
-  }
-
-  if(chatForm){
-    chatForm.addEventListener('submit', function(e){
-      e.preventDefault();
-      e.stopPropagation();
-      const msg = chatInput ? chatInput.value.trim() : '';
-      if(!msg){ ensureSuggestions(); return false; }
-      if(chatInput) chatInput.value = '';
-      const intent = inferIntent(msg);
-      answerIntent(intent, msg);
-      openChat();
-      return false;
-    }, true);
-  }
-
-  if(chatInput){
-    chatInput.addEventListener('keydown', function(e){
-      if(e.key === 'Enter'){
-        e.preventDefault();
-        e.stopPropagation();
-        if(chatForm && typeof chatForm.requestSubmit === 'function') chatForm.requestSubmit();
-        else if(chatForm) chatForm.dispatchEvent(new Event('submit', {cancelable:true, bubbles:true}));
-        return false;
-      }
-    }, true);
-  }
-
-  const floatingBtn = document.getElementById('floatingChatbotBtn');
-  if(floatingBtn){
-    floatingBtn.onclick = function(e){
-      e.preventDefault();
-      e.stopPropagation();
-      openChat();
-      if(state.turns === 0) answerIntent('home', '');
-      return false;
-    };
-  }
-
-  const headerVideo = document.querySelector('.header-video');
-  if(headerVideo){
-    headerVideo.onclick = function(e){
-      e.preventDefault();
-      e.stopPropagation();
-      openChat();
-      if(state.turns === 0) answerIntent('home', '');
-      return false;
-    };
-  }
-
-  // Keep suggestions visible even after the original intro or saved history.
-  renderSuggestionBar('home');
-  setInterval(ensureSuggestions, 1500);
-});
-</script>
 
 
 <script id="service-contact-prefill-script">
@@ -5853,7 +6014,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
 <script id="solutions-tech-specs-premium-stable-script">
 document.addEventListener('DOMContentLoaded', function(){
-  var techSpecs = {"Easy Apply": {"title": "Easy Apply — plateforme candidature IA", "intro": "Plateforme orientée RH et productivité candidat, conçue pour transformer une offre d’emploi et un profil utilisateur en dossier de candidature structuré, cohérent et exploitable.", "sections": [["Architecture fonctionnelle", ["Base de données profil : expériences, réalisations, compétences, outils, langues, formations et préférences de candidature.", "Moteur d’analyse d’offre : extraction des mots-clés, exigences, responsabilités, outils demandés et critères ATS.", "Système de scoring : comparaison offre/profil, identification des écarts et priorisation des éléments à renforcer."]], ["Automatisation & IA", ["Génération contrôlée de CV, lettres, messages recruteurs et réponses personnalisées.", "Prompts structurés par contexte : secteur, niveau, ton, type d’offre et langue.", "Workflow complet : importer l’offre, analyser, adapter, générer, corriger, exporter."]], ["Réutilisation possible", ["Portails RH, matching candidat/offre, onboarding, génération de documents, assistants métiers ou plateformes de formation personnalisée."]]]}, "CRM & gestion opérationnelle ASBL": {"title": "CRM & gestion opérationnelle ASBL", "intro": "Solution de gestion terrain structurée autour des bénéficiaires, des stocks, des distributions, des bénévoles et des indicateurs de conformité.", "sections": [["Données & traçabilité", ["Modèle de données bénéficiaires : dossier, composition de ménage, statut, historique et critères de suivi.", "Gestion des stocks : entrées, sorties, ajustements, destructions, distributions et rapprochements.", "Historique opérationnel complet pour audit, suivi interne et reporting."]], ["Pilotage & workflows", ["Tableaux de bord KPI : volumes, capacités, catégories, alertes et suivi hebdomadaire.", "Règles métier : capacité de distribution, jours, statuts, validations et cohérence des données.", "Architecture compatible Firebase, SQL, exports CSV/PDF et API futures."]], ["Réutilisation possible", ["CRM PME, gestion de stocks, suivi logistique, plateformes sociales, inventaire, planning terrain, gestion d’équipes ou conformité opérationnelle."]]]}, "Ornicar": {"title": "Ornicar — outil communautaire transport", "intro": "Application mobile-first pensée pour croiser carte, géolocalisation, signalements utilisateurs et logique de prédiction locale.", "sections": [["Cartographie & géolocalisation", ["Carte interactive avec stations, arrêts, lignes, zones et points d’intérêt.", "Géolocalisation utilisateur, focus carte, calcul de proximité et lecture contextuelle du trajet.", "Structuration des données par lignes, directions, arrêts et correspondances."]], ["Signalements & scoring", ["Workflow de signalement : lieu, ligne, direction, description, validation et durée de vie.", "Statuts dynamiques : en attente, validé, historique et expiration automatique.", "Scoring local de risque basé sur données déclarées, intensité, temps et récurrence."]], ["Réutilisation possible", ["Applications de mobilité, signalement citoyen, maintenance terrain, sécurité, logistique, alertes géolocalisées, suivi d’intervention ou cartographie d’événements."]]]}, "Quboor": {"title": "Quboor — plateforme lieux de mémoire", "intro": "Plateforme de répertorisation et consultation de lieux de mémoire avec logique de recherche, carte, fiches et données patrimoniales.", "sections": [["Base documentaire", ["Fiches structurées : nom, description, emplacement, images, informations familiales et catégories.", "Recherche multicritère et filtrage par zone, type, nom, repères ou informations associées.", "Gestion de contenus sensibles avec logique de lisibilité, transmission et conservation."]], ["Interface & données géographiques", ["Navigation par carte, fiches détaillées et parcours utilisateur simplifié.", "Possibilité d’intégrer coordonnées GPS, médias, validations et contributions utilisateurs.", "Architecture adaptable à des bases patrimoniales, privées ou communautaires."]], ["Réutilisation possible", ["Cartes touristiques, inventaires immobiliers, registres historiques, plateformes culturelles, catalogues patrimoniaux ou bases documentaires géolocalisées."]]]}, "Planning Management": {"title": "Planning Management — gestion opérationnelle", "intro": "Outil de planification destiné aux équipes avec contraintes horaires, besoins minimums, disponibilités, rotations et pilotage opérationnel.", "sections": [["Moteur de planning", ["Gestion des shifts, disponibilités, absences, postes, rôles et contraintes par profil.", "Règles de couverture minimum : nombre de personnes, compétences requises, back-up et alertes.", "Vue calendrier, suivi par période et historiques de planning."]], ["Optimisation & reporting", ["Détection d’incohérences : sous-effectif, conflits, surcharge et couverture insuffisante.", "Exports possibles vers Excel, PDF ou tableaux de bord.", "Base évolutive vers notifications, API RH ou automatisation d’assignation."]], ["Réutilisation possible", ["Maisons de repos, associations, logistique, call centers, équipes commerciales, nettoyage, retail, horeca, événementiel ou services avec rotations d’équipes."]]]}, "IA au quotidien": {"title": "IA au quotidien — assistant d’usage personnel", "intro": "Solution d’accompagnement à l’adoption des outils IA, conçue pour transformer des besoins quotidiens en routines simples, prompts utiles et automatisations concrètes.", "sections": [["Parcours utilisateur", ["Diagnostic des tâches quotidiennes : recherche, rédaction, organisation, images, vidéo, audio et productivité.", "Bibliothèque de cas d’usage : prompts, méthodes, routines et workflows réutilisables.", "Assistant conversationnel avec suggestions contextualisées."]], ["Adoption & structuration", ["Approche pédagogique pour aider l’utilisateur à comprendre quand et comment utiliser les bons outils.", "Structuration des usages par objectif : emploi, administratif, création de contenu, organisation personnelle.", "Possibilité d’intégrer des outils externes, formulaires, bases de données ou automatisations simples."]], ["Réutilisation possible", ["Portails de formation, assistants internes, copilotes administratifs, support client, accompagnement digital, onboarding ou outils d’aide à la productivité."]]]}, "Excel VBA": {"title": "Excel VBA — automatisation bureautique avancée", "intro": "Service d’automatisation Excel pour transformer des fichiers manuels en outils fiables, plus rapides et plus faciles à exploiter au quotidien.", "sections": [["Automatisation Excel", ["Macros VBA, boutons d’action, formulaires, contrôles de saisie et traitements automatisés.", "Nettoyage de données, consolidation multi-fichiers, calculs automatiques, exports et génération de rapports.", "Réduction des manipulations répétitives et sécurisation des fichiers existants sans changer brutalement les habitudes."]], ["Évolution vers outil métier", ["Structuration progressive d’un fichier Excel vers une base de données, un dashboard ou une application web.", "Connexion possible avec CSV, API, Google Sheets, outils internes ou formulaires.", "Documentation des règles et simplification de l’usage pour les équipes non techniques."]], ["Cas d’usage réutilisables", ["Reporting financier, suivi de stock, planning, facturation, contrôle qualité, RH, tableaux mensuels, consolidation de données ou migration vers application."]]]}, "Automatisation de workflows": {"title": "Automatisation de workflows — orchestration métier", "intro": "Service de conception de workflows sur mesure pour réduire les tâches répétitives, fiabiliser les échanges entre outils et structurer les processus métier.", "sections": [["Analyse du processus", ["Cartographie des tâches manuelles, irritants opérationnels, étapes répétitives et points de friction.", "Identification des données sources, validations nécessaires, dépendances métier et rôles utilisateurs.", "Formalisation d’un workflow cible clair : déclencheurs, actions, conditions, notifications et livrables."]], ["Automatisation & intégration", ["Création de scénarios automatisés entre formulaires, fichiers, CRM, e-mails, tableaux de bord et bases de données.", "Mise en place de règles conditionnelles, statuts, relances, alertes et génération automatique de documents.", "Connexion possible à des API, outils no-code/low-code, scripts, Firebase, Google Workspace ou plateformes métier."]], ["Cas d’usage réutilisables", ["Suivi commercial, gestion administrative, validation de dossiers, onboarding, support client, facturation, reporting, stock, RH ou gestion terrain."]]]}, "Dashboarding": {"title": "Dashboarding — pilotage et indicateurs", "intro": "Service de création de tableaux de bord pour rendre les données lisibles, suivre les indicateurs importants et piloter les décisions avec une vision claire.", "sections": [["Structuration des données", ["Nettoyage, regroupement et normalisation des données issues de fichiers, formulaires, CRM ou bases existantes.", "Définition des KPI utiles : volumes, délais, progression, alertes, performance, qualité et écarts.", "Organisation des sources pour obtenir une lecture fiable et exploitable dans le temps."]], ["Interface de pilotage", ["Création de vues synthétiques : cartes KPI, graphiques, filtres, tableaux, historiques et comparaisons.", "Mise en place d’un suivi opérationnel adapté aux profils : direction, équipe terrain, administration ou commercial.", "Possibilité d’intégrer exports PDF/Excel, mises à jour automatisées, droits d’accès et alertes."]], ["Cas d’usage réutilisables", ["Pilotage ASBL, finance, ventes, stocks, RH, opérations, suivi de projet, distribution, conformité, service client ou performance commerciale."]]]}, "CRM FEAD": {"title": "CRM FEAD & gestion opérationnelle ASBL", "intro": "Plateforme de gestion sociale et logistique inspirée du fonctionnement FEAD : bénéficiaires, stocks, distributions, bénévoles, conformité et reporting.", "sections": [["Gestion bénéficiaires & dossiers", ["Fiches bénéficiaires structurées : numéro de dossier, composition de ménage, statuts, documents et historique.", "Suivi des jours de distribution, catégories sociales, capacité d’accueil et indicateurs de besoins.", "Vision CRM terrain permettant de retrouver rapidement les informations utiles pour l’équipe."]], ["Stocks FEAD & distributions", ["Gestion des entrées, sorties, ajustements, inventaires, colis et produits distribués.", "Lien entre bénéficiaires, distributions et consommation de stock pour garder une traçabilité opérationnelle.", "Tableaux de bord pour suivre volumes, capacité hebdomadaire, ruptures potentielles et rapprochements."]], ["Conformité & pilotage", ["Suivi des justificatifs, règles de distribution, alertes et historiques utiles en cas d’audit.", "Gestion des bénévoles, postes, disponibilités et couverture minimale par jour.", "Base réutilisable pour ASBL, aide alimentaire, distribution sociale, inventaire ou gestion terrain."]]]}, "ERP Certifications": {"title": "ERP Certifications — gestion premium de certification", "intro": "ERP métier pour organismes de certification : gestion clients, dossiers, audits, documents, facturation, conformité et suivi technique.", "sections": [["Client management & dossiers", ["Fiches clients complètes : contacts, billing contact, licence, type de certification, sites, produits et documents.", "Gestion des dossiers de certification avec statut, échéances, pièces nécessaires, historique et responsabilités.", "Vue centralisée pour suivre prospects, clients actifs, renouvellements et priorités opérationnelles."]], ["Audit, conformité & documents", ["Suivi des audits, évaluations de risques, actions correctives, validations et preuves documentaires.", "Organisation des fiches techniques, certificats, rapports, documents d’audit et pièces jointes.", "Traçabilité des décisions, contrôles, changements de statut et étapes de validation."]], ["ERP premium & pilotage", ["Modules connectés : clients, certifications, facturation, documents, conformité, tâches et reporting.", "Tableaux de bord KPI pour suivre dossiers ouverts, certificats actifs, audits à planifier et actions critiques.", "Architecture extensible vers portail client, workflow d’approbation, exports PDF, notifications et droits d’accès."]]]}};
+  var techSpecs = {"Easy Apply": {"title": "Easy Apply — plateforme candidature IA", "intro": "Plateforme orientée RH et productivité candidat, conçue pour transformer une offre d’emploi et un profil utilisateur en dossier de candidature structuré, cohérent et exploitable.", "sections": [["Architecture fonctionnelle", ["Base de données profil : expériences, réalisations, compétences, outils, langues, formations et préférences de candidature.", "Moteur d’analyse d’offre : extraction des mots-clés, exigences, responsabilités, outils demandés et critères ATS.", "Système de scoring : comparaison offre/profil, identification des écarts et priorisation des éléments à renforcer."]], ["Automatisation & IA", ["Génération contrôlée de CV, lettres, messages recruteurs et réponses personnalisées.", "Prompts structurés par contexte : secteur, niveau, ton, type d’offre et langue.", "Workflow complet : importer l’offre, analyser, adapter, générer, corriger, exporter."]], ["Réutilisation possible", ["Portails RH, matching candidat/offre, onboarding, génération de documents, assistants métiers ou plateformes de formation personnalisée."]]]}, "CRM & gestion opérationnelle ASBL": {"title": "CRM & gestion opérationnelle ASBL", "intro": "Solution de gestion terrain structurée autour des bénéficiaires, des stocks, des distributions, des bénévoles et des indicateurs de conformité.", "sections": [["Données & traçabilité", ["Modèle de données bénéficiaires : dossier, composition de ménage, statut, historique et critères de suivi.", "Gestion des stocks : entrées, sorties, ajustements, destructions, distributions et rapprochements.", "Historique opérationnel complet pour audit, suivi interne et reporting."]], ["Pilotage & workflows", ["Tableaux de bord KPI : volumes, capacités, catégories, alertes et suivi hebdomadaire.", "Règles métier : capacité de distribution, jours, statuts, validations et cohérence des données.", "Architecture compatible Firebase, SQL, exports CSV/PDF et API futures."]], ["Réutilisation possible", ["CRM PME, gestion de stocks, suivi logistique, plateformes sociales, inventaire, planning terrain, gestion d’équipes ou conformité opérationnelle."]]]}, "Ornicar": {"title": "Ornicar — outil communautaire transport", "intro": "Application mobile-first pensée pour croiser carte, géolocalisation, signalements utilisateurs et logique de prédiction locale.", "sections": [["Cartographie & géolocalisation", ["Carte interactive avec stations, arrêts, lignes, zones et points d’intérêt.", "Géolocalisation utilisateur, focus carte, calcul de proximité et lecture contextuelle du trajet.", "Structuration des données par lignes, directions, arrêts et correspondances."]], ["Signalements & scoring", ["Workflow de signalement : lieu, ligne, direction, description, validation et durée de vie.", "Statuts dynamiques : en attente, validé, historique et expiration automatique.", "Scoring local de risque basé sur données déclarées, intensité, temps et récurrence."]], ["Réutilisation possible", ["Applications de mobilité, signalement citoyen, maintenance terrain, sécurité, logistique, alertes géolocalisées, suivi d’intervention ou cartographie d’événements."]]]}, "Quboor": {"title": "Quboor — plateforme lieux de mémoire", "intro": "Plateforme de répertorisation et consultation de lieux de mémoire avec logique de recherche, carte, fiches et données patrimoniales.", "sections": [["Base documentaire", ["Fiches structurées : nom, description, emplacement, images, informations familiales et catégories.", "Recherche multicritère et filtrage par zone, type, nom, repères ou informations associées.", "Gestion de contenus sensibles avec logique de lisibilité, transmission et conservation."]], ["Interface & données géographiques", ["Navigation par carte, fiches détaillées et parcours utilisateur simplifié.", "Possibilité d’intégrer coordonnées GPS, médias, validations et contributions utilisateurs.", "Architecture adaptable à des bases patrimoniales, privées ou communautaires."]], ["Réutilisation possible", ["Cartes touristiques, inventaires immobiliers, registres historiques, plateformes culturelles, catalogues patrimoniaux ou bases documentaires géolocalisées."]]]}, "Planning Management": {"title": "Planning Management — gestion opérationnelle", "intro": "Outil de planification destiné aux équipes avec contraintes horaires, besoins minimums, disponibilités, rotations et pilotage opérationnel.", "sections": [["Moteur de planning", ["Gestion des shifts, disponibilités, absences, postes, rôles et contraintes par profil.", "Règles de couverture minimum : nombre de personnes, compétences requises, back-up et alertes.", "Vue calendrier, suivi par période et historiques de planning."]], ["Optimisation & reporting", ["Détection d’incohérences : sous-effectif, conflits, surcharge et couverture insuffisante.", "Exports possibles vers Excel, PDF ou tableaux de bord.", "Base évolutive vers notifications, API RH ou automatisation d’assignation."]], ["Réutilisation possible", ["Maisons de repos, associations, logistique, call centers, équipes commerciales, nettoyage, retail, horeca, événementiel ou services avec rotations d’équipes."]]]}, "IA au quotidien": {"title": "IA au quotidien — assistant d’usage personnel", "intro": "Solution d’accompagnement à l’adoption des outils IA, conçue pour transformer des besoins quotidiens en routines simples, prompts utiles et automatisations concrètes.", "sections": [["Parcours utilisateur", ["Diagnostic des tâches quotidiennes : recherche, rédaction, organisation, images, vidéo, audio et productivité.", "Bibliothèque de cas d’usage : prompts, méthodes, routines et workflows réutilisables.", "Assistant conversationnel avec suggestions contextualisées."]], ["Adoption & structuration", ["Approche pédagogique pour aider l’utilisateur à comprendre quand et comment utiliser les bons outils.", "Structuration des usages par objectif : emploi, administratif, création de contenu, organisation personnelle.", "Possibilité d’intégrer des outils externes, formulaires, bases de données ou automatisations simples."]], ["Réutilisation possible", ["Portails de formation, assistants internes, copilotes administratifs, support client, accompagnement digital, onboarding ou outils d’aide à la productivité."]]]}, "Excel VBA": {"title": "Excel VBA — automatisation bureautique avancée", "intro": "Service d’automatisation Excel pour transformer des fichiers manuels en outils fiables, plus rapides et plus faciles à exploiter au quotidien.", "sections": [["Automatisation Excel", ["Macros VBA, boutons d’action, formulaires, contrôles de saisie et traitements automatisés.", "Nettoyage de données, consolidation multi-fichiers, calculs automatiques, exports et génération de rapports.", "Réduction des manipulations répétitives et sécurisation des fichiers existants sans changer brutalement les habitudes."]], ["Évolution vers outil métier", ["Structuration progressive d’un fichier Excel vers une base de données, un dashboard ou une application web.", "Connexion possible avec CSV, API, Google Sheets, outils internes ou formulaires.", "Documentation des règles et simplification de l’usage pour les équipes non techniques."]], ["Cas d’usage réutilisables", ["Reporting financier, suivi de stock, planning, facturation, contrôle qualité, RH, tableaux mensuels, consolidation de données ou migration vers application."]]]}, "Automatisation de workflows": {"title": "Automatisation de workflows — orchestration métier", "intro": "Service de conception de workflows sur mesure pour réduire les tâches répétitives, fiabiliser les échanges entre outils et structurer les processus métier.", "sections": [["Analyse du processus", ["Cartographie des tâches manuelles, irritants opérationnels, étapes répétitives et points de friction.", "Identification des données sources, validations nécessaires, dépendances métier et rôles utilisateurs.", "Formalisation d’un workflow cible clair : déclencheurs, actions, conditions, notifications et livrables."]], ["Automatisation & intégration", ["Création de scénarios automatisés entre formulaires, fichiers, CRM, e-mails, tableaux de bord et bases de données.", "Mise en place de règles conditionnelles, statuts, relances, alertes et génération automatique de documents.", "Connexion possible à des API, outils no-code/low-code, scripts, Firebase, Google Workspace ou plateformes métier."]], ["Cas d’usage réutilisables", ["Suivi commercial, gestion administrative, validation de dossiers, onboarding, support client, facturation, reporting, stock, RH ou gestion terrain."]]]}, "Dashboarding": {"title": "Dashboarding — pilotage et indicateurs", "intro": "Service de création de tableaux de bord pour rendre les données lisibles, suivre les indicateurs importants et piloter les décisions avec une vision claire.", "sections": [["Structuration des données", ["Nettoyage, regroupement et normalisation des données issues de fichiers, formulaires, CRM ou bases existantes.", "Définition des KPI utiles : volumes, délais, progression, alertes, performance, qualité et écarts.", "Organisation des sources pour obtenir une lecture fiable et exploitable dans le temps."]], ["Interface de pilotage", ["Création de vues synthétiques : cartes KPI, graphiques, filtres, tableaux, historiques et comparaisons.", "Mise en place d’un suivi opérationnel adapté aux profils : direction, équipe terrain, administration ou commercial.", "Possibilité d’intégrer exports PDF/Excel, mises à jour automatisées, droits d’accès et alertes."]], ["Cas d’usage réutilisables", ["Pilotage ASBL, finance, ventes, stocks, RH, opérations, suivi de projet, distribution, conformité, service client ou performance commerciale."]]]}, "CRM FEAD": {"title": "CRM FEAD & gestion opérationnelle ASBL", "intro": "Plateforme de gestion sociale et logistique inspirée du fonctionnement FEAD : bénéficiaires, stocks, distributions, bénévoles, conformité et reporting.", "sections": [["Gestion bénéficiaires & dossiers", ["Fiches bénéficiaires structurées : numéro de dossier, composition de ménage, statuts, documents et historique.", "Suivi des jours de distribution, catégories sociales, capacité d’accueil et indicateurs de besoins.", "Vision CRM terrain permettant de retrouver rapidement les informations utiles pour l’équipe."]], ["Stocks FEAD & distributions", ["Gestion des entrées, sorties, ajustements, inventaires, colis et produits distribués.", "Lien entre bénéficiaires, distributions et consommation de stock pour garder une traçabilité opérationnelle.", "Tableaux de bord pour suivre volumes, capacité hebdomadaire, ruptures potentielles et rapprochements."]], ["Conformité & pilotage", ["Suivi des justificatifs, règles de distribution, alertes et historiques utiles en cas d’audit.", "Gestion des bénévoles, postes, disponibilités et couverture minimale par jour.", "Base réutilisable pour ASBL, aide alimentaire, distribution sociale, inventaire ou gestion terrain."]]]}, "ERP Certifications": {"title": "ERP Certifications — gestion premium de certification", "intro": "ERP métier pour organismes de certification : gestion clients, dossiers, audits, documents, facturation, conformité et suivi technique.", "sections": [["Client management & dossiers", ["Fiches clients complètes : contacts, billing contact, licence, type de certification, sites, produits et documents.", "Gestion des dossiers de certification avec statut, échéances, pièces nécessaires, historique et responsabilités.", "Vue centralisée pour suivre prospects, clients actifs, renouvellements et priorités opérationnelles."]], ["Audit, conformité & documents", ["Suivi des audits, évaluations de risques, actions correctives, validations et preuves documentaires.", "Organisation des fiches techniques, certificats, rapports, documents d’audit et pièces jointes.", "Traçabilité des décisions, contrôles, changements de statut et étapes de validation."]], ["ERP premium & pilotage", ["Modules connectés : clients, certifications, facturation, documents, conformité, tâches et reporting.", "Tableaux de bord KPI pour suivre dossiers ouverts, certificats actifs, audits à planifier et actions critiques.", "Architecture extensible vers portail client, workflow d’approbation, exports PDF, notifications et droits d’accès."]]]}, "DOBON": {"title": "DOBON — jeu japonais de cartes", "intro": "Jeu digital de cartes avec identité visuelle japonaise, logique de manches, règles spéciales, sons, états de jeu et interface responsive.", "sections": [["Mécanique de jeu", ["Gestion des joueurs, mains, pioche, défausse, tours, effets de cartes et conditions de victoire.", "Modes de jeu configurables, règles spéciales, sons d’action, validation des coups et écran de résultat.", "Interface immersive avec boutons graphiques, cartes personnalisées, animations et feedback utilisateur."]], ["Technique & expérience", ["Application HTML/JS autonome ou évolutive vers version web plus complète.", "Gestion des assets visuels et audio, optimisation mobile, logique de menus et sauvegarde locale possible.", "Base adaptable à d’autres jeux, mini-jeux, formations ludiques ou expériences interactives."]]]}, "Food Sharing App": {"title": "Application livraison & partage de plats entre particuliers", "intro": "Plateforme communautaire permettant à des particuliers de proposer des plats faits maison et à des clients de commander, réserver ou organiser une livraison.", "sections": [["Fonctions utilisateurs", ["Comptes clients et vendeurs, profils, catégories de plats, favoris, panier, commandes et suivi.", "Adresse vendeur visible après commande, gestion des quantités, disponibilité, créneaux et statut de commande.", "Interface mobile-first avec recherche, filtres, cartes produits, panier overlay et expérience simple."]], ["Modules avancés", ["Paiements, facturation, notifications, messagerie, notation, modération et historique des commandes.", "Base de données produits, vendeurs, clients, transactions, documents et préférences.", "Évolutif vers marketplace locale, restauration artisanale, click & collect ou livraison de proximité."]]]}, "Mémoire & Moi Alzheimer": {"title": "Assistance Alzheimer — Mémoire & Moi", "intro": "Plateforme d’aide quotidienne pour personnes atteintes d’Alzheimer, aidants et proches, centrée sur les rappels, la mémoire, la sécurité et le lien familial.", "sections": [["Accompagnement quotidien", ["Rappels médicaments, objectifs du jour, contacts importants, documents, bien-être et conseils doux.", "Souvenirs textes, images, vidéos ou audios consultables dans des fiches détaillées.", "Interface lisible, rassurante, pensée pour smartphone et pour l’usage par des proches."]], ["Gestion & sécurité", ["Détails médicaments, historique de prise, possibilité d’annuler une prise, documents à visualiser ou télécharger.", "Partage WhatsApp, informations de validité, contacts, paramètres et ajout de données par les aidants.", "Base extensible vers notifications, suivi médical, espace famille et tableau de bord aidant."]]]}, "Parents Divorcés Garde": {"title": "Assistance parents divorcés — gestion de garde", "intro": "Plateforme d’organisation parentale pour gérer la garde d’enfants, le calendrier, les documents, les dépenses, les communications et les responsabilités.", "sections": [["Organisation familiale", ["Calendrier multi-années, modes de garde paramétrables, enfants, parents, périodes, vacances et exceptions.", "Documents, factures, charges, rendez-vous, communications, notifications et historique partagé.", "Fiches enfants avec informations importantes, contacts, santé, école et pièces utiles."]], ["Pilotage & adaptation", ["Gestion de systèmes comme garde partagée, 2-2-5-5, 2-2-3 ou autres modèles personnalisés.", "Possibilité de modifier les profils, sélectionner les informations affichées et préparer des documents de suivi.", "Base évolutive vers export PDF, rappels, espace parent, validation mutuelle et journal de communication."]]]}, "Outil N": {"title": "Outil N — plateforme scientifique", "intro": "Concept d’outil scientifique pour structurer des protocoles, données, observations, fichiers et résultats dans un environnement exploitable.", "sections": [["Structuration scientifique", ["Gestion de projets, protocoles, hypothèses, jeux de données, observations, fichiers et versions.", "Organisation par échantillons, séries, mesures, notes, résultats et statuts d’avancement.", "Recherche, filtres, tags, tableaux et fiches détaillées pour retrouver rapidement l’information."]], ["Analyse & traçabilité", ["Visualisation de résultats, export CSV/PDF, historique des modifications et documentation des décisions.", "Base adaptable à laboratoires, études terrain, recherche académique, qualité ou innovation.", "Évolutif vers IA d’aide à la synthèse, comparaison de résultats et génération de rapports."]]]}, "Outil M": {"title": "Outil M — laboratoire & recherche", "intro": "Concept d’outil scientifique orienté laboratoire pour suivre expériences, mesures, documents, équipes et résultats.", "sections": [["Suivi laboratoire", ["Gestion d’expériences, lots, mesures, protocoles, observations, fichiers attachés et séries temporelles.", "Tableaux de bord pour suivre avancement, anomalies, résultats, validations et actions restantes.", "Gestion des rôles, notes, statuts, versions et traçabilité des manipulations."]], ["Exploitation des résultats", ["Exports, graphiques, comparaisons, fiches de synthèse et préparation de rapports scientifiques.", "Architecture adaptée à de petites ou grandes bases de données de recherche.", "Évolutif vers modules IA, lecture de documents, résumé d’expérience et assistant de recherche."]]]}};
 
   function openContactSection(){
     var target = 'contact';
@@ -6676,6 +6837,952 @@ document.addEventListener('DOMContentLoaded', function(){
     dots.forEach(function(dot, i){ dot.classList.toggle('active', i === index); });
   }
   setInterval(function(){ showSlide(index + 1); }, 2000);
+});
+</script>
+
+
+
+
+<script id="qitty-v98-demo-links-open-fix-script">
+document.addEventListener('DOMContentLoaded', function(){
+  var demoLinks = {
+    "Easy Apply — Candidature IA": "https://www.qitty.space/easyapply.html",
+    "Quboor": "https://www.qitty.space/quboor.html",
+    "CRM & gestion ASBL": "https://www.qitty.space/crm.html",
+    "ERP Certifications": "https://www.qitty.space/erp.html",
+    "Ornicar": "https://www.qitty.space/ornicar.html",
+    "Planning Management": "https://www.qitty.space/planning-management.html",
+    "Jeu de cartes": "https://www.qitty.space/dobon.html",
+    "Application Partage de plats": "https://www.qitty.space/partage-plats.html",
+    "Assistance Alzheimer": "https://www.qitty.space/alzheimer.html",
+    "Assistance parents divorcés": "https://www.qitty.space/garde-parentale.html",
+    "Outil N — plateforme scientifique": "https://www.qitty.space/outil-n.html",
+    "Outil M — laboratoire & recherche": "https://www.qitty.space/outil-m.html"
+  };
+
+  function cleanText(el){
+    return (el && el.textContent ? el.textContent : '').replace(/\s+/g,' ').trim();
+  }
+
+  document.querySelectorAll('[data-section="solutions"] article').forEach(function(card){
+    var titleEl = card.querySelector('h3');
+    var title = cleanText(titleEl);
+    var btn = card.querySelector('.demo-btn');
+    if(!btn || !demoLinks[title]) return;
+
+    btn.setAttribute('href', demoLinks[title]);
+    btn.setAttribute('target', '_blank');
+    btn.setAttribute('rel', 'noopener');
+    btn.classList.remove('no-external-action');
+    btn.style.pointerEvents = 'auto';
+    btn.style.cursor = 'pointer';
+  });
+
+  document.addEventListener('click', function(e){
+    var btn = e.target.closest('[data-section="solutions"] .demo-btn');
+    if(!btn) return;
+
+    var card = btn.closest('article');
+    var title = cleanText(card ? card.querySelector('h3') : null);
+    var url = demoLinks[title] || btn.getAttribute('href');
+
+    if(!url || url === '#' || url.indexOf('google.com') !== -1) return;
+
+    e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+
+    window.open(url, '_blank', 'noopener');
+    return false;
+  }, true);
+});
+</script>
+
+
+<script id="qitty-v101-contact-email-target-script">
+document.addEventListener('DOMContentLoaded', function(){
+  const QITTY_CONTACT_EMAIL = "bouhlal.achraf@gmail.com";
+
+  function setContactTargets(){
+    document.querySelectorAll('a[href^="mailto:"]').forEach(function(a){
+      a.setAttribute('href', 'mailto:' + QITTY_CONTACT_EMAIL);
+      if(!a.textContent.trim() || a.textContent.indexOf('@') !== -1){
+        a.textContent = QITTY_CONTACT_EMAIL;
+      }
+    });
+
+    document.querySelectorAll('form').forEach(function(form){
+      form.setAttribute('data-contact-email', QITTY_CONTACT_EMAIL);
+
+      let hidden = form.querySelector('input[name="to"], input[name="recipient"], input[name="email_to"], input[name="destinataire"]');
+      if(!hidden){
+        hidden = document.createElement('input');
+        hidden.type = 'hidden';
+        hidden.name = 'to';
+        form.appendChild(hidden);
+      }
+      hidden.value = QITTY_CONTACT_EMAIL;
+    });
+  }
+
+  function buildMailBody(form){
+    const data = new FormData(form);
+    const lines = [];
+    data.forEach(function(value, key){
+      if(['to','recipient','email_to','destinataire'].includes(String(key).toLowerCase())) return;
+      if(String(value || '').trim()) lines.push(key + ': ' + value);
+    });
+    return encodeURIComponent(lines.join('\n'));
+  }
+
+  // Safety: any contact/devis form submit opens an email to the fixed address
+  document.addEventListener('submit', function(e){
+    const form = e.target;
+    if(!form || !(form instanceof HTMLFormElement)) return;
+
+    const inContact = form.closest('[data-section="contact"]') || form.id === 'contactForm' || form.className.includes('contact');
+    if(!inContact) return;
+
+    const action = form.getAttribute('action') || '';
+    const hasRealBackend = action && !action.startsWith('#') && !action.startsWith('mailto:');
+
+    setContactTargets();
+
+    if(!hasRealBackend){
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+
+      const subject = encodeURIComponent('Demande de contact / devis Qitty');
+      const body = buildMailBody(form);
+      window.location.href = 'mailto:' + QITTY_CONTACT_EMAIL + '?subject=' + subject + '&body=' + body;
+      return false;
+    }
+  }, true);
+
+  // Safety for quote/contact CTA buttons that should lead to contact section, not other emails
+  document.addEventListener('click', function(e){
+    const btn = e.target.closest('a[href^="mailto:"], button[data-target="contact"], a[data-target="contact"], a[href="#contact"]');
+    if(!btn) return;
+    if(btn.matches('a[href^="mailto:"]')){
+      btn.setAttribute('href', 'mailto:' + QITTY_CONTACT_EMAIL);
+    }
+  }, true);
+
+  setContactTargets();
+});
+</script>
+
+
+<script id="qitty-v103-chatbot-premium-v2-script">
+document.addEventListener('DOMContentLoaded', function(){
+  const chatModal = document.getElementById('chatModal');
+  const chatBody = document.getElementById('chatBody');
+  const chatForm = document.getElementById('chatForm');
+  const chatInput = document.getElementById('chatInput');
+  const chatReset = document.getElementById('chatReset');
+  const chatClose = document.getElementById('chatClose');
+  const stage = document.querySelector('.chat-stage');
+  const CONTACT_EMAIL = 'bouhlal.achraf@gmail.com';
+
+  const state = {
+    turns: 0,
+    lastIntent: '',
+    lastEntity: '',
+    audience: '',
+    projectType: '',
+    urgency: '',
+    budget: '',
+    sectionHistory: []
+  };
+
+  const DEMOS = {
+    easyapply:'https://www.qitty.space/easyapply.html',
+    crm:'https://www.qitty.space/crm.html',
+    erp:'https://www.qitty.space/erp.html',
+    planning:'https://www.qitty.space/planning-management.html',
+    dobon:'https://www.qitty.space/dobon.html',
+    food:'https://www.qitty.space/partage-plats.html',
+    alzheimer:'https://www.qitty.space/alzheimer.html',
+    garde:'https://www.qitty.space/garde-parentale.html',
+    quboor:'https://www.qitty.space/quboor.html',
+    ornicar:'https://www.qitty.space/ornicar.html'
+  };
+
+  const KNOWLEDGE = {
+    sections: {
+      accueil: {
+        label:'Accueil',
+        pitch:'La page d’accueil présente Qitty comme une approche d’automatisation éthique : réduire les tâches à faible valeur, structurer les workflows et rendre l’IA utile au quotidien.',
+        next:'Depuis l’accueil, le visiteur doit rapidement choisir entre un parcours Particulier, B2B ou Solutions.'
+      },
+      about: {
+        label:'Qui sommes-nous',
+        pitch:'Cette section explique l’approche Qitty : partir des besoins réels, structurer les processus, livrer des outils utiles et garder une logique humaine, claire et mesurable.',
+        next:'Elle est utile quand le visiteur veut comprendre la méthode, les valeurs et le positionnement de Qitty.'
+      },
+      particuliers: {
+        label:'Particuliers',
+        pitch:'La section Particuliers s’adresse aux personnes qui veulent utiliser l’IA, améliorer leur recherche d’emploi, automatiser des tâches personnelles ou être accompagnées sur des usages concrets.',
+        next:'Elle est adaptée aux demandes comme CV, Easy Apply, formation IA, organisation personnelle ou automatisation simple.'
+      },
+      b2b: {
+        label:'B2B / PME',
+        pitch:'La section B2B présente l’accompagnement pour entreprises, indépendants et organisations : workflows, process, CRM, reporting, automatisation, outils métier et cadrage projet.',
+        next:'Elle est utile dès qu’il y a une équipe, plusieurs utilisateurs, des dossiers, clients, données ou opérations à piloter.'
+      },
+      solutions: {
+        label:'Solutions',
+        pitch:'La section Solutions regroupe les services et plateformes : automatisation, dashboarding, formation IA, Excel/VBA, CRM, ERP, planning, Easy Apply et autres démonstrateurs.',
+        next:'Elle sert à voir ce qui existe déjà, consulter une démo, comprendre une fiche technique ou préparer un devis.'
+      },
+      articles: {
+        label:'Articles',
+        pitch:'La section Articles permet de comprendre les sujets autour de l’IA, l’automatisation, les données, les ATS, le no-code, le reporting et les outils digitaux.',
+        next:'Elle est utile pour apprendre, comparer ou préparer une décision avant de contacter Qitty.'
+      },
+      contact: {
+        label:'Contact',
+        pitch:'La section Contact sert à expliquer son besoin, demander un devis ou prendre contact avec Qitty.',
+        next:'Le message doit idéalement préciser le contexte, l’objectif, les utilisateurs, les outils actuels et le résultat attendu.'
+      }
+    },
+    services: {
+      automatisation: {
+        title:'Automatisation de workflows',
+        audience:'B2B, PME, indépendants et organisations',
+        problem:'tâches répétitives, relances, saisies manuelles, validations, fichiers dispersés',
+        value:'réduire le temps perdu, fiabiliser les opérations et clarifier les responsabilités',
+        route:'solutions',
+        keywords:['automatisation','automatiser','workflow','workflows','processus','process','relance','validation','tache repetitive','tâche répétitive','gain de temps','optimisation']
+      },
+      dashboard: {
+        title:'Dashboarding & reporting',
+        audience:'équipes qui suivent des volumes, statuts, KPI, dossiers ou performances',
+        problem:'reporting manuel, manque de visibilité, données dispersées',
+        value:'rendre les données lisibles avec indicateurs, filtres, priorités et alertes',
+        route:'solutions',
+        keywords:['dashboard','dashboards','reporting','kpi','tableau de bord','data','données','donnees','indicateur','indicateurs','statistiques']
+      },
+      formation: {
+        title:'Formation IA',
+        audience:'particuliers, équipes, indépendants et organisations',
+        problem:'mauvaise utilisation de ChatGPT/IA, prompts faibles, manque de méthode',
+        value:'rendre l’IA utile, pratique et contrôlée dans les tâches quotidiennes',
+        route:'solutions',
+        keywords:['formation','former','apprendre','ia au quotidien','prompt','prompts','chatgpt','utiliser ia','maitriser ia','maîtriser ia']
+      },
+      excel: {
+        title:'Excel & VBA',
+        audience:'personnes ou équipes qui travaillent encore beaucoup avec Excel',
+        problem:'copier-coller, fichiers lourds, macros inexistantes, reporting manuel',
+        value:'automatiser les fichiers, consolider les données et générer des sorties fiables',
+        route:'solutions',
+        keywords:['excel','vba','macro','macros','tableur','fichier excel','outlook','consolidation']
+      },
+      api: {
+        title:'Intégrations & APIs',
+        audience:'activités avec plusieurs outils qui doivent communiquer',
+        problem:'double saisie, synchronisations manuelles, informations dupliquées',
+        value:'connecter les outils, automatiser les déclencheurs et fluidifier les flux',
+        route:'solutions',
+        keywords:['api','apis','integration','intégration','connecteur','connecter','synchronisation','zapier','make','notion','gmail','slack']
+      }
+    },
+    platforms: {
+      crm: {
+        title:'CRM & gestion ASBL',
+        category:'Plateforme professionnelle',
+        audience:'associations, organisations, équipes sociales ou structures avec bénéficiaires/dossiers',
+        problem:'suivi de bénéficiaires, stocks, distributions, documents, bénévoles, conformité',
+        value:'centraliser les dossiers, suivre l’activité et réduire les fichiers dispersés',
+        route:'solutions',
+        demo:DEMOS.crm,
+        keywords:['crm','asbl','fead','beneficiaire','bénéficiaire','stock','distribution','benevole','bénévole','dossier','dossiers','client','clients']
+      },
+      erp: {
+        title:'ERP Certifications',
+        category:'Plateforme professionnelle',
+        audience:'organismes de certification, audit, conformité, qualité ou opérations structurées',
+        problem:'clients, audits, documents, facturation, actions correctives, statuts',
+        value:'relier plusieurs modules dans une plateforme opérationnelle complète',
+        route:'solutions',
+        demo:DEMOS.erp,
+        keywords:['erp','certification','certifications','audit','audits','iso','conformite','conformité','facturation','action corrective','actions correctives']
+      },
+      planning: {
+        title:'Planning Management',
+        category:'Plateforme professionnelle',
+        audience:'équipes avec horaires, ressources, rendez-vous, intervenants ou rotations',
+        problem:'planning manuel, conflits, absences, manque de visibilité',
+        value:'organiser les disponibilités, assignations, calendriers et statuts',
+        route:'solutions',
+        demo:DEMOS.planning,
+        keywords:['planning','agenda','calendrier','horaire','horaires','rendez-vous','rdv','ressources','shift','rotation']
+      },
+      easyapply: {
+        title:'Easy Apply — Candidature IA',
+        category:'Plateforme professionnelle / particulier',
+        audience:'candidats, coachs emploi, organismes d’accompagnement, recruteurs',
+        problem:'CV, lettres, ATS, analyse d’offres, candidatures répétitives',
+        value:'structurer une candidature adaptée, plus rapide et plus cohérente',
+        route:'particuliers',
+        demo:DEMOS.easyapply,
+        keywords:['easy apply','easyapply','cv','lettre','ats','candidature','postuler','emploi','job','recherche emploi','recrutement']
+      },
+      dobon: {
+        title:'DOBON — jeu de cartes',
+        category:'Autres / démonstrateur interactif',
+        audience:'démonstration produit, jeu, expérience interactive',
+        problem:'logique de jeu, cartes, règles, animations, états de partie',
+        value:'montrer la capacité à créer une expérience interactive complète',
+        route:'solutions',
+        demo:DEMOS.dobon,
+        keywords:['dobon','jeu','cartes','japonais','japonnais','game']
+      },
+      food: {
+        title:'Application partage de plats',
+        category:'Autres / application thématique',
+        audience:'créateurs de marketplace locale, food, plats maison, livraison',
+        problem:'profils vendeurs, plats, panier, commande, paiement, adresse, disponibilité',
+        value:'structurer un parcours complet de commande et une logique marketplace',
+        route:'solutions',
+        demo:DEMOS.food,
+        keywords:['livraison','plats','food','cuisine','panier','commande','paiement','dessert','boisson','partage de plats']
+      },
+      alzheimer: {
+        title:'Assistance Alzheimer',
+        category:'Autres / application humaine',
+        audience:'familles, aidants, structures d’aide, personnes âgées',
+        problem:'rappels, médicaments, souvenirs, contacts, documents, routine',
+        value:'rendre les informations simples, visibles et rassurantes',
+        route:'solutions',
+        demo:DEMOS.alzheimer,
+        keywords:['alzheimer','memoire','mémoire','aidant','malade','medicament','médicament','santé','sante','souvenir']
+      },
+      garde: {
+        title:'Assistance parents divorcés',
+        category:'Autres / organisation familiale',
+        audience:'parents séparés, familles, médiation, organisation garde',
+        problem:'calendrier, enfants, factures, documents, rendez-vous, notifications',
+        value:'clarifier l’organisation et garder une meilleure traçabilité',
+        route:'solutions',
+        demo:DEMOS.garde,
+        keywords:['garde','parents divorces','parents divorcés','divorce','enfant','calendrier','coparentalite','coparentalité','factures','charges']
+      },
+      quboor: {
+        title:'Quboor',
+        category:'Autres / plateforme mémoire',
+        audience:'répertorisation de lieux de mémoire, tombes, fiches et recherche',
+        problem:'localisation, fiches, données, carte, consultation',
+        value:'centraliser l’information et rendre la recherche accessible',
+        route:'solutions',
+        demo:DEMOS.quboor,
+        keywords:['quboor','tombe','tombes','cimetiere','cimetière','memoire','mémoire','lieu de mémoire']
+      },
+      ornicar: {
+        title:'Ornicar',
+        category:'Autres / mobilité',
+        audience:'démonstrateur géolocalisation, transport, contrôles ou itinéraires',
+        problem:'carte, lignes, arrêts, contrôles, alertes, navigation',
+        value:'montrer une logique app mobile avec géolocalisation et données terrain',
+        route:'solutions',
+        demo:DEMOS.ornicar,
+        keywords:['ornicar','transport','bus','tram','metro','métro','arret','arrêt','controle','contrôle','itineraire','itinéraire']
+      }
+    }
+  };
+
+  const INTENTS = [
+    {id:'greeting', keys:['bonjour','salut','hello','hey','bonsoir','coucou','yo','bjr']},
+    {id:'howareyou', keys:['ca va','ça va','comment ca va','comment ça va','tu vas bien','cv?','ça roule']},
+    {id:'thanks', keys:['merci','thanks','thank you','super merci','parfait merci','merci beaucoup']},
+    {id:'bye', keys:['au revoir','bye','a plus','à plus','bonne journee','bonne journée','bonne soiree','bonne soirée']},
+    {id:'time', keys:['heure','quelle heure','il est quelle heure','jour','date','on est quel jour','aujourdhui','aujourd hui','aujourd’hui']},
+    {id:'identity', keys:['tu es qui','qui es tu','qui es-tu','c est quoi ce chatbot','tu fais quoi','qui es','assistant']},
+    {id:'help', keys:['aide','help','comment faire','je sais pas','je ne sais pas','par ou commencer','par où commencer','commencer','je suis perdu']},
+    {id:'pricing', keys:['prix','tarif','combien','budget','devis','cout','coût','payer','facture','estimation']},
+    {id:'contact', keys:['contact','contacter','email','mail','rdv','rendez-vous','rendez vous','envoyer','parler a quelqu un','parler à quelqu’un']},
+    {id:'demo', keys:['demo','démo','demonstration','démonstration','voir demo','consulter demo','lien demo']},
+    {id:'compare', keys:['difference','différence','versus','vs','compare','comparer','quoi choisir','lequel choisir','crm ou erp','dashboard ou crm']},
+    {id:'sales', keys:['j ai un projet','j’ai un projet','projet','idee','idée','besoin','solution sur mesure','application','plateforme','site web','app']},
+    {id:'support', keys:['bug','ne marche pas','probleme','problème','erreur','lien ne marche pas','page ne s ouvre pas','page ne s’ouvre pas']},
+    {id:'security', keys:['securite','sécurité','rgpd','privacy','confidentialite','confidentialité','donnees personnelles','données personnelles']},
+    {id:'timeline', keys:['delai','délai','combien de temps','rapidement','urgent','livraison','deadline']},
+    {id:'maintenance', keys:['maintenance','support apres','support après','mise a jour','mise à jour','evolution','évolution']},
+    {id:'navigation', keys:['ou est','où est','section','aller a','aller à','redirige','redirection','menu','naviguer']}
+  ];
+
+  function n(text){
+    return (text || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  }
+
+  function escapeHtml(text){
+    return String(text || '').replace(/[&<>"']/g, function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c];
+    });
+  }
+
+  function activeSectionKey(){
+    const active = document.querySelector('.page-section.active');
+    return active ? active.getAttribute('data-section') || 'accueil' : 'accueil';
+  }
+
+  function sectionLabel(key){
+    return (KNOWLEDGE.sections[key] && KNOWLEDGE.sections[key].label) || 'Accueil';
+  }
+
+  function scrollChat(){
+    if(chatBody) chatBody.scrollTop = chatBody.scrollHeight;
+  }
+
+  function openChat(){
+    if(!chatModal) return;
+    chatModal.classList.add('open');
+    chatModal.style.display = 'flex';
+    chatModal.removeAttribute('aria-hidden');
+    setTimeout(function(){ if(chatInput) chatInput.focus(); }, 90);
+  }
+
+  function closeChat(){
+    if(!chatModal) return;
+    chatModal.classList.remove('open');
+    chatModal.setAttribute('aria-hidden','true');
+    chatModal.style.display = '';
+  }
+
+  function route(section){
+    if(!section) return;
+    closeChat();
+    setTimeout(function(){
+      if(typeof showSection === 'function'){
+        showSection(section);
+      }else{
+        document.querySelectorAll('.page-section').forEach(function(s){
+          s.classList.toggle('active', s.dataset.section === section);
+        });
+        window.scrollTo({top:0, behavior:'smooth'});
+      }
+    }, 120);
+  }
+
+  function addUser(text){
+    if(!text) return;
+    if(typeof addChatBubble === 'function'){
+      addChatBubble(escapeHtml(text), 'user');
+    }else if(stage){
+      const bubble = document.createElement('div');
+      bubble.className = 'chat-message user';
+      bubble.innerHTML = '<span>'+escapeHtml(text)+'</span>';
+      stage.appendChild(bubble);
+    }
+    scrollChat();
+  }
+
+  function addBot(html){
+    if(typeof addChatBubble === 'function'){
+      addChatBubble(html, 'bot');
+    }else if(stage){
+      const bubble = document.createElement('div');
+      bubble.className = 'chat-message bot';
+      bubble.innerHTML = '<span>'+html+'</span>';
+      stage.appendChild(bubble);
+    }
+    bindLinks();
+    scrollChat();
+  }
+
+  function link(label, payload, type){
+    const cls = type ? ' '+type : '';
+    const attr = payload.url
+      ? 'data-qitty-url="'+payload.url+'"'
+      : 'data-qitty-route="'+payload.section+'"';
+    return '<button type="button" class="qitty-v2-link'+cls+'" '+attr+'>'+label+' →</button>';
+  }
+
+  function links(items){
+    if(!items || !items.length) return '';
+    return '<div class="qitty-v2-links">'+items.map(function(i){
+      return link(i.label, i, i.type);
+    }).join('')+'</div>';
+  }
+
+  function chips(items){
+    if(!items || !items.length) return '';
+    return '<div class="qitty-mini-chips">'+items.map(function(i){
+      return '<span class="qitty-mini-chip">'+escapeHtml(i)+'</span>';
+    }).join('')+'</div>';
+  }
+
+  function answer(title, paragraphs, options){
+    options = options || {};
+    const active = activeSectionKey();
+    const contextNote = options.context === false ? '' :
+      '<div class="qitty-context-note">Contexte actuel : vous êtes dans la section <strong>'+sectionLabel(active)+'</strong>. '+((KNOWLEDGE.sections[active]||{}).next || '')+'</div>';
+    return '<div class="qitty-ai-v2">'
+      + '<h4>'+escapeHtml(title)+'</h4>'
+      + paragraphs.map(function(p){ return '<p>'+p+'</p>'; }).join('')
+      + chips(options.chips || [])
+      + links(options.links || [])
+      + contextNote
+      + '<div class="qitty-followup">'+(options.followup || 'Vous pouvez continuer à me donner des détails : je peux préciser, comparer, qualifier le besoin ou vous orienter vers le bon service. ')+'</div>'
+      + '</div>';
+  }
+
+  function currentTimeAnswer(){
+    const now = new Date();
+    const jour = now.toLocaleDateString('fr-FR', {weekday:'long'});
+    const date = now.toLocaleDateString('fr-FR', {day:'2-digit', month:'long', year:'numeric'});
+    const heure = now.toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit'});
+    return answer('Heure et date', [
+      'Nous sommes '+jour+' '+date+'. Il est environ '+heure+'.',
+      'Je peux aussi vous aider sur le site : expliquer une offre, trouver une démo, préparer un devis ou vous orienter vers la bonne section.'
+    ], {
+      links:[{label:'Voir les solutions', section:'solutions', type:'primary'}, {label:'Contact / devis', section:'contact', type:'quote'}],
+      followup:'Dites-moi ce que vous voulez faire ensuite.'
+    });
+  }
+
+  function detectIntent(q){
+    for(const intent of INTENTS){
+      if(intent.keys.some(function(k){ return q.includes(n(k)); })) return intent.id;
+    }
+    return 'unknown';
+  }
+
+  function detectAudience(q){
+    if(['b2b','pme','entreprise','business','organisation','professionnel','societe','société','equipe','équipe'].some(k=>q.includes(n(k)))) return 'b2b';
+    if(['particulier','personnel','moi','cv','emploi','formation','quotidien'].some(k=>q.includes(n(k)))) return 'particuliers';
+    return '';
+  }
+
+  function findEntity(q){
+    const all = [];
+    Object.keys(KNOWLEDGE.platforms).forEach(function(key){
+      const e = KNOWLEDGE.platforms[key];
+      all.push({type:'platform', key:key, data:e});
+    });
+    Object.keys(KNOWLEDGE.services).forEach(function(key){
+      const e = KNOWLEDGE.services[key];
+      all.push({type:'service', key:key, data:e});
+    });
+
+    let best = null;
+    let bestScore = 0;
+    all.forEach(function(item){
+      let score = 0;
+      item.data.keywords.forEach(function(k){
+        if(q.includes(n(k))) score += Math.max(1, n(k).length/6);
+      });
+      if(score > bestScore){
+        bestScore = score;
+        best = item;
+      }
+    });
+    return bestScore > 0 ? best : null;
+  }
+
+  function updateState(q, intent, entity){
+    const aud = detectAudience(q);
+    if(aud) state.audience = aud;
+    if(intent) state.lastIntent = intent;
+    if(entity) {
+      state.lastEntity = entity.key;
+      state.projectType = entity.type;
+    }
+    if(['urgent','rapidement','vite','cette semaine'].some(k=>q.includes(n(k)))) state.urgency = 'urgent';
+    if(['petit budget','pas cher','moins cher','budget limite','budget limité'].some(k=>q.includes(n(k)))) state.budget = 'limité';
+    const sec = activeSectionKey();
+    if(state.sectionHistory[state.sectionHistory.length-1] !== sec) state.sectionHistory.push(sec);
+  }
+
+  function entityAnswer(entity){
+    const e = entity.data;
+    const isPlatform = entity.type === 'platform';
+    const paragraphs = isPlatform ? [
+      '<strong>'+escapeHtml(e.title)+'</strong> est dans la catégorie <strong>'+escapeHtml(e.category)+'</strong>. La cible principale : '+escapeHtml(e.audience)+'.',
+      'Le problème traité : '+escapeHtml(e.problem)+'. La valeur ajoutée : '+escapeHtml(e.value)+'.',
+      'Si votre besoin ressemble à ça, la bonne étape est de regarder la démo, puis de demander un devis avec le contexte réel : utilisateurs, données, écrans, automatisations et niveau de finition souhaité.'
+    ] : [
+      '<strong>'+escapeHtml(e.title)+'</strong> s’adresse surtout à '+escapeHtml(e.audience)+'.',
+      'Le problème typique : '+escapeHtml(e.problem)+'. La valeur ajoutée : '+escapeHtml(e.value)+'.',
+      'Pour cadrer correctement, il faut identifier les tâches actuelles, les fichiers/outils utilisés, les utilisateurs concernés et le résultat attendu.'
+    ];
+
+    const linkItems = [
+      {label:'Voir la section Solutions', section:e.route || 'solutions', type:'primary'},
+      {label:'Demander un devis', section:'contact', type:'quote'}
+    ];
+    if(isPlatform && e.demo) linkItems.splice(1,0,{label:'Ouvrir la démo', url:e.demo, type:'demo'});
+
+    return answer(e.title, paragraphs, {
+      links:linkItems,
+      chips:[isPlatform ? 'Plateforme' : 'Service', e.audience.split(',')[0], 'Qitty'],
+      followup:'Vous pouvez me dire votre cas concret et je vous répondrai si ce service est adapté, ou s’il vaut mieux partir sur une autre solution.'
+    });
+  }
+
+  function compareAnswer(q){
+    let text = [
+      'La bonne comparaison dépend de ce que vous voulez piloter. Un <strong>CRM</strong> suit surtout les clients, bénéficiaires, dossiers, statuts et historiques. Un <strong>ERP</strong> va plus loin : il relie plusieurs modules comme facturation, documents, audits, opérations et tableaux de bord.',
+      'Un <strong>dashboard</strong> est plutôt une couche de visualisation : il ne remplace pas forcément un CRM ou un ERP, il rend les données lisibles. Une <strong>automatisation</strong>, elle, sert à supprimer des actions manuelles entre plusieurs étapes ou outils.'
+    ];
+    if(q.includes('crm') && q.includes('erp')){
+      text.push('Donc si vous avez seulement besoin de suivre des dossiers ou clients, CRM. Si vous devez connecter plusieurs fonctions métier, ERP.');
+    } else if(q.includes('dashboard')){
+      text.push('Si votre problème est surtout “je ne vois pas clairement mes chiffres”, commencez par un dashboard. Si votre problème est “mes opérations sont dispersées”, il faut plutôt CRM/ERP ou automatisation.');
+    } else {
+      text.push('Pour choisir, dites-moi ce que vous gérez aujourd’hui : clients, dossiers, stocks, factures, documents, planning, équipes ou reporting.');
+    }
+    return answer('Comparaison rapide', text, {
+      links:[{label:'Voir les plateformes', section:'solutions', type:'primary'}, {label:'Voir B2B / PME', section:'b2b'}, {label:'Demander un avis projet', section:'contact', type:'quote'}],
+      followup:'Donnez-moi deux options à comparer, par exemple “CRM ou ERP”, et je vous fais une réponse plus tranchée.'
+    });
+  }
+
+  function pricingAnswer(){
+    return answer('Prix, devis et cadrage', [
+      'Le prix dépend surtout de la complexité : simple automatisation, dashboard, formulaire, CRM, ERP, application avec comptes utilisateurs, paiement, rôles, fichiers, notifications ou intégrations.',
+      'La bonne méthode premium consiste à commencer par le périmètre : qui utilise l’outil, quelles données entrent, quelles actions doivent être automatisées, quels écrans sont nécessaires et quel niveau de finition est attendu.',
+      'Pour une demande de devis utile, écrivez simplement le problème actuel, ce que vous voulez obtenir et les outils que vous utilisez déjà. Le message ira vers <strong>'+CONTACT_EMAIL+'</strong>.'
+    ], {
+      links:[{label:'Ouvrir Contact / devis', section:'contact', type:'quote'}, {label:'Voir les solutions', section:'solutions', type:'primary'}],
+      chips:['Devis', 'Cadrage', 'Budget'],
+      followup:'Vous pouvez me décrire votre projet en une phrase et je vous aide à formuler une demande de devis claire.'
+    });
+  }
+
+  function salesAnswer(q){
+    const aud = state.audience || detectAudience(q);
+    let angle = aud === 'b2b'
+      ? 'Comme vous parlez d’un contexte professionnel, je raisonnerais en priorité sur les processus, les utilisateurs, les données, les rôles et le retour sur investissement.'
+      : aud === 'particuliers'
+      ? 'Comme cela semble personnel, je raisonnerais plutôt sur l’usage concret, le gain de temps, la simplicité et l’accompagnement.'
+      : 'Je vais d’abord chercher à comprendre si votre besoin est personnel, professionnel, ou les deux.';
+    return answer('Cadrage de votre projet', [
+      angle,
+      'Pour cadrer proprement, il faut répondre à quatre questions : <strong>quel problème voulez-vous résoudre</strong>, <strong>qui utilisera la solution</strong>, <strong>quelles données ou fichiers sont concernés</strong>, et <strong>quel résultat doit être visible à la fin</strong>.',
+      'Selon vos réponses, Qitty peut orienter vers une automatisation simple, un dashboard, un CRM, une plateforme métier, une app ou un accompagnement IA.'
+    ], {
+      links:[{label:'Voir Solutions', section:'solutions', type:'primary'}, {label:'Voir B2B / PME', section:'b2b'}, {label:'Contact / devis', section:'contact', type:'quote'}],
+      chips:['Qualification projet', aud || 'À clarifier', 'Prochaine étape'],
+      followup:'Répondez juste à ceci : c’est pour vous, pour une entreprise, ou pour une organisation ?'
+    });
+  }
+
+  function supportAnswer(){
+    return answer('Support site et démos', [
+      'Si une page ou une démo ne s’ouvre pas, il y a généralement trois causes : le lien pointe vers une page qui n’existe pas encore, le navigateur bloque l’ouverture dans un nouvel onglet, ou le fichier n’a pas encore été publié sur le domaine.',
+      'Les boutons de démo sont prévus pour ouvrir des pages du type <strong>qitty.space/xxx.html</strong>. Si la page n’existe pas encore côté hébergement, le bouton fonctionne techniquement mais la page affichera une erreur.',
+      'Pour résoudre ça, il faut vérifier que le fichier HTML correspondant existe bien sur le serveur avec exactement le même nom.'
+    ], {
+      links:[{label:'Voir Solutions', section:'solutions', type:'primary'}, {label:'Contacter Qitty', section:'contact', type:'quote'}],
+      chips:['Support', 'Démo', 'Publication'],
+      followup:'Dites-moi quel bouton ou quelle démo pose problème, et je vous indique le nom de fichier à vérifier.'
+    });
+  }
+
+  function contactAnswer(){
+    return answer('Contact et demande de devis', [
+      'Pour contacter Qitty, le plus efficace est d’expliquer votre besoin en langage simple : votre activité, le problème actuel, les utilisateurs concernés, les outils utilisés et le résultat attendu.',
+      'Tous les emails ou demandes de devis du site doivent être orientés vers <strong>'+CONTACT_EMAIL+'</strong>.',
+      'Si vous n’avez pas encore un cahier des charges, ce n’est pas bloquant : décrivez seulement le problème et Qitty peut aider à le cadrer.'
+    ], {
+      links:[{label:'Ouvrir la section Contact', section:'contact', type:'quote'}, {label:'Voir les solutions avant', section:'solutions', type:'primary'}],
+      chips:['Contact', 'Devis', CONTACT_EMAIL],
+      followup:'Vous pouvez me dicter votre idée en quelques lignes, et je vous aide à transformer ça en message de contact.'
+    });
+  }
+
+  function demoAnswer(entity){
+    if(entity && entity.type === 'platform' && entity.data.demo){
+      return answer('Démo disponible', [
+        'Pour <strong>'+escapeHtml(entity.data.title)+'</strong>, le bouton de démo doit ouvrir la page correspondante sur qitty.space.',
+        'Si la page ne s’ouvre pas, il faut vérifier que le fichier HTML existe bien sur le serveur avec le même nom que le lien.'
+      ], {
+        links:[{label:'Ouvrir la démo', url:entity.data.demo, type:'demo'}, {label:'Voir Solutions', section:'solutions', type:'primary'}, {label:'Demander un devis', section:'contact', type:'quote'}],
+        followup:'Vous pouvez aussi me demander quelle démo correspond à CRM, ERP, Easy Apply, Planning ou DOBON.'
+      });
+    }
+    return answer('Démos Qitty', [
+      'Les démos servent à montrer des exemples concrets de plateformes ou outils : CRM, ERP, Planning Management, Easy Apply, DOBON, partage de plats, Alzheimer, garde parentale et autres démonstrateurs.',
+      'Chaque bouton “Consulter Démo” est prévu pour ouvrir une page indépendante sur le domaine qitty.space.'
+    ], {
+      links:[{label:'Voir les démos dans Solutions', section:'solutions', type:'primary'}, {label:'Demander une démo personnalisée', section:'contact', type:'quote'}],
+      followup:'Dites-moi le nom de la démo que vous voulez voir, et je vous oriente vers la bonne page.'
+    });
+  }
+
+  function securityAnswer(){
+    return answer('Sécurité, données et RGPD', [
+      'Pour un projet sérieux, il faut penser dès le départ aux données collectées, aux accès, aux rôles utilisateurs, aux exports, aux sauvegardes, aux droits de consultation et aux informations sensibles.',
+      'Qitty peut aider à structurer une solution plus propre : limiter les données inutiles, clarifier les rôles, documenter les flux et éviter de mélanger des informations personnelles dans des fichiers dispersés.',
+      'Le niveau exact dépend du projet : une simple automatisation Excel n’a pas les mêmes exigences qu’une plateforme avec comptes, documents, paiements ou données sensibles.'
+    ], {
+      links:[{label:'Voir l’approche Qitty', section:'about', type:'primary'}, {label:'Voir B2B / PME', section:'b2b'}, {label:'Discuter sécurité projet', section:'contact', type:'quote'}],
+      chips:['RGPD', 'Accès', 'Données'],
+      followup:'Expliquez-moi quelles données votre projet manipule, et je vous dis les points de vigilance.'
+    });
+  }
+
+  function timelineAnswer(){
+    return answer('Délais et livraison', [
+      'Le délai dépend du périmètre. Une automatisation ciblée ou un prototype peut être rapide. Une plateforme avec comptes, rôles, données, documents, paiement ou plusieurs modules demande plus de cadrage.',
+      'La logique premium est de livrer par étapes : cadrage, maquette, prototype fonctionnel, tests, corrections, puis version plus propre.',
+      'Si c’est urgent, il faut réduire le périmètre initial et viser une première version utile plutôt qu’un outil complet dès le premier jour.'
+    ], {
+      links:[{label:'Voir Solutions', section:'solutions', type:'primary'}, {label:'Demander un délai projet', section:'contact', type:'quote'}],
+      chips:['Cadrage', 'Prototype', 'Itération'],
+      followup:'Dites-moi ce que vous voulez livrer en premier, et je vous aide à définir une V1 réaliste.'
+    });
+  }
+
+  function maintenanceAnswer(){
+    return answer('Maintenance et évolutions', [
+      'Un bon outil ne s’arrête pas à la première livraison. Il faut souvent prévoir des ajustements : nouveaux champs, nouveaux rôles, corrections, exports, indicateurs, intégrations ou amélioration UX.',
+      'Pour une solution professionnelle, Qitty peut penser la structure dès le départ pour éviter que l’outil devienne difficile à maintenir.',
+      'Le plus important est de distinguer la V1 indispensable des évolutions futures.'
+    ], {
+      links:[{label:'Voir B2B / PME', section:'b2b', type:'primary'}, {label:'Contact maintenance', section:'contact', type:'quote'}],
+      chips:['Maintenance', 'Évolutions', 'V1'],
+      followup:'Vous pouvez me dire si votre priorité est une première version rapide ou une plateforme stable long terme.'
+    });
+  }
+
+  function navigationAnswer(q){
+    const map = [
+      ['accueil','accueil'], ['qui sommes','about'], ['about','about'], ['particulier','particuliers'],
+      ['b2b','b2b'], ['pme','b2b'], ['solution','solutions'], ['outil','solutions'],
+      ['article','articles'], ['blog','articles'], ['contact','contact'], ['devis','contact']
+    ];
+    let target = '';
+    map.forEach(function(pair){
+      if(!target && q.includes(n(pair[0]))) target = pair[1];
+    });
+    if(target){
+      return answer('Redirection utile', [
+        'Oui, la section la plus pertinente est <strong>'+sectionLabel(target)+'</strong>.',
+        (KNOWLEDGE.sections[target] || {}).pitch || 'Je peux vous y rediriger directement.'
+      ], {
+        links:[{label:'Aller à '+sectionLabel(target), section:target, type:'primary'}],
+        followup:'Cliquez sur le lien pour fermer le chat et aller directement à la section.'
+      });
+    }
+    return answer('Navigation dans le site', [
+      'Je peux vous rediriger vers Accueil, Qui sommes-nous, Particuliers, B2B, Solutions, Articles ou Contact.',
+      'Dites-moi simplement ce que vous cherchez : une démo, un devis, une offre pro, un accompagnement particulier ou une explication.'
+    ], {
+      links:[{label:'Solutions', section:'solutions', type:'primary'}, {label:'B2B / PME', section:'b2b'}, {label:'Contact', section:'contact', type:'quote'}],
+      followup:'Vous pouvez écrire “emmène-moi vers contact” ou “je veux voir les plateformes”.'
+    });
+  }
+
+  function genericContextAnswer(q){
+    const sec = activeSectionKey();
+    const secInfo = KNOWLEDGE.sections[sec] || KNOWLEDGE.sections.accueil;
+    return answer('Je peux vous aider à préciser', [
+      'Je comprends l’idée générale, mais je veux éviter de vous donner une réponse vague. Actuellement, vous êtes dans <strong>'+escapeHtml(secInfo.label)+'</strong>, donc je peux déjà contextualiser : '+escapeHtml(secInfo.pitch),
+      'Pour vous répondre mieux, dites-moi si vous cherchez plutôt : une explication, un devis, une démo, une automatisation, un CRM/ERP, un dashboard, une formation IA, ou un accompagnement particulier.',
+      'Si vous avez un projet, donnez-moi une phrase simple : “je veux créer…”, “je veux automatiser…”, “je veux gérer…”.'
+    ], {
+      links:[{label:'Voir Solutions', section:'solutions', type:'primary'}, {label:'Contact / devis', section:'contact', type:'quote'}],
+      chips:['Clarification', 'Support', 'Sales'],
+      followup:'Posez une question plus précise et je vous répondrai avec une orientation concrète.'
+    });
+  }
+
+  function greetingAnswer(){
+    return answer('Bonjour, comment je peux vous aider ?', [
+      'Vous pouvez me parler naturellement. Je peux agir comme assistant commercial, support client et guide du site : expliquer les services, comparer les solutions, vous aider à cadrer un projet ou vous rediriger vers la bonne section.',
+      'Je connais les sections du site, les services, les plateformes, les démos, le contact, les questions de prix, de délais, de support et de choix entre solutions.'
+    ], {
+      links:[],
+      chips:['Support', 'Sales', 'Guide du site', 'Conseil projet'],
+      context:false,
+      followup:'Essayez par exemple : “je veux automatiser mon activité”, “CRM ou ERP ?”, “combien ça coûte ?”, “je veux voir une démo”, ou “ça va ?”.'
+    });
+  }
+
+  function smallTalk(intent){
+    if(intent === 'howareyou'){
+      return answer('Ça va très bien, merci.', [
+        'Je suis prêt à vous aider. Vous pouvez me poser une question banale, me parler d’un projet ou me demander quelle solution Qitty choisir.',
+        'Même si votre besoin est flou, je peux vous aider à le structurer étape par étape.'
+      ], {
+        links:[{label:'Voir les solutions', section:'solutions', type:'primary'}, {label:'Contact / devis', section:'contact', type:'quote'}],
+        context:false,
+        followup:'Dites-moi simplement ce que vous voulez faire.'
+      });
+    }
+    if(intent === 'thanks'){
+      return answer('Avec plaisir.', [
+        'Je reste disponible pour préciser, comparer ou vous orienter. Si vous voulez, vous pouvez me donner votre cas concret et je vous propose une prochaine étape.'
+      ], {
+        links:[{label:'Voir Solutions', section:'solutions', type:'primary'}, {label:'Contact', section:'contact', type:'quote'}],
+        context:false,
+        followup:'Vous pouvez continuer avec une question comme “quel service me correspond ?”.'
+      });
+    }
+    if(intent === 'bye'){
+      return answer('À bientôt.', [
+        'Merci pour votre passage. Quand vous voudrez avancer, vous pourrez revenir avec une idée, une question ou une demande de devis.'
+      ], {links:[{label:'Contact', section:'contact', type:'quote'}], context:false, followup:'Bonne continuation.'});
+    }
+    if(intent === 'identity'){
+      return answer('Je suis l’assistant Qitty Premium V2.', [
+        'Mon rôle est de vous aider dans le site comme un assistant de vente, support client et conseiller projet. Je peux expliquer les services, qualifier un besoin, comparer CRM/ERP/dashboard, ouvrir une démo ou vous rediriger.',
+        'Je ne suis pas connecté à une IA externe dans cette version : je fonctionne avec une base de connaissance intégrée au code du site, enrichie pour couvrir un maximum de cas.'
+      ], {
+        links:[{label:'Voir Qui sommes-nous', section:'about', type:'primary'}, {label:'Voir Solutions', section:'solutions'}, {label:'Contact', section:'contact', type:'quote'}],
+        context:false,
+        followup:'Demandez-moi un sujet précis et je vous répondrai avec le contexte Qitty.'
+      });
+    }
+    return null;
+  }
+
+  function mainReply(message){
+    const q = n(message);
+    const intent = detectIntent(q);
+    const entity = findEntity(q);
+    updateState(q, intent, entity);
+
+    if(intent === 'time') return currentTimeAnswer();
+    if(['greeting','howareyou','thanks','bye','identity'].includes(intent)) return smallTalk(intent) || greetingAnswer();
+    if(entity && !['compare','demo'].includes(intent)) return entityAnswer(entity);
+    if(intent === 'demo') return demoAnswer(entity);
+    if(intent === 'compare') return compareAnswer(q);
+    if(intent === 'pricing') return pricingAnswer();
+    if(intent === 'contact') return contactAnswer();
+    if(intent === 'sales') return salesAnswer(q);
+    if(intent === 'support') return supportAnswer();
+    if(intent === 'security') return securityAnswer();
+    if(intent === 'timeline') return timelineAnswer();
+    if(intent === 'maintenance') return maintenanceAnswer();
+    if(intent === 'navigation') return navigationAnswer(q);
+    if(intent === 'help') return salesAnswer(q);
+
+    if(q.length < 3){
+      return answer('Je vous écoute', [
+        'Écrivez une phrase un peu plus complète, même simple. Par exemple : “je veux automatiser mes emails”, “je cherche un CRM”, “je veux un devis” ou “explique-moi les plateformes”.'
+      ], {links:[{label:'Voir Solutions', section:'solutions', type:'primary'}], context:false});
+    }
+
+    return genericContextAnswer(q);
+  }
+
+  function submitMessage(){
+    const msg = chatInput ? chatInput.value.trim() : '';
+    if(!msg) return;
+    if(chatInput) chatInput.value = '';
+    state.turns += 1;
+    addUser(msg);
+    const typing = (typeof showTyping === 'function') ? showTyping() : null;
+    setTimeout(function(){
+      if(typing) typing.remove();
+      addBot(mainReply(msg));
+    }, 430);
+  }
+
+  function bindLinks(){
+    document.querySelectorAll('.qitty-v2-link').forEach(function(btn){
+      if(btn.dataset.bound === '1') return;
+      btn.dataset.bound = '1';
+      btn.addEventListener('click', function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        const url = btn.getAttribute('data-qitty-url');
+        const section = btn.getAttribute('data-qitty-route');
+        if(url){
+          window.open(url, '_blank', 'noopener');
+          return false;
+        }
+        route(section);
+        return false;
+      }, true);
+    });
+  }
+
+  if(chatForm){
+    chatForm.addEventListener('submit', function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      submitMessage();
+      return false;
+    }, true);
+  }
+
+  if(chatInput){
+    chatInput.addEventListener('keydown', function(e){
+      if(e.key === 'Enter'){
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        submitMessage();
+        return false;
+      }
+    }, true);
+  }
+
+  if(chatClose){
+    chatClose.addEventListener('click', function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      closeChat();
+      return false;
+    }, true);
+  }
+
+  if(chatModal){
+    chatModal.addEventListener('click', function(e){
+      if(e.target === chatModal) closeChat();
+    });
+  }
+
+  if(chatReset){
+    chatReset.addEventListener('click', function(e){
+      e.preventDefault();
+      try{ localStorage.removeItem('qittyChatHistory'); }catch(err){}
+      if(stage) stage.innerHTML = '';
+      state.turns = 0;
+      state.lastIntent = '';
+      state.lastEntity = '';
+      addBot(greetingAnswer());
+      return false;
+    }, true);
+  }
+
+  const openers = [document.getElementById('floatingChatbotBtn'), document.querySelector('.header-video')].filter(Boolean);
+  openers.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      openChat();
+      setTimeout(function(){
+        if(stage && !stage.dataset.qittyV103Welcome){
+          stage.dataset.qittyV103Welcome = '1';
+          addBot(greetingAnswer());
+        }
+      }, 260);
+    }, true);
+  });
+
+  document.addEventListener('click', function(e){
+    const btn = e.target.closest('.qitty-v2-link');
+    if(!btn) return;
+    e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+    const url = btn.getAttribute('data-qitty-url');
+    if(url){
+      window.open(url, '_blank', 'noopener');
+      return false;
+    }
+    route(btn.getAttribute('data-qitty-route'));
+    return false;
+  }, true);
+
+  bindLinks();
 });
 </script>
 
