@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#163f3a">
+<title>Éclat Mémoire — Assistant quotidien</title>
+<style>
+:root{
+  --bg:#f5f1e8;--panel:#fffdf8;--panel2:#f8f5ee;--text:#17302c;--muted:#68756f;
+  --primary:#1e5a52;--primary2:#2f756b;--accent:#d9985f;--success:#2f7d5a;--warning:#b67722;
+  --danger:#b4444d;--border:#ded9ce;--shadow:0 16px 45px rgba(38,55,50,.10);--radius:22px;
+  --font-scale:1;--sidebar:260px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:linear-gradient(145deg,#f7f3eb,#edf4f1);color:var(--text);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;font-size:calc(16px*var(--font-scale));min-height:100vh}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:4px solid rgba(217,152,95,.35);outline-offset:2px}
+.hidden{display:none!important}
+.app{display:grid;grid-template-columns:var(--sidebar) 1fr;min-height:100vh}
+.sidebar{position:fixed;inset:0 auto 0 0;width:var(--sidebar);background:rgba(255,253,248,.96);border-right:1px solid var(--border);padding:22px 16px;display:flex;flex-direction:column;z-index:30;overflow:auto}
+.brand{display:flex;align-items:center;gap:12px;padding:5px 7px 22px}
+.logo{width:52px;height:52px;border-radius:17px;background:linear-gradient(135deg,var(--primary),#397e73);color:#fff;display:grid;place-items:center;font-size:25px;font-weight:900;box-shadow:0 12px 28px rgba(30,90,82,.25)}
+.brand h1{margin:0;font-family:Georgia,serif;font-size:1.08rem}.brand p{margin:4px 0 0;color:var(--muted);font-size:.74rem}
+.mode-switch{display:grid;grid-template-columns:1fr 1fr;background:#ece8df;border-radius:14px;padding:4px;margin-bottom:16px}
+.mode-switch button{border:0;background:transparent;padding:10px 8px;border-radius:11px;font-weight:800;color:var(--muted)}
+.mode-switch button.active{background:#fff;color:var(--primary);box-shadow:0 4px 12px rgba(30,50,45,.09)}
+.nav{display:grid;gap:7px}.nav-btn{border:0;background:transparent;padding:13px;border-radius:14px;display:flex;align-items:center;gap:11px;font-weight:800;color:#4c5e58;text-align:left}
+.nav-btn:hover{background:#edf4f1}.nav-btn.active{background:var(--primary);color:#fff;box-shadow:0 10px 22px rgba(30,90,82,.22)}
+.nav-icon{width:28px;height:28px;border-radius:9px;background:rgba(255,255,255,.15);display:grid;place-items:center}
+.sidebar-foot{margin-top:auto;display:grid;gap:9px;padding-top:18px}.soft-action,.danger-action{border:0;border-radius:14px;padding:12px;font-weight:900}
+.soft-action{background:#e7f1ed;color:var(--primary)}.danger-action{background:#fae9e9;color:#9e3942}
+main{grid-column:2;padding:24px 28px 120px;min-width:0}
+.topbar{position:sticky;top:0;z-index:20;margin:-24px -28px 22px;padding:17px 28px;background:rgba(245,241,232,.88);backdrop-filter:blur(16px);border-bottom:1px solid rgba(222,217,206,.8);display:flex;align-items:center;justify-content:space-between;gap:16px}
+.topbar h2{margin:0;font-size:1.22rem}.topbar p{margin:4px 0 0;color:var(--muted);font-size:.82rem}
+.top-actions{display:flex;gap:9px;align-items:center}.icon-btn{width:44px;height:44px;border-radius:14px;border:1px solid var(--border);background:#fff;display:grid;place-items:center;font-weight:900}
+.menu-btn{display:none}
+.section{display:none;animation:fade .25s ease}.section.active{display:block}@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.hero{border-radius:30px;padding:28px;background:linear-gradient(135deg,#163f3a,#2d6b62 65%,#507e76);color:#fff;box-shadow:var(--shadow);display:grid;grid-template-columns:1.2fr .8fr;gap:24px}
+.hero-eyebrow{font-size:.78rem;text-transform:uppercase;letter-spacing:.12em;color:#d8ebe6;font-weight:800}
+.hero h1{font-family:Georgia,serif;font-size:2.15rem;line-height:1.15;margin:8px 0 12px}.hero p{margin:0;color:rgba(255,255,255,.86);line-height:1.6;max-width:650px}
+.orientation{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:22px;padding:20px;text-align:center;display:grid;place-items:center}
+.orientation .time{font-size:2.8rem;font-weight:900;letter-spacing:-.04em}.orientation .daypart{margin-top:5px;font-weight:700}.orientation .place{margin-top:13px;font-size:.83rem;color:rgba(255,255,255,.8)}
+.action-card{margin-top:18px;background:var(--panel);border:1px solid var(--border);border-radius:26px;padding:22px;box-shadow:var(--shadow);display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center}
+.action-icon{width:64px;height:64px;border-radius:19px;background:#e8f1ed;display:grid;place-items:center;font-size:28px}
+.action-card h2{margin:0 0 6px;font-size:1.18rem}.action-card p{margin:0;color:var(--muted);line-height:1.5}
+.action-buttons{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:0;border-radius:14px;padding:12px 16px;font-weight:900;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn-primary{background:var(--primary);color:#fff}.btn-soft{background:#e8f1ed;color:var(--primary)}.btn-accent{background:#fff0e4;color:#9b5d2b}.btn-danger{background:#fae8ea;color:#a63a45}.btn-outline{background:#fff;border:1px solid var(--border);color:var(--text)}.btn-sm{padding:9px 12px;font-size:.82rem}
+.grid-2{display:grid;grid-template-columns:1.15fr .85fr;gap:18px;margin-top:18px}.grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.grid-4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.panel{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:20px;box-shadow:0 10px 32px rgba(47,61,57,.055)}
+.panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:15px}.panel-head h3{margin:0;font-size:1.05rem}.sub{color:var(--muted);font-size:.78rem;margin-top:3px}
+.section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:18px}.section-head h2{margin:0;font-family:Georgia,serif;font-size:1.65rem}.section-head p{margin:5px 0 0;color:var(--muted)}.section-actions{display:flex;gap:9px;flex-wrap:wrap}
+.timeline{display:grid;gap:10px}.item{border:1px solid var(--border);border-radius:17px;padding:14px;background:#fff;display:flex;align-items:center;gap:12px}.item.done{opacity:.66}.check{width:30px;height:30px;border-radius:10px;border:2px solid #bdc7c2;background:#fff;display:grid;place-items:center;flex:0 0 auto}.done .check{background:var(--success);color:#fff;border-color:var(--success)}.item-main{flex:1;min-width:0}.item-title{font-weight:900}.item-meta{color:var(--muted);font-size:.78rem;margin-top:3px}.pill{border-radius:999px;padding:7px 10px;background:#f1eee7;font-size:.75rem;font-weight:900;white-space:nowrap}.pill.good{background:#e7f3ec;color:#236949}.pill.warn{background:#fff0da;color:#9a631b}.pill.bad{background:#fce9ea;color:#a63b45}
+.memory-feature{min-height:310px;border-radius:22px;padding:22px;color:#fff;display:flex;align-items:flex-end;position:relative;overflow:hidden;background:linear-gradient(to top,rgba(15,37,33,.88),rgba(15,37,33,.08)),url("https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80") center/cover}
+.memory-feature h3{margin:0 0 8px;font-family:Georgia,serif;font-size:1.4rem}.memory-feature p{margin:0;color:rgba(255,255,255,.9);line-height:1.55}.badge{position:absolute;top:15px;left:15px;background:rgba(255,255,255,.92);color:var(--primary);border-radius:11px;padding:8px 11px;font-weight:900;font-size:.74rem}
+.cards{display:grid;gap:12px}.med-card,.appt-card,.notif,.doc-card,.person-card,.game-card,.setting{border:1px solid var(--border);border-radius:18px;background:#fff;padding:16px}
+.med-card{display:grid;grid-template-columns:auto 1fr auto;gap:13px;align-items:center}.med-icon{width:50px;height:50px;border-radius:15px;background:#e8f1ed;display:grid;place-items:center;font-size:23px}.med-card h3,.appt-card h3,.notif h3{margin:0;font-size:.96rem}.med-card p,.appt-card p,.notif p{margin:4px 0 0;color:var(--muted);font-size:.79rem;line-height:1.45}
+.people-grid,.docs-grid,.games-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}.person-card{text-align:center}.person-card img{width:92px;height:92px;border-radius:50%;object-fit:cover;border:4px solid #eef4f1}.person-card h3{margin:11px 0 3px}.person-card p{margin:0;color:var(--muted);font-size:.8rem}.card-actions{display:flex;gap:7px;margin-top:13px}.card-actions .btn{flex:1}
+.appt-card{display:flex;gap:13px;align-items:center}.datebox{width:60px;height:60px;border-radius:16px;background:#e8f1ed;color:var(--primary);display:grid;place-items:center;text-align:center;font-weight:900;line-height:1.05;flex:0 0 auto}.datebox span{display:block;font-size:.65rem;text-transform:uppercase}
+.doc-card .doc-icon{font-size:28px}.doc-card h3,.game-card h3{margin:12px 0 5px}.doc-card p,.game-card p{margin:0;color:var(--muted);font-size:.79rem;line-height:1.5}.doc-foot{display:flex;justify-content:space-between;align-items:center;margin-top:14px}
+.game-card{min-height:220px;display:flex;flex-direction:column}.game-visual{width:58px;height:58px;border-radius:18px;background:#e8f1ed;display:grid;place-items:center;font-size:27px}.game-card .btn{margin-top:auto}
+.notif{display:flex;gap:12px}.notif.unread{background:#f0f6f3;border-color:#cfe1da}.notif-icon{width:42px;height:42px;border-radius:13px;background:#fff;display:grid;place-items:center;flex:0 0 auto}
+.settings-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}.setting{display:flex;align-items:center;justify-content:space-between;gap:14px}.setting h3{margin:0;font-size:.93rem}.setting p{margin:4px 0 0;color:var(--muted);font-size:.76rem}.toggle{width:52px;height:29px;border:0;border-radius:999px;background:#c9cfcb;padding:3px}.toggle:after{content:"";display:block;width:23px;height:23px;border-radius:50%;background:#fff;transition:.2s}.toggle.on{background:var(--primary)}.toggle.on:after{transform:translateX(23px)}
+.help-fab{position:fixed;right:24px;bottom:24px;z-index:50;border:0;border-radius:999px;padding:16px 20px;background:var(--danger);color:#fff;font-weight:900;box-shadow:0 15px 35px rgba(180,68,77,.3)}
+.modal{position:fixed;inset:0;background:rgba(15,32,29,.48);display:none;place-items:center;padding:18px;z-index:100;backdrop-filter:blur(5px)}.modal.open{display:grid}.modal-card{width:min(600px,100%);max-height:90vh;overflow:auto;background:var(--panel);border-radius:25px;padding:22px;box-shadow:0 30px 90px rgba(0,0,0,.24)}.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.modal-head h3{margin:0;font-family:Georgia,serif;font-size:1.3rem}.close{width:40px;height:40px;border:0;border-radius:12px;background:#eeeae2;font-size:20px}
+.form{display:grid;gap:13px}.field label{display:block;font-size:.79rem;font-weight:900;margin-bottom:6px}.field input,.field select,.field textarea{width:100%;padding:12px 13px;border:1px solid #d7d3ca;border-radius:13px;background:#fff;color:var(--text)}.field textarea{min-height:92px;resize:vertical}.modal-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:18px}
+.toast{position:fixed;right:24px;bottom:92px;background:#18312d;color:#fff;padding:14px 17px;border-radius:14px;opacity:0;transform:translateY(12px);transition:.25s;z-index:200;pointer-events:none}.toast.show{opacity:1;transform:none}
+.caregiver-only{display:initial}.patient-only{display:initial}
+.audit-table{width:100%;border-collapse:collapse;font-size:.82rem}.audit-table th,.audit-table td{text-align:left;padding:10px;border-bottom:1px solid var(--border)}
+.memory-board{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.memory-board button{aspect-ratio:1;border:0;border-radius:15px;background:#e8f1ed;font-size:28px;font-weight:900;color:var(--primary)}
+@media(max-width:1000px){:root{--sidebar:230px}.people-grid,.docs-grid,.games-grid{grid-template-columns:repeat(2,1fr)}.grid-4{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:800px){.app{display:block}.sidebar{transform:translateX(-100%);transition:.25s;width:min(300px,88vw);box-shadow:20px 0 60px rgba(0,0,0,.18)}.sidebar.open{transform:none}main{padding:18px 18px 120px}.topbar{margin:-18px -18px 18px;padding:14px 18px}.menu-btn{display:grid}.hero{grid-template-columns:1fr}.grid-2,.grid-3{grid-template-columns:1fr}.action-card{grid-template-columns:auto 1fr}.action-buttons{grid-column:1/-1}.settings-grid{grid-template-columns:1fr}}
+@media(max-width:520px){.people-grid,.docs-grid,.games-grid,.grid-4{grid-template-columns:1fr}.hero h1{font-size:1.65rem}.orientation .time{font-size:2.2rem}.section-head{align-items:flex-start;flex-direction:column}.med-card{grid-template-columns:auto 1fr}.med-card>:last-child{grid-column:1/-1}.help-fab{left:18px;right:18px;width:calc(100% - 36px)}}
+</style>
+
+<style>
+.quick-search{min-width:260px;height:44px;border:1px solid var(--border);border-radius:14px;background:#fff;padding:0 14px;color:var(--text)}
+.command-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:18px}
+.command-card{border:1px solid var(--border);background:var(--panel);border-radius:18px;padding:16px;text-align:left;box-shadow:0 8px 24px rgba(40,55,50,.05)}
+.command-card strong{display:block;margin-top:8px}.command-card span{font-size:.76rem;color:var(--muted)}
+.week-calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:9px}
+.calendar-day{min-height:135px;border:1px solid var(--border);border-radius:16px;padding:10px;background:#fff}
+.calendar-day.today{border:2px solid var(--primary);background:#f0f6f3}.calendar-day b{display:block;margin-bottom:8px}
+.calendar-event{padding:7px 8px;background:#e8f1ed;border-radius:9px;font-size:.72rem;margin-top:6px}
+.routine-card{border:1px solid var(--border);border-radius:20px;background:#fff;padding:18px}
+.routine-card h3{margin:0}.routine-progress{height:8px;background:#ece9e1;border-radius:999px;margin:14px 0;overflow:hidden}
+.routine-progress div{height:100%;background:var(--primary);border-radius:inherit}
+.step-list{display:grid;gap:8px}.routine-step{display:flex;gap:10px;align-items:center;padding:10px;border-radius:12px;background:#f7f5ef}
+.routine-step.done{opacity:.6;text-decoration:line-through}.mood-row{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.mood-btn{border:1px solid var(--border);background:#fff;border-radius:16px;padding:14px 8px;font-size:25px}.mood-btn.selected{border:3px solid var(--primary);background:#edf5f1}
+.insight{border-left:4px solid var(--accent);padding:12px 14px;background:#fff6ee;border-radius:0 14px 14px 0}
+.profile-banner{display:flex;gap:16px;align-items:center}.profile-banner img{width:92px;height:92px;border-radius:24px;object-fit:cover}
+.setting-group{display:grid;gap:10px}.select-control{padding:11px;border:1px solid var(--border);border-radius:12px;background:#fff}
+.calm-mode *{animation:none!important;transition:none!important}.calm-mode .memory-feature{background-image:none!important;background:#315f58!important}.calm-mode .hero{background:#244f48}
+.compact-mode .panel{padding:15px}.compact-mode .item{padding:10px}.status-dot{width:10px;height:10px;border-radius:50%;display:inline-block;background:var(--success)}
+.search-result{border:1px solid var(--border);padding:13px;border-radius:14px;background:#fff;display:flex;justify-content:space-between;gap:12px;align-items:center}
+@media(max-width:900px){.command-grid{grid-template-columns:repeat(2,1fr)}.week-calendar{grid-template-columns:1fr}.calendar-day{min-height:auto}.quick-search{display:none}}
+@media(max-width:520px){.command-grid,.mood-row{grid-template-columns:1fr 1fr}.profile-banner{align-items:flex-start}.profile-banner img{width:72px;height:72px}}
+</style>
+
+<style>
+@media(max-width:520px){
+  #nowCard .action-buttons{display:grid;grid-template-columns:1fr 1fr;width:100%}
+  #nowCard .action-buttons .btn{width:100%}
+  #nowCard .action-buttons .btn-accent{grid-column:1/-1}
+  .mood-row{grid-template-columns:repeat(5,1fr)!important;gap:6px}
+  .mood-btn{padding:11px 3px;font-size:22px}
+}
+.clickable-card{cursor:pointer;transition:.2s ease}
+.clickable-card:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(35,55,50,.09)}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.detail-visual{border:1px solid var(--border);border-radius:18px;background:#f7f4ed;min-height:180px;display:grid;place-items:center;overflow:hidden}
+.detail-visual img,.detail-visual video{width:100%;height:100%;object-fit:cover}
+.detail-list{display:grid;gap:9px}.detail-row{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)}.detail-row span{color:var(--muted);text-align:right}
+.advice-carousel{overflow:hidden;touch-action:pan-y;border-radius:18px}.advice-track{display:flex;transition:transform .35s ease}.advice-slide{min-width:100%;padding:18px;background:#fff6ee;border-left:4px solid var(--accent);border-radius:0 16px 16px 0;line-height:1.6}.carousel-dots{display:flex;justify-content:center;gap:7px;margin-top:12px}.carousel-dot{width:9px;height:9px;border-radius:50%;border:0;background:#cfc8bd;padding:0}.carousel-dot.active{background:var(--primary)}
+.management-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}.management-tabs button.active{background:var(--primary);color:#fff}.management-pane{display:none}.management-pane.active{display:block}
+.upload-zone{border:2px dashed var(--border);border-radius:16px;padding:20px;text-align:center;background:#faf8f3}
+@media(max-width:700px){.detail-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+<aside class="sidebar" id="sidebar">
+  <div class="brand"><div class="logo">É</div><div><h1>Éclat Mémoire</h1><p>Assistant quotidien bienveillant</p></div></div>
+<nav class="nav" id="nav">
+    <button class="nav-btn active" data-section="today"><span class="nav-icon">⌂</span>Aujourd’hui</button>
+    <button class="nav-btn" data-section="medications"><span class="nav-icon">💊</span>Médicaments</button>
+    <button class="nav-btn" data-section="agenda"><span class="nav-icon">📅</span>Agenda</button>
+    <button class="nav-btn" data-section="routines"><span class="nav-icon">☀</span>Routines</button>
+    <button class="nav-btn" data-section="people"><span class="nav-icon">👥</span>Mes proches</button>
+    <button class="nav-btn" data-section="memories"><span class="nav-icon">♥</span>Mes souvenirs</button>
+    <button class="nav-btn" data-section="activities"><span class="nav-icon">🧩</span>Mes activités</button>
+    <button class="nav-btn" data-section="wellbeing"><span class="nav-icon">🌿</span>Bien-être</button>
+    <button class="nav-btn" data-section="documents"><span class="nav-icon">📄</span>Documents</button>
+    <button class="nav-btn" data-section="control"><span class="nav-icon">⚙</span>Réglages</button>
+  </nav>
+  <div class="sidebar-foot">
+    <button class="soft-action" onclick="speakCurrent()">🔊 Lire l’écran</button>
+    <button class="danger-action" onclick="openModal('helpModal')">☎ J’ai besoin d’aide</button>
+  </div>
+</aside>
+
+<main>
+<header class="topbar">
+  <button class="icon-btn menu-btn" onclick="sidebar.classList.toggle('open')">☰</button>
+  <div><h2 id="pageTitle">Aujourd’hui</h2><p id="currentDate"></p></div>
+  <div class="top-actions"><input class="quick-search" aria-label="Rechercher" placeholder="Rechercher un proche, un document…" onclick="openModal('searchModal')" readonly><button class="icon-btn" onclick="toggleLargeText()">A+</button><button class="icon-btn" onclick="openModal('notificationsModal')">🔔</button></div>
+</header>
+
+<section class="section active" id="today">
+  <div class="hero">
+    <div><div class="hero-eyebrow">Votre repère du jour</div><h1 id="greeting">Bonjour Claire.</h1><p id="orientationText">Nous sommes lundi. Vous êtes chez vous à Bruxelles. Sophie vient vous chercher à 17 h 00.</p></div>
+    <div class="orientation"><div class="time" id="clock">16:03</div><div class="daypart" id="daypart">Nous sommes l’après-midi</div><div class="place">📍 Chez vous · Bruxelles</div></div>
+  </div>
+
+  <div class="action-card" id="nowCard">
+    <div class="action-icon">📅</div>
+    <div><h2>Maintenant : préparez-vous pour votre rendez-vous</h2><p>Sophie arrive à 17 h 00. Prenez votre carte d’identité et votre liste de médicaments.</p></div>
+    <div class="action-buttons"><button class="btn btn-primary" onclick="completeNow()">J’ai compris</button><button class="btn btn-soft" onclick="snoozeNow()">Me le rappeler</button><button class="btn btn-accent" onclick="callPerson('Sophie')">Appeler Sophie</button></div>
+  </div>
+
+  <div class="command-grid">
+    <button class="command-card" onclick="navigate('medications')"><span style="font-size:25px">💊</span><strong>Médicaments</strong><span>Voir les prochaines prises</span></button>
+    <button class="command-card" onclick="navigate('agenda')"><span style="font-size:25px">📅</span><strong>Agenda</strong><span>Voir les rendez-vous</span></button>
+    <button class="command-card" onclick="navigate('people')"><span style="font-size:25px">👥</span><strong>Mes proches</strong><span>Appeler une personne</span></button>
+    <button class="command-card" onclick="navigate('routines')"><span style="font-size:25px">☀</span><strong>Ma routine</strong><span>Être guidé pas à pas</span></button>
+  </div>
+
+  <div class="grid-2">
+    <div class="panel">
+      <div class="panel-head"><div><h3>Ensuite</h3><div class="sub">Les deux prochaines étapes seulement</div></div><button class="btn btn-soft btn-sm" onclick="openModal('taskModal')">Ajouter</button></div>
+      <div class="timeline" id="taskList"></div>
+    </div>
+    <div class="panel">
+      <div class="panel-head"><div><h3>Souvenir du jour</h3><div class="sub">Une histoire positive, sans test</div></div><button class="btn btn-soft btn-sm" onclick="speakMemory()">Écouter</button></div>
+      <div class="memory-feature"><span class="badge">Été 1989</span><div><h3>Les vacances à Ostende</h3><p>Vous aimiez marcher sur la plage avec Pierre et ramasser des coquillages avec les enfants.</p></div></div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="panel"><div class="panel-head"><h3>Médicaments aujourd’hui</h3><button class="btn btn-soft btn-sm" onclick="openModal('medicineModal')">Ajouter</button></div><div class="cards" id="medicineList"></div></div>
+    <div class="panel"><div class="panel-head"><h3>Rendez-vous à venir</h3><button class="btn btn-soft btn-sm" onclick="openModal('appointmentModal')">Ajouter</button></div><div class="cards" id="appointmentList"></div></div>
+  </div>
+</section>
+
+
+<section class="section" id="medications">
+  <div class="section-head">
+    <div><h2>Mes médicaments</h2><p>Consultez les prises prévues, confirmez-les et modifiez les informations si nécessaire.</p></div>
+    <button class="btn btn-primary" onclick="openModal('medicineModal')">＋ Ajouter un médicament</button>
+  </div>
+  <div class="grid-2">
+    <div class="panel">
+      <div class="panel-head"><div><h3>Prises du jour</h3><div class="sub">Les médicaments sont classés par heure.</div></div></div>
+      <div class="cards" id="medicinePageList"></div>
+    </div>
+    <div class="panel">
+      <div class="panel-head"><div><h3>Informations utiles</h3><div class="sub">Repères simples pour éviter les erreurs.</div></div></div>
+      <div class="cards">
+        <div class="setting"><div><h3>Ordonnance principale</h3><p>Valable jusqu’au 28 septembre 2026.</p></div><button class="btn btn-soft btn-sm" onclick="navigate('documents')">Voir</button></div>
+        <div class="setting"><div><h3>Pharmacie habituelle</h3><p>Pharmacie du Parc · Bruxelles.</p></div><button class="btn btn-soft btn-sm" onclick="showToast('Appel simulé vers la pharmacie')">Appeler</button></div>
+        <div class="setting"><div><h3>Besoin d’aide</h3><p>Appelez Sophie en cas de doute sur une prise.</p></div><button class="btn btn-accent btn-sm" onclick="callPerson('Sophie')">Appeler Sophie</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="section" id="agenda">
+ <div class="section-head"><div><h2>Agenda et rendez-vous</h2><p>Une vue claire de la semaine, des lieux et des personnes qui vous accompagnent.</p></div><button class="btn btn-primary" onclick="openModal('appointmentModal')">＋ Rendez-vous</button></div>
+ <div class="panel"><div class="panel-head"><div><h3>Cette semaine</h3><div class="sub">Cliquez sur un rendez-vous pour obtenir les détails.</div></div></div><div class="week-calendar" id="weekCalendar"></div></div>
+ <div class="grid-2"><div class="panel"><div class="panel-head"><h3>Prochains rendez-vous</h3></div><div class="cards" id="agendaAppointmentList"></div></div>
+ <div class="panel"><div class="panel-head"><h3>À préparer</h3></div><div class="timeline"><div class="item"><button class="check" onclick="this.closest('.item').classList.toggle('done');this.textContent=this.closest('.item').classList.contains('done')?'✓':''"></button><div class="item-main"><div class="item-title">Carte d’identité</div><div class="item-meta">Dans le tiroir de l’entrée</div></div></div><div class="item"><button class="check" onclick="this.closest('.item').classList.toggle('done');this.textContent=this.closest('.item').classList.contains('done')?'✓':''"></button><div class="item-main"><div class="item-title">Liste des médicaments</div><div class="item-meta">Disponible dans Documents</div></div></div></div></div></div>
+</section>
+
+<section class="section" id="routines">
+ <div class="section-head"><div><h2>Routines guidées</h2><p>Des séquences simples, stables et personnalisables pour chaque moment de la journée.</p></div><button class="btn btn-primary" onclick="resetRoutines()">Réinitialiser aujourd’hui</button></div>
+ <div class="grid-3" id="routineGrid"></div>
+</section>
+
+<section class="section" id="wellbeing">
+ <div class="section-head"><div><h2>Bien-être</h2><p>Un suivi volontaire et non médicalisant de l’humeur, du sommeil, de l’hydratation et des activités.</p></div></div>
+ <div class="grid-2">
+  <div class="panel"><div class="panel-head"><h3>Comment vous sentez-vous ?</h3></div><div class="mood-row" id="moodRow"><button class="mood-btn" onclick="selectMood(this,'Très bien')">😄</button><button class="mood-btn" onclick="selectMood(this,'Bien')">🙂</button><button class="mood-btn" onclick="selectMood(this,'Neutre')">😐</button><button class="mood-btn" onclick="selectMood(this,'Fatigué')">😴</button><button class="mood-btn" onclick="selectMood(this,'Pas bien')">😟</button></div><p id="moodText" class="sub" style="margin-top:14px">Aucune réponse enregistrée aujourd’hui.</p></div>
+  <div class="panel"><div class="panel-head"><h3>Petits objectifs du jour</h3><button class="btn btn-soft btn-sm" onclick="openModal('goalModal')">＋ Ajouter</button></div><div class="timeline" id="wellbeingGoals"></div></div>
+ </div>
+ <div class="panel" style="margin-top:18px"><div class="panel-head"><h3>Conseils doux</h3><div><button class="btn btn-soft btn-sm" onclick="previousAdvice()">←</button> <button class="btn btn-soft btn-sm" onclick="nextAdvice()">→</button></div></div><div class="advice-carousel" id="adviceCarousel"><div class="advice-track" id="adviceTrack"></div></div><div class="carousel-dots" id="adviceDots"></div></div>
+</section>
+
+<section class="section" id="control">
+ <div class="section-head"><div><h2>Centre de contrôle</h2><p>Personnalisez l’application, les données, la sécurité et l’accessibilité.</p></div></div>
+ <div class="grid-2">
+  <div class="panel"><div class="profile-banner"><img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80"><div><h3 style="margin:0">Claire Martin</h3><p class="sub">Profil principal · Bruxelles</p><button class="btn btn-soft btn-sm" onclick="openModal('profileModal')">Modifier le profil</button></div></div></div>
+  <div class="panel"><div class="panel-head"><h3>État du système</h3></div><p><span class="status-dot"></span> Données sauvegardées dans ce navigateur</p><p><span class="status-dot"></span> Lecture vocale disponible</p><p><span class="status-dot"></span> Mode hors connexion partiel</p></div>
+ </div>
+ <div class="settings-grid" style="margin-top:18px">
+  <div class="setting"><div><h3>Texte agrandi</h3><p>Augmente la taille de lecture.</p></div><button class="toggle" onclick="toggleSetting(this,'large')"></button></div>
+  <div class="setting"><div><h3>Contraste renforcé</h3><p>Rend les séparations plus visibles.</p></div><button class="toggle" onclick="toggleSetting(this,'contrast')"></button></div>
+  <div class="setting"><div><h3>Mode calme</h3><p>Supprime animations et photos décoratives.</p></div><button class="toggle" onclick="toggleSetting(this,'calm')"></button></div>
+  <div class="setting"><div><h3>Affichage compact</h3><p>Affiche davantage d’éléments.</p></div><button class="toggle" onclick="toggleSetting(this,'compact')"></button></div>
+ </div>
+ <div class="grid-2">
+  <div class="panel"><div class="panel-head"><h3>Sauvegarde et transfert</h3></div><div class="setting-group"><button class="btn btn-primary" onclick="exportData()">Exporter une sauvegarde</button><button class="btn btn-soft" onclick="document.getElementById('importDataFile').click()">Importer une sauvegarde</button><input id="importDataFile" type="file" accept=".json" hidden onchange="importData(this)"><button class="btn btn-danger" onclick="resetAllData()">Réinitialiser les données</button></div></div>
+  <div class="panel"><div class="panel-head"><h3>Préférences</h3></div><div class="field"><label>Voix de lecture</label><select id="voiceRate" class="select-control"><option value=".75">Très lente</option><option value=".88" selected>Confortable</option><option value="1">Normale</option></select></div><div class="field" style="margin-top:12px"><label>Durée du rappel différé</label><select class="select-control"><option>5 minutes</option><option selected>10 minutes</option><option>15 minutes</option></select></div></div>
+ </div>
+</section>
+
+<section class="section" id="people">
+  <div class="section-head"><div><h2>Les personnes que je connais</h2><p>Des repères simples pour reconnaître et contacter les proches.</p></div><button class="btn btn-primary" onclick="openModal('personModal')">＋ Ajouter</button></div>
+  <div class="people-grid" id="peopleGrid"></div>
+</section>
+
+<section class="section" id="memories">
+  <div class="section-head"><div><h2>Histoires de ma vie</h2><p>Photos, voix, lieux et personnes importantes.</p></div><button class="btn btn-primary" onclick="openModal('memoryModal')">＋ Ajouter un souvenir</button></div>
+  <div class="grid-3" id="memoryGrid"></div>
+</section>
+
+<section class="section" id="activities">
+  <div class="section-head"><div><h2>Mes activités</h2><p>Des exercices courts, encourageants et sans pression.</p></div><span class="pill good">Activité du jour : 10 minutes</span></div>
+  <div class="games-grid">
+    <div class="game-card"><div class="game-visual">🃏</div><h3>Paires d’images</h3><p>Retrouvez les images identiques, sans limite de temps.</p><button class="btn btn-primary" onclick="startMemoryGame()">Jouer</button></div>
+    <div class="game-card"><div class="game-visual">👤</div><h3>Qui est cette personne ?</h3><p>Associez une photo au prénom avec des indices bienveillants.</p><button class="btn btn-primary" onclick="startPeopleQuiz()">Commencer</button></div>
+    <div class="game-card"><div class="game-visual">🎵</div><h3>Souvenirs musicaux</h3><p>Écoutez une chanson et partagez ce qu’elle vous rappelle.</p><button class="btn btn-primary" onclick="showToast('Activité musicale lancée')">Écouter</button></div>
+  </div>
+</section>
+
+<section class="section" id="documents">
+  <div class="section-head"><div><h2>Documents importants</h2><p>Accès simple aux informations utiles et fiche d’urgence.</p></div><button class="btn btn-primary" onclick="document.getElementById('docFile').click()">↑ Ajouter</button><input id="docFile" type="file" hidden onchange="addDocument(this)"></div>
+  <div class="docs-grid" id="docsGrid"></div>
+</section>
+
+</main>
+</div>
+
+<button class="help-fab" onclick="openModal('helpModal')">☎ J’ai besoin d’aide</button>
+
+<div class="modal" id="helpModal"><div class="modal-card"><div class="modal-head"><h3>Vous êtes en sécurité</h3><button class="close" onclick="closeModal('helpModal')">×</button></div><p style="font-size:1.05rem;line-height:1.6">Vous êtes chez vous à Bruxelles. Sophie et Marc peuvent vous aider.</p><div class="cards"><button class="btn btn-primary" onclick="callPerson('Sophie')">Appeler Sophie</button><button class="btn btn-soft" onclick="callPerson('Marc')">Appeler Marc</button><button class="btn btn-outline" onclick="showToast('Adresse : domicile de Claire, Bruxelles')">Voir mon adresse</button><button class="btn btn-danger" onclick="showToast('Prototype : appel d’urgence non déclenché')">Urgence</button></div></div></div>
+
+</div>
+
+<div class="modal" id="taskModal"><div class="modal-card"><div class="modal-head"><h3>Nouveau rappel</h3><button class="close" onclick="closeModal('taskModal')">×</button></div><div class="form"><div class="field"><label>Action</label><input id="taskTitle" placeholder="Ex. Appeler Sophie"></div><div class="field"><label>Heure</label><input id="taskTime" type="time"></div><div class="field"><label>Instructions simples</label><textarea id="taskNote" placeholder="Une phrase courte et claire"></textarea></div></div><div class="modal-actions"><button class="btn btn-soft" onclick="closeModal('taskModal')">Annuler</button><button class="btn btn-primary" onclick="addTask()">Enregistrer</button></div></div></div>
+
+<div class="modal" id="medicineModal"><div class="modal-card"><div class="modal-head"><h3>Ajouter un médicament</h3><button class="close" onclick="closeModal('medicineModal')">×</button></div><div class="form"><div class="field"><label>Nom</label><input id="medName" placeholder="Nom du médicament"></div><div class="field"><label>Dosage</label><input id="medDose" placeholder="Ex. 5 mg"></div><div class="field"><label>Heure</label><input id="medTime" type="time"></div><div class="field"><label>Instructions validées</label><textarea id="medNote" placeholder="Ex. Après le repas, avec un verre d’eau"></textarea></div>
+<div class="field"><label>Nombre de prises par jour</label><input id="medTimesPerDay" type="number" min="1" max="6" value="1"></div>
+<div class="field"><label>Jours de prise</label><input id="medDays" placeholder="Ex. Lun, Mar, Mer, Jeu, Ven"></div>
+<div class="field"><label>Image de la boîte</label><input id="medBoxImg" placeholder="URL de l’image"></div>
+<div class="field"><label>Image du comprimé</label><input id="medPillImg" placeholder="URL de l’image"></div></div><div class="modal-actions"><button class="btn btn-soft" onclick="closeModal('medicineModal')">Annuler</button><button class="btn btn-primary" onclick="addMedicine()">Enregistrer</button></div></div></div>
+
+<div class="modal" id="appointmentModal"><div class="modal-card"><div class="modal-head"><h3>Nouveau rendez-vous</h3><button class="close" onclick="closeModal('appointmentModal')">×</button></div><div class="form"><div class="field"><label>Objet</label><input id="apptTitle"></div><div class="field"><label>Date et heure</label><input id="apptDate" type="datetime-local"></div><div class="field"><label>Lieu</label><input id="apptPlace"></div><div class="field"><label>Accompagnant</label><input id="apptWith" placeholder="Ex. Sophie"></div></div><div class="modal-actions"><button class="btn btn-soft" onclick="closeModal('appointmentModal')">Annuler</button><button class="btn btn-primary" onclick="addAppointment()">Enregistrer</button></div></div></div>
+
+<div class="modal" id="personModal"><div class="modal-card"><div class="modal-head"><h3>Ajouter une personne</h3><button class="close" onclick="closeModal('personModal')">×</button></div><div class="form"><div class="field"><label>Nom</label><input id="personName"></div><div class="field"><label>Lien</label><input id="personRelation" placeholder="Ex. Ma fille"></div><div class="field"><label>Téléphone</label><input id="personPhone"></div><div class="field"><label>Repère</label><textarea id="personNote"></textarea></div></div><div class="modal-actions"><button class="btn btn-soft" onclick="closeModal('personModal')">Annuler</button><button class="btn btn-primary" onclick="addPerson()">Enregistrer</button></div></div></div>
+
+<div class="modal" id="memoryModal"><div class="modal-card"><div class="modal-head"><h3>Ajouter un souvenir</h3><button class="close" onclick="closeModal('memoryModal')">×</button></div><div class="form"><div class="field"><label>Titre</label><input id="memoryTitle"></div><div class="field"><label>Période</label><input id="memoryPeriod"></div><div class="field"><label>Histoire</label><textarea id="memoryStory"></textarea></div>
+<div class="field"><label>Type de média</label><select id="memoryType"><option value="image">Image</option><option value="video">Vidéo</option><option value="audio">Audio</option></select></div>
+<div class="field"><label>URL du média</label><input id="memoryMedia" placeholder="Lien vers l’image, l’audio ou la vidéo"></div>
+<div class="field"><label>Personnes présentes</label><input id="memoryPeople"></div>
+<div class="field"><label>Lieu</label><input id="memoryPlace"></div></div><div class="modal-actions"><button class="btn btn-soft" onclick="closeModal('memoryModal')">Annuler</button><button class="btn btn-primary" onclick="addMemory()">Enregistrer</button></div></div></div>
+
+<div class="modal" id="notificationsModal"><div class="modal-card"><div class="modal-head"><h3>Notifications</h3><button class="close" onclick="closeModal('notificationsModal')">×</button></div><div class="cards" id="notificationList"></div><div class="modal-actions"><button class="btn btn-soft" onclick="markAllRead()">Tout marquer comme lu</button></div></div></div>
+
+<div class="modal" id="gameModal"><div class="modal-card"><div class="modal-head"><h3 id="gameTitle">Jeu</h3><button class="close" onclick="closeModal('gameModal')">×</button></div><div id="gameContent"></div><p id="gameStatus" style="text-align:center;color:var(--muted);font-weight:800"></p></div></div>
+
+
+<div class="modal" id="searchModal"><div class="modal-card"><div class="modal-head"><h3>Recherche globale</h3><button class="close" onclick="closeModal('searchModal')">×</button></div><div class="field"><label>Que recherchez-vous ?</label><input id="globalSearchInput" placeholder="Ex. Sophie, ordonnance, coiffeur…" oninput="globalSearch(this.value)"></div><div class="cards" id="searchResults" style="margin-top:15px"><div class="sub">Commencez à écrire pour rechercher dans toute la plateforme.</div></div></div></div>
+<div class="modal" id="profileModal"><div class="modal-card"><div class="modal-head"><h3>Modifier le profil</h3><button class="close" onclick="closeModal('profileModal')">×</button></div><div class="form"><div class="field"><label>Prénom</label><input id="profileName" value="Claire"></div><div class="field"><label>Ville</label><input id="profileCity" value="Bruxelles"></div><div class="field"><label>Contact principal</label><input id="profileContact" value="Sophie"></div></div><div class="modal-actions"><button class="btn btn-soft" onclick="closeModal('profileModal')">Annuler</button><button class="btn btn-primary" onclick="saveProfile()">Enregistrer</button></div></div></div>
+
+<div class="modal" id="medicineDetailModal"><div class="modal-card"><div class="modal-head"><h3>Détails du médicament</h3><button class="close" onclick="closeModal('medicineDetailModal')">×</button></div><div id="medicineDetailContent"></div></div></div>
+<div class="modal" id="memoryDetailModal"><div class="modal-card"><div class="modal-head"><h3>Souvenir</h3><button class="close" onclick="closeModal('memoryDetailModal')">×</button></div><div id="memoryDetailContent"></div></div></div>
+<div class="modal" id="documentDetailModal"><div class="modal-card"><div class="modal-head"><h3>Document</h3><button class="close" onclick="closeModal('documentDetailModal')">×</button></div><div id="documentDetailContent"></div></div></div>
+<div class="modal" id="goalModal"><div class="modal-card"><div class="modal-head"><h3>Ajouter un objectif</h3><button class="close" onclick="closeModal('goalModal')">×</button></div><div class="form"><div class="field"><label>Objectif du jour</label><input id="goalTitle" placeholder="Ex. Appeler un proche"></div></div><div class="modal-actions"><button class="btn btn-soft" onclick="closeModal('goalModal')">Annuler</button><button class="btn btn-primary" onclick="addGoal()">Ajouter</button></div></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const STORE='eclatMemoirePremiumV2';
+const defaults={
+ tasks:[
+  {id:1,title:'Appeler Sophie',time:'16:30',note:'Votre fille',done:false},
+  {id:2,title:'Préparer les vêtements de demain',time:'19:00',note:'Dans la chambre',done:false}
+ ],
+ meds:[
+  {id:1,name:'Traitement du matin',dose:'1 comprimé',time:'08:30',note:'Après le petit-déjeuner',status:'taken',days:['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'],timesPerDay:1,boxImg:'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=900&q=80',pillImg:'https://images.unsplash.com/photo-1550572017-edd951b55104?auto=format&fit=crop&w=900&q=80',prescriber:'Dr Laurent',start:'2026-07-01',end:'2026-09-28'},
+  {id:2,name:'Vitamine D',dose:'1 dose',time:'18:00',note:'Avec le repas',status:'pending',days:['Lun','Mer','Ven'],timesPerDay:1,boxImg:'https://images.unsplash.com/photo-1550572017-edd951b55104?auto=format&fit=crop&w=900&q=80',pillImg:'https://images.unsplash.com/photo-1587854692152-cbe660dbde88?auto=format&fit=crop&w=900&q=80',prescriber:'Dr Laurent',start:'2026-08-01',end:'2026-12-31'},
+  {id:3,name:'Traitement du soir',dose:'1 comprimé',time:'21:00',note:'Avant le coucher',status:'pending',days:['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'],timesPerDay:1,boxImg:'https://images.unsplash.com/photo-1471864190281-a93a3070b6de?auto=format&fit=crop&w=900&q=80',pillImg:'https://images.unsplash.com/photo-1585435557343-3b092031a831?auto=format&fit=crop&w=900&q=80',prescriber:'Dr Laurent',start:'2026-07-01',end:'2026-09-28'}
+ ],
+ appointments:[
+  {id:1,title:'Consultation chez le médecin',date:'2026-08-03T17:30',place:'Centre médical du Parc',with:'Sophie'},
+  {id:2,title:'Coiffeur',date:'2026-08-06T11:00',place:'Rue de la Gare 12',with:''}
+ ],
+ people:[
+  {id:1,name:'Sophie',relation:'Ma fille',phone:'+3200000001',note:'Elle habite à Bruxelles et vient chaque lundi.',img:'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=400&q=80'},
+  {id:2,name:'Marc',relation:'Mon fils',phone:'+3200000002',note:'Il habite à Namur.',img:'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80'},
+  {id:3,name:'Julie',relation:'Ma petite-fille',phone:'+3200000003',note:'Elle aime dessiner et écouter de la musique.',img:'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=400&q=80'}
+ ],
+ memories:[
+  {id:1,title:'Vacances à Ostende',period:'Été 1989',story:'Notre semaine à la mer avec Pierre et les enfants. Nous marchions chaque matin sur la digue.',type:'image',media:'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80',people:'Pierre, Sophie et Marc',place:'Ostende'},
+  {id:2,title:'Notre mariage',period:'Juin 1978',story:'Une journée très ensoleillée entourés de toute la famille.',type:'image',media:'https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=1200&q=80',people:'Pierre et la famille',place:'Bruxelles'},
+  {id:3,title:'Noël chez Sophie',period:'Décembre 2004',story:'Le premier Noël de Julie avec son petit bonnet rouge.',type:'image',media:'https://images.unsplash.com/photo-1472653431158-6364773b2a56?auto=format&fit=crop&w=1200&q=80',people:'Sophie, Julie et Marc',place:'Chez Sophie'},
+  {id:4,title:'Message de Sophie',period:'Printemps 2026',story:'Sophie raconte un souvenir de promenade au parc.',type:'audio',media:'',people:'Sophie',place:'Parc du quartier'},
+  {id:5,title:'Anniversaire de Julie',period:'Juillet 2025',story:'Un court film de famille autour du gâteau d’anniversaire.',type:'video',media:'https://www.w3schools.com/html/mov_bbb.mp4',people:'Julie et la famille',place:'Maison de Sophie'}
+ ],
+ docs:[
+  {id:1,name:"Carte d’identité",meta:'Expire le 14 janvier 2030',status:'Valide',icon:'🪪',validUntil:'2030-01-14',category:'Identité',fileName:'carte-identite.pdf'},
+  {id:2,name:'Liste des médicaments',meta:'Mise à jour le 1 août 2026',status:'À jour',icon:'📋',validUntil:'2026-12-31',category:'Santé',fileName:'liste-medicaments.pdf'},
+  {id:3,name:'Ordonnance médicale',meta:'Expire le 28 septembre 2026',status:'À renouveler',icon:'🩺',validUntil:'2026-09-28',category:'Santé',fileName:'ordonnance.pdf'},
+  {id:4,name:"Fiche d’urgence",meta:'Contacts, traitements et médecin',status:'Protégé',icon:'☎',validUntil:'',category:'Urgence',fileName:'fiche-urgence.pdf'}
+ ],
+ notifications:[
+  {id:1,type:'💊',title:'Médicament à 18 h 00',text:'La vitamine D est prévue avec le repas.',unread:true},
+  {id:2,type:'♥',title:'Souvenir du jour',text:'Découvrez une photo de vos vacances à Ostende.',unread:true},
+  {id:3,type:'📅',title:"Rendez-vous aujourd’hui",text:'Sophie arrive à 17 h 00.',unread:false}
+ ],
+ audit:[{time:'15:40',action:'Synchronisation des données',user:'Système'}]
+};
+let data=JSON.parse(localStorage.getItem(STORE)||'null')||structuredClone(defaults);
+function save(){localStorage.setItem(STORE,JSON.stringify(data));renderAll()}
+function esc(s=''){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+function log(action,user='Aidant'){data.audit.unshift({time:new Date().toLocaleTimeString('fr-BE',{hour:'2-digit',minute:'2-digit'}),action,user});data.audit=data.audit.slice(0,12)}
+function renderAll(){renderTasks();renderMeds();renderAppointments();renderPeople();renderMemories();renderDocs();renderNotifications();renderAudit();renderKPIs();renderAgenda();renderRoutines();renderGoals();renderAdvice();renderSettingsManagement()}
+function renderTasks(){taskList.innerHTML=data.tasks.slice(0,4).map(t=>`<div class="item ${t.done?'done':''}"><button class="check" onclick="toggleTask(${t.id})">${t.done?'✓':''}</button><div class="item-main"><div class="item-title">${esc(t.title)}</div><div class="item-meta">${esc(t.note)}</div></div><span class="pill">${esc(t.time)}</span><button class="btn btn-danger btn-sm" onclick="deleteItem('tasks',${t.id})">Supprimer</button></div>`).join('')}
+function toggleTask(id){let t=data.tasks.find(x=>x.id===id);t.done=!t.done;log(`${t.title} : ${t.done?'confirmé':'rouvert'}`,'Claire');save();showToast(t.done?'Bravo, tâche terminée':'Tâche remise à faire')}
+function renderMeds(){
+  const markup=data.meds.slice().sort((a,b)=>a.time.localeCompare(b.time)).map(m=>`<div class="med-card clickable-card" onclick="openMedicineDetails(${m.id})">
+    <div class="med-icon">💊</div>
+    <div><h3>${esc(m.name)} · ${esc(m.dose)}</h3><p>${esc(m.note)} · ${esc(m.time)} · ${m.timesPerDay||1} fois/jour</p></div>
+    <div style="display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end" onclick="event.stopPropagation()">
+      <button class="btn ${m.status==='taken'?'btn-soft':'btn-primary'} btn-sm" onclick="toggleMedStatus(${m.id})">${m.status==='taken'?'Annuler la prise':'Marquer pris'}</button>
+      <button class="btn btn-soft btn-sm" onclick="editMedicine(${m.id})">Modifier</button>
+      <button class="btn btn-danger btn-sm" onclick="deleteItem('meds',${m.id})">Supprimer</button>
+    </div>
+  </div>`).join('');
+  medicineList.innerHTML=markup;
+  if(document.getElementById('medicinePageList')) document.getElementById('medicinePageList').innerHTML=markup;
+}
+function toggleMedStatus(id){const m=data.meds.find(x=>x.id===id);if(!m)return;m.status=m.status==='taken'?'pending':'taken';log(`${m.name} : ${m.status==='taken'?'prise confirmée':'prise annulée'}`,'Claire');save();showToast(m.status==='taken'?'Prise enregistrée':'Prise remise comme non prise')}
+function confirmMed(id){toggleMedStatus(id)}
+function renderAppointments(){const apptMarkup=data.appointments.map(a=>{let d=new Date(a.date);return `<div class="appt-card"><div class="datebox"><span>${d.toLocaleDateString('fr-BE',{month:'short'})}</span>${d.getDate()}</div><div style="flex:1"><h3>${esc(a.title)}</h3><p>${d.toLocaleTimeString('fr-BE',{hour:'2-digit',minute:'2-digit'})} · ${esc(a.place)} ${a.with?'· '+esc(a.with):''}</p></div><button class="btn btn-danger btn-sm" onclick="deleteItem('appointments',${a.id})">×</button></div>`}).join('');appointmentList.innerHTML=apptMarkup;if(document.getElementById('agendaAppointmentList'))document.getElementById('agendaAppointmentList').innerHTML=apptMarkup}
+function renderPeople(){peopleGrid.innerHTML=data.people.map(p=>`<div class="person-card"><img src="${esc(p.img)}" alt="${esc(p.name)}"><h3>${esc(p.name)}</h3><p>${esc(p.relation)}</p><p style="margin-top:7px">${esc(p.note)}</p><div class="card-actions"><button class="btn btn-soft btn-sm" onclick="callPerson('${esc(p.name)}')">Appeler</button><button class="btn btn-outline btn-sm" onclick="speakText('${esc(p.name)} est ${esc(p.relation)}. ${esc(p.note)}')">Écouter</button></div></div>`).join('')}
+function renderMemories(){memoryGrid.innerHTML=data.memories.map(m=>`<div class="memory-feature clickable-card" onclick="openMemoryDetails(${m.id})" style="min-height:300px;background-image:linear-gradient(to top,rgba(15,37,33,.88),rgba(15,37,33,.08)),url('${esc(m.media||m.img||'')}')"><span class="badge">${esc(m.period)}</span><div><h3>${esc(m.title)}</h3><p>${esc(m.story)}</p><span class="pill" style="display:inline-block;margin-top:10px">${m.type==='video'?'Vidéo':m.type==='audio'?'Audio':'Image'}</span></div></div>`).join('')}
+function renderDocs(){docsGrid.innerHTML=data.docs.map(d=>`<div class="doc-card clickable-card" onclick="openDocumentDetails(${d.id})"><div class="doc-icon">${d.icon}</div><h3>${esc(d.name)}</h3><p>${esc(d.meta)}</p><div class="doc-foot"><span class="pill ${d.status.includes('renouveler')?'warn':'good'}">${esc(d.status)}</span><button class="btn btn-soft btn-sm" onclick="event.stopPropagation();openDocumentDetails(${d.id})">Ouvrir</button></div></div>`).join('')}
+function renderNotifications(){notificationList.innerHTML=data.notifications.map(n=>`<div class="notif ${n.unread?'unread':''}"><div class="notif-icon">${n.type}</div><div><h3>${esc(n.title)}</h3><p>${esc(n.text)}</p></div></div>`).join('')}
+function renderAudit(){if(document.getElementById('auditBody')) document.getElementById('auditBody').innerHTML=data.audit.map(a=>`<tr><td>${esc(a.time)}</td><td>${esc(a.action)}</td><td>${esc(a.user)}</td></tr>`).join('')}
+function renderKPIs(){
+  if(document.getElementById('kpiTasks')) document.getElementById('kpiTasks').textContent=data.tasks.filter(t=>t.done).length;
+  if(document.getElementById('kpiMeds')) document.getElementById('kpiMeds').textContent=data.meds.filter(m=>m.status!=='taken').length;
+  if(document.getElementById('kpiAppointments')) document.getElementById('kpiAppointments').textContent=data.appointments.length;
+  if(document.getElementById('alertList')) document.getElementById('alertList').innerHTML=`<div class="notif unread"><div class="notif-icon">💊</div><div><h3>${data.meds.filter(m=>m.status!=='taken').length} prise(s) à vérifier</h3><p>Les traitements non confirmés apparaissent ici.</p></div></div>`;
+}
+function deleteItem(type,id){if(confirm('Supprimer cet élément ?')){data[type]=data[type].filter(x=>x.id!==id);log('Élément supprimé');save()}}
+function addTask(){let title=taskTitle.value.trim();if(!title)return showToast('Ajoutez une action');data.tasks.push({id:Date.now(),title,time:taskTime.value||'À venir',note:taskNote.value||'Rappel personnalisé',done:false});log(`Rappel ajouté : ${title}`);closeModal('taskModal');save()}
+let editingMedicineId=null;
+function editMedicine(id){
+  const m=data.meds.find(x=>x.id===id); if(!m)return;
+  editingMedicineId=id;
+  medName.value=m.name; medDose.value=m.dose; medTime.value=m.time; medNote.value=m.note;medTimesPerDay.value=m.timesPerDay||1;medDays.value=(m.days||[]).join(', ');medBoxImg.value=m.boxImg||'';medPillImg.value=m.pillImg||'';
+  document.querySelector('#medicineModal .modal-head h3').textContent='Modifier le médicament';
+  openModal('medicineModal');
+}
+function addMedicine(){
+  if(!medName.value.trim())return showToast('Ajoutez le nom');
+  if(editingMedicineId){
+    const m=data.meds.find(x=>x.id===editingMedicineId);
+    Object.assign(m,{name:medName.value.trim(),dose:medDose.value||'',time:medTime.value||'',note:medNote.value||'',timesPerDay:Number(medTimesPerDay.value||1),days:medDays.value.split(',').map(x=>x.trim()).filter(Boolean),boxImg:medBoxImg.value.trim(),pillImg:medPillImg.value.trim()});
+    log(`Médicament modifié : ${medName.value}`);
+  }else{
+    data.meds.push({id:Date.now(),name:medName.value.trim(),dose:medDose.value||'',time:medTime.value||'',note:medNote.value||'',status:'pending',timesPerDay:Number(medTimesPerDay.value||1),days:medDays.value.split(',').map(x=>x.trim()).filter(Boolean),boxImg:medBoxImg.value.trim(),pillImg:medPillImg.value.trim(),prescriber:'',start:'',end:''});
+    log(`Médicament ajouté : ${medName.value}`);
+  }
+  editingMedicineId=null;
+  medName.value=medDose.value=medTime.value=medNote.value=medDays.value=medBoxImg.value=medPillImg.value='';medTimesPerDay.value='1';
+  document.querySelector('#medicineModal .modal-head h3').textContent='Ajouter un médicament';
+  closeModal('medicineModal');save();
+}
+function addAppointment(){if(!apptTitle.value.trim()||!apptDate.value)return showToast('Complétez le titre et la date');data.appointments.push({id:Date.now(),title:apptTitle.value,date:apptDate.value,place:apptPlace.value,with:apptWith.value});log(`Rendez-vous ajouté : ${apptTitle.value}`);closeModal('appointmentModal');save()}
+function addPerson(){if(!personName.value.trim())return showToast('Ajoutez le nom');data.people.push({id:Date.now(),name:personName.value,relation:personRelation.value,phone:personPhone.value,note:personNote.value,img:'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80'});log(`Proche ajouté : ${personName.value}`);closeModal('personModal');save()}
+function addMemory(){if(!memoryTitle.value.trim())return showToast('Ajoutez un titre');data.memories.push({id:Date.now(),title:memoryTitle.value,period:memoryPeriod.value,story:memoryStory.value,type:memoryType.value,media:memoryMedia.value||'https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=900&q=80',people:memoryPeople.value,place:memoryPlace.value});log(`Souvenir ajouté : ${memoryTitle.value}`);closeModal('memoryModal');save()}
+function addDocument(input){let f=input.files[0];if(!f)return;data.docs.push({id:Date.now(),name:f.name,meta:'Ajouté aujourd’hui',status:'Protégé',icon:'📄'});log(`Document ajouté : ${f.name}`);save();showToast('Document ajouté localement')}
+document.querySelectorAll('.nav-btn').forEach(b=>b.onclick=()=>navigate(b.dataset.section))
+function navigate(id){document.querySelectorAll('.section').forEach(s=>s.classList.toggle('active',s.id===id));document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.section===id));pageTitle.textContent=bTitle(id);sidebar.classList.remove('open');scrollTo({top:0,behavior:'smooth'})}
+function bTitle(id){return({today:"Aujourd’hui",medications:'Médicaments',agenda:'Agenda',routines:'Routines',people:'Mes proches',memories:'Mes souvenirs',activities:'Mes activités',wellbeing:'Bien-être',documents:'Documents',control:'Réglages'})[id]||'Éclat Mémoire'}
+function completeNow(){nowCard.innerHTML='<div class="action-icon">✓</div><div><h2>Très bien, tout est prêt.</h2><p>Sophie arrive à 17 h 00. Vous pouvez maintenant vous reposer.</p></div>';log('Instruction principale confirmée','Claire');save()}
+function snoozeNow(){showToast('Rappel prévu dans 10 minutes');setTimeout(()=>showToast('Rappel : Sophie arrive bientôt'),600000)}
+function callPerson(name){showToast(`Appel simulé vers ${name}`);log(`Appel vers ${name}`,'Claire');save()}
+function openModal(id){document.getElementById(id).classList.add('open')}
+function closeModal(id){document.getElementById(id).classList.remove('open')}
+document.querySelectorAll('.modal').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open')}))
+function showToast(msg){toast.textContent=msg;toast.classList.add('show');clearTimeout(window.tt);window.tt=setTimeout(()=>toast.classList.remove('show'),2600)}
+function markAllRead(){data.notifications.forEach(n=>n.unread=false);save();showToast('Notifications marquées comme lues')}
+function speakText(text){if('speechSynthesis'in window){speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(text);u.lang='fr-FR';u.rate=parseFloat(document.getElementById('voiceRate')?.value||'.88');speechSynthesis.speak(u)}else showToast('Lecture vocale non disponible')}
+function isActuallyVisible(el){
+  if(!el) return false;
+  const style=getComputedStyle(el);
+  if(style.display==='none'||style.visibility==='hidden'||style.opacity==='0') return false;
+  if(el.closest('.modal') && !el.closest('.modal').classList.contains('open')) return false;
+  return !!(el.offsetWidth||el.offsetHeight||el.getClientRects().length);
+}
+function getVisibleScreenText(){
+  const active=document.querySelector('.section.active');
+  if(!active)return '';
+  const parts=[];
+  active.querySelectorAll('h1,h2,h3,p,.item-title,.item-meta,.pill,.sub').forEach(el=>{
+    if(isActuallyVisible(el)){
+      const text=el.textContent.replace(/\s+/g,' ').trim();
+      if(text && !parts.includes(text)) parts.push(text);
+    }
+  });
+  return parts.join('. ');
+}
+function speakCurrent(){
+  const text=getVisibleScreenText();
+  if(!text)return showToast('Aucun contenu visible à lire');
+  speakText(text.slice(0,1400));
+}
+function speakMemory(){speakText('Souvenir du jour. Les vacances à Ostende. Vous aimiez marcher sur la plage avec Pierre et ramasser des coquillages avec les enfants.')}
+function toggleLargeText(){let v=getComputedStyle(document.documentElement).getPropertyValue('--font-scale').trim();document.documentElement.style.setProperty('--font-scale',v==='1.12'?'1':'1.12')}
+function toggleSetting(btn,type){btn.classList.toggle('on');if(type==='large')toggleLargeText();if(type==='contrast'){document.documentElement.style.setProperty('--border',btn.classList.contains('on')?'#8d9792':'#ded9ce');document.documentElement.style.setProperty('--text',btn.classList.contains('on')?'#000':'#17302c')}
+if(type==='calm')document.body.classList.toggle('calm-mode',btn.classList.contains('on'));
+if(type==='compact')document.body.classList.toggle('compact-mode',btn.classList.contains('on'));
+}
+function exportData(){let blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='eclat-memoire-donnees.json';a.click();URL.revokeObjectURL(a.href);showToast('Données exportées')}
+function startMemoryGame(){openModal('gameModal');gameTitle.textContent='Paires d’images';let vals=['🌸','🏠','🎵','☀️','🌸','🏠','🎵','☀️'].sort(()=>Math.random()-.5),first=null,lock=false,matched=0;gameContent.innerHTML='<div class="memory-board" id="board"></div>';vals.forEach(v=>{let b=document.createElement('button');b.dataset.v=v;b.textContent='?';b.onclick=()=>{if(lock||b.classList.contains('matched')||b===first)return;b.textContent=v;if(!first){first=b;return}if(first.dataset.v===v){first.classList.add('matched');b.classList.add('matched');first.style.background=b.style.background='#dff0e7';first=null;matched+=2;if(matched===8)gameStatus.textContent='Bravo ! Toutes les paires sont trouvées.'}else{lock=true;let p=first;setTimeout(()=>{p.textContent=b.textContent='?';first=null;lock=false},700)}};board.appendChild(b)});gameStatus.textContent='Retrouvez les quatre paires. Vous pouvez prendre votre temps.'}
+function startPeopleQuiz(){openModal('gameModal');gameTitle.textContent='Qui est cette personne ?';let p=data.people[0];gameContent.innerHTML=`<div style="text-align:center"><img src="${p.img}" style="width:150px;height:150px;border-radius:50%;object-fit:cover"><h3>Qui est cette personne ?</h3><div style="display:grid;gap:8px"><button class="btn btn-soft" onclick="quizAnswer(true)">${p.name}</button><button class="btn btn-soft" onclick="quizAnswer(false)">Julie</button><button class="btn btn-outline" onclick="speakText('Indice : c’est votre fille')">Écouter un indice</button></div></div>`;gameStatus.textContent='Choisissez une réponse ou demandez un indice.'}
+function quizAnswer(ok){gameStatus.textContent=ok?'Bravo, c’est bien Sophie.':'Essayons une autre réponse. Vous pouvez écouter un indice.'}
+
+function renderAgenda(){
+ const cal=document.getElementById('weekCalendar');if(!cal)return;
+ const start=new Date();start.setHours(0,0,0,0);start.setDate(start.getDate()-((start.getDay()+6)%7));
+ cal.innerHTML='';
+ for(let i=0;i<7;i++){const d=new Date(start);d.setDate(start.getDate()+i);const events=data.appointments.filter(a=>new Date(a.date).toDateString()===d.toDateString());cal.innerHTML+=`<div class="calendar-day ${d.toDateString()===new Date().toDateString()?'today':''}"><b>${d.toLocaleDateString('fr-BE',{weekday:'short',day:'numeric'})}</b>${events.map(e=>`<div class="calendar-event">${new Date(e.date).toLocaleTimeString('fr-BE',{hour:'2-digit',minute:'2-digit'})} · ${esc(e.title)}</div>`).join('')||'<span class="sub">Aucun rendez-vous</span>'}</div>`}
+}
+const routines=[
+ {id:'morning',title:'Routine du matin',icon:'☀️',steps:['Ouvrir les volets','Prendre le petit-déjeuner','Faire la toilette','Vérifier les médicaments']},
+ {id:'outing',title:'Préparer une sortie',icon:'🧥',steps:["Prendre la carte d’identité",'Prendre les clés','Vérifier le rendez-vous','Attendre la personne prévue']},
+ {id:'evening',title:'Routine du soir',icon:'🌙',steps:['Préparer les vêtements','Fermer les volets','Prendre le traitement du soir','Mettre le téléphone en charge']}
+];
+let routineState=JSON.parse(localStorage.getItem(STORE+'Routines')||'{}');
+function renderRoutines(){const g=document.getElementById('routineGrid');if(!g)return;g.innerHTML=routines.map(r=>{let done=routineState[r.id]||[];let pct=Math.round(done.length/r.steps.length*100);return `<div class="routine-card"><div style="font-size:28px">${r.icon}</div><h3>${r.title}</h3><div class="routine-progress"><div style="width:${pct}%"></div></div><div class="step-list">${r.steps.map((s,i)=>`<button class="routine-step ${done.includes(i)?'done':''}" onclick="toggleRoutineStep('${r.id}',${i})"><span>${done.includes(i)?'✓':'○'}</span><span>${s}</span></button>`).join('')}</div></div>`}).join('')}
+function toggleRoutineStep(id,i){let arr=routineState[id]||[];arr=arr.includes(i)?arr.filter(x=>x!==i):[...arr,i];routineState[id]=arr;localStorage.setItem(STORE+'Routines',JSON.stringify(routineState));renderRoutines();showToast(arr.includes(i)?'Étape terminée':'Étape rouverte')}
+function resetRoutines(){routineState={};localStorage.removeItem(STORE+'Routines');renderRoutines();showToast('Routines réinitialisées')}
+function selectMood(btn,label){document.querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');moodText.textContent=`Humeur enregistrée : ${label}.`;localStorage.setItem(STORE+'Mood',JSON.stringify({date:new Date().toISOString(),label}));showToast('Merci, votre réponse est enregistrée')}
+function simpleCheck(btn,msg){let item=btn.closest('.item');item.classList.toggle('done');btn.textContent=item.classList.contains('done')?'✓':'';showToast(msg)}
+function globalSearch(q){q=q.trim().toLowerCase();if(!q){searchResults.innerHTML='<div class="sub">Commencez à écrire pour rechercher dans toute la plateforme.</div>';return}
+ let all=[
+  ...data.people.map(x=>({title:x.name,meta:x.relation,section:'people'})),
+  ...data.meds.map(x=>({title:x.name,meta:x.note,section:'medications'})),
+  ...data.appointments.map(x=>({title:x.title,meta:x.place,section:'agenda'})),
+  ...data.memories.map(x=>({title:x.title,meta:x.story,section:'memories'})),
+  ...data.docs.map(x=>({title:x.name,meta:x.meta,section:'documents'})),
+  ...data.tasks.map(x=>({title:x.title,meta:x.note,section:'today'}))
+ ].filter(x=>(x.title+' '+x.meta).toLowerCase().includes(q));
+ searchResults.innerHTML=all.length?all.map(x=>`<button class="search-result" onclick="closeModal('searchModal');navigate('${x.section}')"><span><strong>${esc(x.title)}</strong><br><small>${esc(x.meta)}</small></span><span>Ouvrir →</span></button>`).join(''):'<div class="sub">Aucun résultat trouvé.</div>'
+}
+function saveProfile(){const n=profileName.value.trim()||'Claire',c=profileCity.value.trim()||'Bruxelles';localStorage.setItem(STORE+'Profile',JSON.stringify({name:n,city:c,contact:profileContact.value.trim()}));greeting.textContent=`Bonjour ${n}.`;orientationText.textContent=`Vous êtes chez vous à ${c}. Votre journée est organisée ici.`;closeModal('profileModal');showToast('Profil mis à jour')}
+function importData(input){const f=input.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{data=JSON.parse(r.result);save();showToast('Sauvegarde importée')}catch(e){showToast('Fichier de sauvegarde invalide')}};r.readAsText(f)}
+function resetAllData(){if(confirm('Réinitialiser toutes les données locales ?')){localStorage.removeItem(STORE);localStorage.removeItem(STORE+'Routines');data=structuredClone(defaults);routineState={};save();showToast('Données réinitialisées')}}
+
+
+function openMedicineDetails(id){
+ const m=data.meds.find(x=>x.id===id);if(!m)return;
+ medicineDetailContent.innerHTML=`<div class="detail-grid"><div><div class="detail-visual"><img src="${esc(m.boxImg||'')}" alt="Boîte"></div><p class="sub" style="text-align:center">Boîte du médicament</p></div><div><div class="detail-visual"><img src="${esc(m.pillImg||'')}" alt="Comprimé"></div><p class="sub" style="text-align:center">Comprimé</p></div></div><div class="detail-list" style="margin-top:16px"><div class="detail-row"><strong>Nom</strong><span>${esc(m.name)}</span></div><div class="detail-row"><strong>Dosage</strong><span>${esc(m.dose)}</span></div><div class="detail-row"><strong>Heure</strong><span>${esc(m.time)}</span></div><div class="detail-row"><strong>Fréquence</strong><span>${m.timesPerDay||1} fois par jour</span></div><div class="detail-row"><strong>Jours</strong><span>${(m.days||[]).join(', ')}</span></div><div class="detail-row"><strong>Instructions</strong><span>${esc(m.note)}</span></div><div class="detail-row"><strong>Prescripteur</strong><span>${esc(m.prescriber||'Non renseigné')}</span></div><div class="detail-row"><strong>Période</strong><span>${esc(m.start||'')} → ${esc(m.end||'')}</span></div></div><div class="modal-actions"><button class="btn ${m.status==='taken'?'btn-soft':'btn-primary'}" onclick="toggleMedStatus(${m.id});closeModal('medicineDetailModal')">${m.status==='taken'?'Annuler la prise':'Marquer pris'}</button><button class="btn btn-soft" onclick="closeModal('medicineDetailModal');editMedicine(${m.id})">Modifier</button></div>`;
+ openModal('medicineDetailModal')
+}
+function openMemoryDetails(id){
+ const m=data.memories.find(x=>x.id===id);if(!m)return;
+ let media=m.type==='video'?`<video controls src="${esc(m.media)}"></video>`:m.type==='audio'?`<div style="padding:35px;text-align:center"><div style="font-size:55px">🎧</div><p>Souvenir audio</p><audio controls style="width:100%"><source src="${esc(m.media)}"></audio></div>`:`<img src="${esc(m.media||m.img||'')}" alt="${esc(m.title)}">`;
+ memoryDetailContent.innerHTML=`<div class="detail-visual" style="min-height:260px">${media}</div><h2 style="font-family:Georgia,serif">${esc(m.title)}</h2><p>${esc(m.story)}</p><div class="detail-list"><div class="detail-row"><strong>Période</strong><span>${esc(m.period)}</span></div><div class="detail-row"><strong>Personnes</strong><span>${esc(m.people||'Non renseigné')}</span></div><div class="detail-row"><strong>Lieu</strong><span>${esc(m.place||'Non renseigné')}</span></div></div><div class="modal-actions"><button class="btn btn-primary" onclick="shareMemoryWhatsApp(${m.id})">Partager sur WhatsApp</button><button class="btn btn-soft" onclick="speakText('${esc(m.title)}. ${esc(m.story)}')">Écouter le texte</button></div>`;
+ openModal('memoryDetailModal')
+}
+function shareMemoryWhatsApp(id){const m=data.memories.find(x=>x.id===id);window.open(`https://wa.me/?text=${encodeURIComponent(m.title+' — '+m.story)}`,'_blank')}
+function openDocumentDetails(id){
+ const d=data.docs.find(x=>x.id===id);if(!d)return;
+ documentDetailContent.innerHTML=`<div class="detail-visual"><div style="text-align:center"><div style="font-size:64px">${d.icon}</div><h3>${esc(d.fileName||d.name)}</h3><p class="sub">Aperçu de démonstration</p></div></div><div class="detail-list" style="margin-top:16px"><div class="detail-row"><strong>Nom</strong><span>${esc(d.name)}</span></div><div class="detail-row"><strong>Catégorie</strong><span>${esc(d.category||'Document')}</span></div><div class="detail-row"><strong>Validité</strong><span>${esc(d.validUntil||'Sans expiration')}</span></div><div class="detail-row"><strong>Statut</strong><span>${esc(d.status)}</span></div></div><div class="upload-zone" style="margin-top:16px"><p>Remplacer ou téléverser une nouvelle version</p><input type="file" onchange="replaceDocumentFile(${d.id},this)"></div><div class="modal-actions"><button class="btn btn-primary" onclick="downloadDocument(${d.id})">Télécharger</button><button class="btn btn-soft" onclick="showToast('Visualisation plein écran simulée')">Visualiser</button></div>`;
+ openModal('documentDetailModal')
+}
+function replaceDocumentFile(id,input){const f=input.files[0];if(!f)return;const d=data.docs.find(x=>x.id===id);d.fileName=f.name;d.meta='Nouvelle version ajoutée aujourd’hui';save();showToast('Nouvelle version enregistrée')}
+function downloadDocument(id){const d=data.docs.find(x=>x.id===id);const blob=new Blob([`Document de démonstration : ${d.name}\nStatut : ${d.status}\nValidité : ${d.validUntil||'Sans expiration'}`],{type:'text/plain'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=d.fileName||d.name+'.txt';a.click();URL.revokeObjectURL(a.href)}
+let wellbeingGoals=JSON.parse(localStorage.getItem(STORE+'Goals')||'null')||[{id:1,title:"Boire un verre d’eau",done:false},{id:2,title:'Marcher quelques minutes',done:false},{id:3,title:'Prendre un moment calme',done:false}];
+function renderGoals(){if(!document.getElementById('wellbeingGoals'))return;document.getElementById('wellbeingGoals').innerHTML=wellbeingGoals.map(g=>`<div class="item ${g.done?'done':''}"><button class="check" onclick="toggleGoal(${g.id})">${g.done?'✓':''}</button><div class="item-main"><div class="item-title">${esc(g.title)}</div></div><button class="btn btn-danger btn-sm" onclick="deleteGoal(${g.id})">×</button></div>`).join('')}
+function addGoal(){const t=goalTitle.value.trim();if(!t)return showToast('Ajoutez un objectif');wellbeingGoals.push({id:Date.now(),title:t,done:false});goalTitle.value='';localStorage.setItem(STORE+'Goals',JSON.stringify(wellbeingGoals));closeModal('goalModal');renderGoals();showToast('Objectif ajouté')}
+function toggleGoal(id){const g=wellbeingGoals.find(x=>x.id===id);g.done=!g.done;localStorage.setItem(STORE+'Goals',JSON.stringify(wellbeingGoals));renderGoals()}
+function deleteGoal(id){wellbeingGoals=wellbeingGoals.filter(x=>x.id!==id);localStorage.setItem(STORE+'Goals',JSON.stringify(wellbeingGoals));renderGoals()}
+const advices=["Une routine régulière est plus importante qu’une performance.","Prenez votre temps. Il n’est pas nécessaire de tout faire immédiatement.","Un verre d’eau et quelques minutes de mouvement peuvent faire du bien.","En cas de doute, appelez une personne de confiance.","Un souvenir agréable, une musique ou une photo peuvent apporter un moment positif."];
+let adviceIndex=0,touchStartX=0;
+function renderAdvice(){if(!document.getElementById('adviceTrack'))return;adviceTrack.innerHTML=advices.map(a=>`<div class="advice-slide">${a}</div>`).join('');adviceDots.innerHTML=advices.map((_,i)=>`<button class="carousel-dot ${i===adviceIndex?'active':''}" onclick="goAdvice(${i})"></button>`).join('');adviceTrack.style.transform=`translateX(-${adviceIndex*100}%)`;adviceCarousel.ontouchstart=e=>touchStartX=e.touches[0].clientX;adviceCarousel.ontouchend=e=>{const dx=e.changedTouches[0].clientX-touchStartX;if(Math.abs(dx)>40)(dx<0?nextAdvice():previousAdvice())}}
+function nextAdvice(){adviceIndex=(adviceIndex+1)%advices.length;renderAdvice()}function previousAdvice(){adviceIndex=(adviceIndex-1+advices.length)%advices.length;renderAdvice()}function goAdvice(i){adviceIndex=i;renderAdvice()}
+function switchManagementTab(name,btn){document.querySelectorAll('.management-pane').forEach(p=>p.classList.remove('active'));document.getElementById('manage-'+name).classList.add('active');document.querySelectorAll('.management-tabs button').forEach(b=>b.classList.remove('active'));btn.classList.add('active')}
+function renderSettingsManagement(){
+ if(!document.getElementById('settingsMedList'))return;
+ settingsMedList.innerHTML=data.meds.map(m=>`<div class="setting"><div><h3>${esc(m.name)}</h3><p>${esc(m.dose)} · ${esc(m.time)} · ${(m.days||[]).join(', ')}</p></div><button class="btn btn-soft btn-sm" onclick="editMedicine(${m.id})">Modifier</button></div>`).join('');
+ settingsMemoryList.innerHTML=data.memories.map(m=>`<div class="setting"><div><h3>${esc(m.title)}</h3><p>${esc(m.period)} · ${m.type||'image'}</p></div><button class="btn btn-soft btn-sm" onclick="openMemoryDetails(${m.id})">Ouvrir</button></div>`).join('');
+ settingsAppointmentList.innerHTML=data.appointments.map(a=>`<div class="setting"><div><h3>${esc(a.title)}</h3><p>${new Date(a.date).toLocaleString('fr-BE')} · ${esc(a.place)}</p></div><button class="btn btn-soft btn-sm" onclick="deleteItem('appointments',${a.id})">Gérer</button></div>`).join('');
+ settingsPeopleList.innerHTML=data.people.map(p=>`<div class="setting"><div><h3>${esc(p.name)}</h3><p>${esc(p.relation)}</p></div><button class="btn btn-soft btn-sm" onclick="callPerson('${esc(p.name)}')">Appeler</button></div>`).join('');
+ settingsDocList.innerHTML=data.docs.map(d=>`<div class="setting"><div><h3>${esc(d.name)}</h3><p>${esc(d.status)} · ${esc(d.validUntil||'Sans expiration')}</p></div><button class="btn btn-soft btn-sm" onclick="openDocumentDetails(${d.id})">Ouvrir</button></div>`).join('')
+}
+
+function updateClock(){let n=new Date();clock.textContent=n.toLocaleTimeString('fr-BE',{hour:'2-digit',minute:'2-digit'});currentDate.textContent=n.toLocaleDateString('fr-BE',{weekday:'long',day:'numeric',month:'long',year:'numeric'});let h=n.getHours();daypart.textContent=h<12?'Nous sommes le matin':h<18?"Nous sommes l’après-midi":'Nous sommes le soir'}
+const savedProfile=JSON.parse(localStorage.getItem(STORE+'Profile')||'null');if(savedProfile){greeting.textContent=`Bonjour ${savedProfile.name}.`;orientationText.textContent=`Vous êtes chez vous à ${savedProfile.city}. Votre journée est organisée ici.`}
+const savedMood=JSON.parse(localStorage.getItem(STORE+'Mood')||'null');if(savedMood&&new Date(savedMood.date).toDateString()===new Date().toDateString())moodText.textContent=`Humeur enregistrée : ${savedMood.label}.`;
+updateClock();setInterval(updateClock,30000);renderAll();
+</script>
+</body>
+</html>
