@@ -5148,7 +5148,7 @@ header img[src*="mascot"]{
             <h3 style="text-align:center" class="qitty-platform-card-title">Application Partage de plats</h3>
             <p style="text-align:center">Plateforme entre particuliers pour proposer, commander, réserver ou livrer des plats faits maison, avec profils vendeurs, panier, catégories, paiements et suivi de commande.</p>
             <div class="service-actions">
-              <a class="btn blue solution-action-btn demo-btn" href="https://www.qitty.space/partage-plats.html" target="_blank" rel="noopener">Consulter Démo →</a>
+              <a class="btn blue solution-action-btn demo-btn" href="https://www.qitty.space/deli.html" target="_blank" rel="noopener">Consulter Démo →</a>
               <button class="btn blue-light solution-action-btn technical-spec-btn" type="button" data-tech-key="Food Sharing App">Spécificités techniques →</button>
             </div>
           </article>
@@ -5168,7 +5168,7 @@ header img[src*="mascot"]{
             <h3 style="text-align:center" class="qitty-platform-card-title">Assistance Alzheimer</h3>
             <p style="text-align:center">Plateforme d’accompagnement pour personnes malades d’Alzheimer et leurs proches : rappels, médicaments, souvenirs, documents, bien-être, contacts et assistance quotidienne.</p>
             <div class="service-actions">
-              <a class="btn blue solution-action-btn demo-btn" href="https://www.qitty.space/alzheimer.html" target="_blank" rel="noopener">Consulter Démo →</a>
+              <a class="btn blue solution-action-btn demo-btn" href="https://www.qitty.space/mal.html" target="_blank" rel="noopener">Consulter Démo →</a>
               <button class="btn blue-light solution-action-btn technical-spec-btn" type="button" data-tech-key="Mémoire & Moi Alzheimer">Spécificités techniques →</button>
             </div>
           </article>
@@ -5188,7 +5188,7 @@ header img[src*="mascot"]{
             <h3 style="text-align:center" class="qitty-platform-card-title">Assistance parents divorcés</h3>
             <p style="text-align:center">Outil de gestion de garde parentale avec calendrier, enfants, documents, factures, communications, charges, notifications et organisation partagée jusqu’à long terme.</p>
             <div class="service-actions">
-              <a class="btn blue solution-action-btn demo-btn" href="https://www.qitty.space/garde-parentale.html" target="_blank" rel="noopener">Consulter Démo →</a>
+              <a class="btn blue solution-action-btn demo-btn" href="https://www.qitty.space/div.html" target="_blank" rel="noopener">Consulter Démo →</a>
               <button class="btn blue-light solution-action-btn technical-spec-btn" type="button" data-tech-key="Parents Divorcés Garde">Spécificités techniques →</button>
             </div>
           </article>
