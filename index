@@ -5089,7 +5089,7 @@ header img[src*="mascot"]{
               Plateforme de répertorisation des tombes, lieux de mémoire et données associées, avec fiches, recherche, carte et consultation simplifiée.
             </p>
             <div class="service-actions">
-              <a class="btn blue solution-action-btn demo-btn" href="https://www.qitty.space/quboor.html" target="_blank" rel="noopener">Consulter Démo →</a>
+              <a class="btn blue solution-action-btn demo-btn" href="https://quboor.org/" target="_blank" rel="noopener">Consulter →</a>
               <button class="btn blue-light solution-action-btn technical-spec-btn" type="button" data-tech-key="Quboor">Spécificités techniques →</button>
             </div>
           </article>
@@ -5128,7 +5128,7 @@ header img[src*="mascot"]{
             <h3 style="text-align:center" class="qitty-platform-card-title">Jeu de cartes </h3>
             <p style="text-align:center">Jeu de cartes digital inspiré de l’univers asiatique, avec modes de jeu, interface immersive, logique de manches, règles spéciales, sons et visuels personnalisés.</p>
             <div class="service-actions">
-              <a class="btn blue solution-action-btn demo-btn" href="https://www.qitty.space/dobon.html" target="_blank" rel="noopener">Consulter Démo →</a>
+              <a class="btn blue solution-action-btn demo-btn" href="https://mo7bous.github.io/Dobon/" target="_blank" rel="noopener">Jouer →</a>
               <button class="btn blue-light solution-action-btn technical-spec-btn" type="button" data-tech-key="DOBON">Spécificités techniques →</button>
             </div>
           </article>
