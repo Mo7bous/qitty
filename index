@@ -5041,7 +5041,7 @@ header img[src*="mascot"]{
             <p style="text-align:center">
               Outil de gestion de planning pour organiser les équipes, les shifts, les disponibilités, les tâches, les exceptions et les besoins opérationnels du quotidien.
             </p>
-<div class="service-actions"><a class="btn blue solution-action-btn demo-btn" href="https://www.qitty.space/planning-management.html" target="_blank" rel="noopener">Consulter Démo →</a><button class="btn blue-light solution-action-btn technical-spec-btn" type="button" data-tech-key="Planning Management">Spécificités techniques →</button></div>
+<div class="service-actions"><a class="btn blue solution-action-btn demo-btn" href="https://www.qitty.space/plan.html" target="_blank" rel="noopener">Consulter Démo →</a><button class="btn blue-light solution-action-btn technical-spec-btn" type="button" data-tech-key="Planning Management">Spécificités techniques →</button></div>
           </article>
 <article class="service-card invest-card">
             <div class="qitty-card-carousel-wrap">
