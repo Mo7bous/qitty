@@ -1,0 +1,1415 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Planning Maison de Repos</title>
+<style>
+:root{
+  --blue:#0d4f7c;--blue2:#1976b9;--bg:#f3f6f9;--card:#fff;--text:#18212b;
+  --muted:#667085;--line:#d9e2ea;--green:#177a50;--greenbg:#eaf7ef;
+  --orange:#a25a00;--orangebg:#fff4e4;--red:#b42318;--redbg:#fff0ef;
+  --shadow:0 8px 24px rgba(13,79,124,.08)
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,"Segoe UI",Arial,sans-serif}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.topbar{position:sticky;top:0;z-index:30;display:flex;justify-content:space-between;gap:10px;padding:11px 14px;background:linear-gradient(135deg,var(--blue),var(--blue2));box-shadow:0 5px 18px #0d4f7c33}
+.top-left,.top-right{display:flex;gap:8px}
+.btn{border:0;border-radius:10px;min-height:40px;padding:9px 13px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.btn-light{background:#fff;color:var(--blue)}
+.btn-primary{background:var(--blue);color:#fff}
+.btn-success{background:var(--green);color:#fff}
+.btn-soft{background:#eaf3f9;color:var(--blue)}
+.btn-danger{background:var(--redbg);color:var(--red)}
+.btn-sm{min-height:32px;padding:6px 9px;font-size:12px}
+.container{max-width:1540px;margin:auto;padding:14px}
+.datebar{display:flex;justify-content:flex-end;margin-bottom:10px}
+.datebox{width:min(360px,100%)}
+label{display:block;font-size:11px;font-weight:900;color:#475467;text-transform:uppercase;letter-spacing:.04em;margin-bottom:5px}
+input,select{width:100%;min-height:40px;border:1px solid var(--line);border-radius:10px;background:#fff;padding:9px 11px;color:var(--text)}
+.date-nav{display:grid;grid-template-columns:40px 1fr 40px;gap:6px}
+.range{font-size:11px;color:var(--muted);text-align:right;margin-top:4px}
+.summary{display:grid;grid-template-columns:.9fr .9fr .9fr .8fr 1.3fr 1.3fr .9fr auto;gap:7px;margin-bottom:12px;align-items:stretch}
+.status-card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:9px 10px;box-shadow:var(--shadow);min-width:0}
+.status-card .num{font-size:19px;font-weight:950;color:var(--blue);line-height:1.1}
+.status-card .lab{font-size:10px;color:var(--muted);margin-top:3px}
+.status-card select{min-height:32px;padding:5px 7px;font-size:11px;margin-top:5px}
+.status-card.ok .num{color:var(--green)}
+.status-card.bad .num{color:var(--red)}
+.generate{height:100%;min-width:110px}
+.alert{display:none;border-radius:11px;padding:10px 12px;margin-bottom:10px;font-size:13px;font-weight:750}
+.alert.show{display:block}
+.alert.warn{background:var(--orangebg);color:var(--orange);border:1px solid #ffd59a}
+.alert.err{background:var(--redbg);color:var(--red);border:1px solid #f7c7c3}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:13px;margin-bottom:12px}
+.head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+.head h2,.head h3{margin:0;font-size:16px}
+.muted{color:var(--muted);font-size:12px}
+.planning-table{overflow:auto;border:1px solid var(--line);border-radius:11px}
+.planning-grid{min-width:980px}
+.phead,.prow{display:grid;grid-template-columns:170px 115px 110px 1fr 95px}
+.phead>div,.prow>div{padding:8px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);font-size:11px}
+.phead>div{background:#f7fafc;font-weight:900}
+.prow .name{font-weight:850;position:sticky;left:0;background:#fff;z-index:2}
+.role{display:inline-flex;padding:4px 7px;border-radius:999px;font-size:10px;font-weight:900}
+.role.nurse{background:#e8f2ff;color:#0f5ca8}
+.role.aide{background:#ecfdf3;color:#16794f}
+.task-pills{display:flex;flex-wrap:wrap;gap:4px}
+.pill{padding:4px 6px;border-radius:6px;background:#edf6ef;color:#176a46;font-size:9px;white-space:nowrap}
+.empty{padding:30px;text-align:center;color:var(--muted)}
+.drawer{position:fixed;inset:0;background:#07121c99;z-index:80;display:none}
+.drawer.open{display:block}
+.drawer-panel{position:absolute;inset:0 auto 0 0;width:min(1080px,100%);background:var(--bg);overflow:auto}
+.drawer-head{position:sticky;top:0;z-index:2;background:#fff;border-bottom:1px solid var(--line);padding:13px 15px;display:flex;justify-content:space-between;align-items:center}
+.drawer-body{padding:14px}
+.tabs{display:flex;gap:7px;margin-bottom:12px}
+.tab{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 12px;font-weight:800}
+.tab.active{background:var(--blue);color:#fff}
+.panel{display:none}
+.panel.active{display:block}
+.close{border:0;background:#eef2f6;width:36px;height:36px;border-radius:9px;font-size:20px}
+.details{margin-bottom:10px}
+.details summary{cursor:pointer;font-weight:900;padding:11px;background:#f8fafc;border-radius:10px;display:flex;justify-content:space-between}
+.details-body{padding-top:9px}
+.list{display:flex;flex-direction:column;gap:7px}
+.person-row{width:100%;background:#fff;border:1px solid var(--line);border-radius:11px;padding:10px;display:grid;grid-template-columns:1.8fr 1fr;align-items:center;gap:8px;text-align:left}
+.availability.yes{color:var(--green);font-weight:850}
+.availability.no{color:var(--red);font-weight:850}
+.catalog-row{background:#fff;border:1px solid var(--line);border-radius:11px;padding:10px;display:grid;grid-template-columns:28px auto minmax(250px,1fr);gap:8px;align-items:start}
+.task-toggle{margin:0}
+.task-toggle input{width:18px;min-height:auto}
+.priority{font-size:9px;font-weight:900;padding:4px 6px;border-radius:999px}
+.priority.critical{background:var(--redbg);color:var(--red)}
+.priority.high{background:var(--orangebg);color:var(--orange)}
+.priority.normal{background:var(--greenbg);color:var(--green)}
+.catalog-info{font-size:10px;color:var(--muted);margin-top:3px}
+.task-week-days{display:flex;gap:5px;flex-wrap:wrap}
+.task-config{grid-column:3;display:flex;flex-direction:column;gap:9px}
+.task-time-row{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.task-time-field{display:flex;align-items:center;gap:7px;min-width:230px}
+.task-time-field label{margin:0;white-space:nowrap;font-size:11px}
+.task-time-field input{min-width:160px;width:180px}
+.task-toolbar{display:grid;grid-template-columns:minmax(260px,1fr) 180px 180px;gap:9px;margin-bottom:12px;padding:10px;background:#fff;border:1px solid var(--line);border-radius:11px}
+.task-empty{padding:28px;text-align:center;color:var(--muted);background:#fff;border:1px dashed var(--line);border-radius:11px}
+.task-actions{display:flex;justify-content:flex-end;margin-top:3px}
+.task-delete-btn{min-height:30px;padding:6px 10px;font-size:11px}
+.confirm-copy{padding:12px;background:var(--redbg);border:1px solid #f7c7c3;border-radius:10px;color:var(--red);margin-bottom:12px;line-height:1.5}
+.confirm-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.task-week-days label{display:flex;align-items:center;gap:3px;padding:5px 6px;border:1px solid var(--line);border-radius:7px;font-size:10px;text-transform:none;letter-spacing:0;margin:0}
+.task-week-days input{width:15px;min-height:auto}
+.modal{position:fixed;inset:0;background:#07121c99;z-index:100;display:none;align-items:center;justify-content:center;padding:14px}
+.modal.open{display:flex}
+.modal-card{width:min(820px,100%);max-height:94vh;overflow:auto;background:#fff;border-radius:16px;padding:15px}
+.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}
+.wide{grid-column:1/-1}
+.week-shift-grid{display:flex;flex-direction:column;gap:8px}
+.day-shift-card{border:1px solid var(--line);border-radius:10px;padding:8px}
+.day-shift-head{display:flex;align-items:center;gap:8px;font-weight:900}
+.day-shift-head input,.day-shift-options input{width:17px;min-height:auto}
+.day-shift-options{display:flex;gap:12px;flex-wrap:wrap;margin:8px 0 0 26px}
+.day-shift-options.disabled{opacity:.4;pointer-events:none}
+.day-shift-options label{display:flex;align-items:center;gap:5px;font-size:12px;text-transform:none;letter-spacing:0;margin:0}
+.shift-hours-details{border:1px solid var(--line);border-radius:10px;background:#fff}
+.shift-hours-details summary{cursor:pointer;padding:11px;font-size:12px;font-weight:900;list-style:none;display:flex;align-items:center;gap:7px}
+.shift-hours-details summary::-webkit-details-marker{display:none}
+.shift-hours-details summary::before{content:'＋';color:var(--muted);font-size:13px;line-height:1}
+.shift-hours-details[open] summary::before{content:'−'}
+.shift-hours-details .shift-editor{padding:0 10px 10px}
+.shift-editor{display:flex;flex-direction:column;gap:6px}
+.shift-edit-row{display:grid;grid-template-columns:95px 1fr 1fr;gap:6px;align-items:center;border:1px solid var(--line);border-radius:8px;padding:6px}
+.shift-edit-row b{font-size:10px}
+.shift-edit-row input{min-height:34px;padding:6px 8px;font-size:11px}
+.day-shift-card.invalid{border-color:var(--red);background:var(--redbg)}
+.day-shift-card.invalid .day-shift-head{color:var(--red)}
+.exception-choice{width:100%;min-height:40px;border:1px solid var(--line);border-radius:10px;background:#f8fafc;padding:9px 11px;color:var(--text)}
+.sublist{display:flex;flex-direction:column;gap:6px}
+.subrow{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:6px;padding:7px;border:1px solid var(--line);border-radius:9px}
+.week{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.week label{border:1px solid var(--line);border-radius:8px;padding:7px;text-transform:none;letter-spacing:0}
+.week input{width:17px;min-height:auto}
+.footer{text-align:center;color:var(--muted);font-size:11px;padding:12px}
+@media(max-width:1150px){.summary{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:900px){
+ .catalog-row{grid-template-columns:28px auto 1fr}
+ .task-config{grid-column:1/-1}
+ .task-toolbar{grid-template-columns:1fr 1fr}
+ .task-toolbar>div:first-child{grid-column:1/-1}
+ .form-grid{grid-template-columns:1fr}.wide{grid-column:auto}
+}
+@media(max-width:650px){
+ .container{padding:9px}.summary{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .catalog-row{grid-template-columns:28px auto 1fr}
+ .task-config{grid-column:1/-1}
+ .task-time-row{display:grid;grid-template-columns:1fr}
+ .task-time-field{min-width:0;width:100%}
+ .task-time-field input{width:100%;min-width:0}
+ .task-toolbar{grid-template-columns:1fr}
+ .task-toolbar>div:first-child{grid-column:auto}
+ .shift-edit-row{grid-template-columns:1fr 1fr}.shift-edit-row b{grid-column:1/-1}
+ .subrow{grid-template-columns:1fr}.week{grid-template-columns:repeat(4,1fr)}
+}
+
+.manual-modal-card{width:min(1040px,100%);padding:0;overflow:hidden;background:#f7f9fc}
+.manual-topbar{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;padding:20px 22px 14px;background:linear-gradient(135deg,#ffffff,#eef6fb);border-bottom:1px solid var(--line)}
+.manual-topbar h3{margin:3px 0 4px;font-size:21px;color:var(--blue)}
+.manual-kicker{font-size:10px;font-weight:950;letter-spacing:.12em;text-transform:uppercase;color:var(--blue2)}
+.manual-top-actions{display:flex;align-items:flex-start;gap:10px}
+.manual-counter{min-width:88px;text-align:center;background:#fff;border:1px solid #ffd0cc;border-radius:13px;padding:8px 10px;box-shadow:0 5px 14px rgba(180,35,24,.08)}
+.manual-counter span{display:block;font-size:24px;font-weight:950;line-height:1;color:var(--red)}
+.manual-counter small{font-size:10px;font-weight:850;color:var(--muted)}
+.manual-counter.done{border-color:#b7e1c7;background:var(--greenbg)}
+.manual-counter.done span{color:var(--green)}
+.manual-progress{height:6px;background:#e3e9ef}
+.manual-progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--blue2),var(--green));transition:width .25s ease}
+.manual-list{padding:14px;display:flex;flex-direction:column;gap:9px;max-height:62vh;overflow:auto}
+.manual-task-card{background:#fff;border:1px solid var(--line);border-radius:13px;padding:12px;display:grid;grid-template-columns:minmax(230px,1.2fr) 110px 110px minmax(250px,1fr);gap:9px;align-items:end;transition:.2s ease}
+.manual-task-card.validated{border-color:#95d5ad;background:linear-gradient(90deg,#fff,var(--greenbg))}
+.manual-task-card.validated .manual-task-title::after{content:'✓ Validée';display:inline-flex;margin-left:8px;padding:3px 7px;border-radius:999px;background:#d7f2e1;color:var(--green);font-size:9px;font-weight:950;vertical-align:middle}
+.manual-task-title{font-size:13px;font-weight:900}
+.manual-task-meta{display:flex;gap:6px;align-items:center;margin-top:5px}
+.manual-task-card label{margin-bottom:4px}
+.manual-task-card select,.manual-task-card input{min-height:38px}
+.manual-footer{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:13px 16px;background:#fff;border-top:1px solid var(--line)}
+.manual-footer .btn{min-width:150px}
+.manual-no-candidate{grid-column:1/-1;padding:11px 12px;border:1px solid #f4c7c3;border-radius:10px;background:var(--redbg);color:var(--red);font-size:12px;font-weight:800}
+.manual-person-wrap optgroup{font-weight:900}
+.print-only{display:none}
+.task-pills .pill{user-select:none;cursor:pointer;position:relative}
+.task-pills .pill.floor-responsibility{background:#fff3cd;border-color:#f3c969;color:#7a4b00;font-weight:900}
+.floor-backup-badge{display:inline-flex;margin-top:5px;padding:3px 7px;border-radius:999px;background:#eef2ff;color:#3949ab;font-size:9px;font-weight:900;border:1px solid #c7d2fe}
+.task-pills .pill::after{content:'';position:absolute;left:0;bottom:0;height:2px;width:0;background:var(--blue2);transition:width 2s linear}
+.task-pills .pill.longpress-active::after{width:100%}
+.force-assign-card{width:min(980px,100%);padding:0;overflow:hidden;background:#f7f9fc}
+.force-head{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;padding:20px 22px 14px;background:linear-gradient(135deg,#fff7ed,#fff)}
+.force-head h3{color:#9a3412}
+.force-head-right{display:flex;gap:10px;align-items:flex-start}
+.force-assign-list{padding:14px;display:flex;flex-direction:column;gap:10px;max-height:62vh;overflow:auto}
+.force-row{display:grid;grid-template-columns:minmax(240px,1.2fr) 110px 110px minmax(260px,1fr);gap:9px;align-items:end;background:#fff;border:1px solid var(--line);border-radius:13px;padding:12px}
+.force-row.assigned{border-color:#95d5ad;background:linear-gradient(90deg,#fff,var(--greenbg))}
+.force-note{grid-column:1/-1;font-size:10px;color:#9a3412;background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:7px 9px}
+@media(max-width:800px){.force-row{grid-template-columns:1fr 1fr}.force-main,.force-person{grid-column:1/-1}}
+@media(max-width:520px){.force-head{padding:15px}.force-row{grid-template-columns:1fr}.force-main,.force-person{grid-column:auto}}
+.task-action-card{width:min(560px,100%)}
+.task-action-summary{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.task-action-summary>div{background:#f7fafc;border:1px solid var(--line);border-radius:10px;padding:10px}
+.task-action-summary span{display:block;font-size:10px;color:var(--muted);text-transform:uppercase;font-weight:900;margin-bottom:3px}
+.task-action-buttons{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
+.task-action-buttons .btn-danger{grid-column:1/-1}
+#alertBox.clickable{cursor:pointer;position:relative;padding-right:42px}
+#alertBox.clickable::after{content:'Ouvrir';position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:10px;font-weight:900;text-decoration:underline}
+.print-summary{border:1px solid var(--line);border-radius:8px;padding:8px;margin-bottom:8px}
+.print-title{font-size:18px;font-weight:950;color:var(--blue);margin-bottom:4px}
+.print-meta{font-size:10px;color:var(--muted);margin-bottom:6px}
+.print-warning{padding:7px;border:1px solid #e5a7a1;background:var(--redbg);color:var(--red);font-size:10px;font-weight:800;border-radius:6px}
+.print-warning ul{margin:5px 0 0 17px;padding:0}
+@media(max-width:800px){
+ .manual-topbar{padding:15px}.manual-task-card{grid-template-columns:1fr 1fr}
+ .manual-task-main,.manual-person-wrap{grid-column:1/-1}.manual-list{max-height:66vh}
+}
+@media(max-width:520px){
+ .manual-topbar{align-items:center}.manual-topbar h3{font-size:17px}.manual-counter{min-width:72px}
+ .manual-task-card{grid-template-columns:1fr}.manual-task-main,.manual-person-wrap{grid-column:auto}
+ .manual-footer{align-items:stretch;flex-direction:column}.manual-footer .btn{width:100%}
+}
+
+@media print{
+ @page{size:A4 landscape;margin:6mm}
+ html,body{width:100%;height:auto;background:#fff;font-size:9px}
+ .topbar,.datebar,.drawer,.modal,.footer,.no-print{display:none!important}
+ .container{max-width:none;padding:0}
+ .print-only{display:block!important}
+ #alertBox{display:block!important;margin:0 0 6px;padding:6px;font-size:9px}
+ .card,.status-card{box-shadow:none;border-color:#aaa}
+ .summary{grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:6px}
+ .status-card{padding:5px}.status-card .num{font-size:13px}.status-card .lab{font-size:8px}
+ .status-card select{border:0;padding:0;min-height:auto;font-size:8px;appearance:none}
+ .generate{display:none}
+ .card{padding:7px;margin-bottom:0;break-inside:avoid}
+ .head{margin-bottom:5px}.head h2{font-size:13px}
+ .planning-table{overflow:visible;border-radius:4px}
+ .planning-grid{min-width:0}
+ .phead,.prow{grid-template-columns:135px 90px 80px 1fr 65px}
+ .phead>div,.prow>div{padding:4px;font-size:8px}
+ .pill{padding:2px 4px;font-size:7px}
+ .role{font-size:7px;padding:2px 4px}
+}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="top-left"><button class="btn btn-light" id="settingsBtn">⚙️ Paramètres</button></div>
+  <div class="top-right"><button class="btn btn-light" onclick="window.print()">🖨️ Imprimer / PDF</button></div>
+</header>
+
+<main class="container">
+  <section class="datebar no-print">
+    <div class="datebox">
+      <label>Date du planning</label>
+      <div class="date-nav">
+        <button class="btn btn-soft" id="prevDay">‹</button>
+        <input id="selectedDate" type="date">
+        <button class="btn btn-soft" id="nextDay">›</button>
+      </div>
+      <div class="range">Navigation sans limite dans le temps</div>
+    </div>
+  </section>
+
+  <section class="summary">
+    <div class="status-card"><div class="num" id="totalStaffCount">0</div><div class="lab">Personnel total</div><div class="lab" id="totalStaffBreakdown"></div></div>
+    <div class="status-card"><div class="num" id="availableStaffCount">0</div><div class="lab">Personnel disponible</div><div class="lab" id="availableStaffBreakdown"></div></div>
+    <div class="status-card"><div class="num" id="plannedStaffCount">0</div><div class="lab">Personnes au planning</div><div class="lab" id="plannedStaffBreakdown"></div></div>
+    <div class="status-card"><div class="num" id="taskCount">0</div><div class="lab">Tâches prévues</div></div>
+    <div class="status-card"><div class="lab">Infirmière référente du jour</div><select id="chiefNurse"></select></div>
+    <div class="status-card"><div class="lab">Aide-soignante référente du jour</div><select id="chiefAide"></select></div>
+    <div class="status-card bad" id="coverageCard"><div class="num" id="coverageValue">NON</div><div class="lab">Prérequis couverts</div></div>
+    <button class="btn btn-success generate no-print" id="generateBtn">⚡ Générer</button>
+  </section>
+
+  <div id="alertBox" class="alert"></div>
+  <section id="printSummary" class="print-only"></section>
+
+  <section class="card">
+    <div class="head"><div><h2>Planning du jour</h2><div class="muted">Personnel, shifts et tâches attribuées</div></div></div>
+    <div class="planning-table"><div id="dayPlanning" class="planning-grid"></div></div>
+  </section>
+
+  <div class="footer">Les modifications sont enregistrées automatiquement dans la mémoire locale du navigateur.</div>
+</main>
+
+<div id="settingsDrawer" class="drawer">
+  <div class="drawer-panel">
+    <div class="drawer-head">
+      <div><b>Paramètres</b><div class="muted">Données hebdomadaires du personnel et des tâches</div></div>
+      <button class="close" id="closeSettings">×</button>
+    </div>
+    <div class="drawer-body">
+      <div class="tabs">
+        <button class="tab active" data-tab="people">Personnel</button>
+        <button class="tab" data-tab="tasks">Tâches</button>
+      </div>
+
+      <section id="panel-people" class="panel active">
+        <div class="head">
+          <div><h3>Personnel</h3><div class="muted">Disponibilités récurrentes, shifts, absences et exceptions</div></div>
+          <button class="btn btn-primary btn-sm" id="addPersonBtn">+ Ajouter</button>
+        </div>
+        <details class="details"><summary>Infirmières <span id="nurseCount" class="muted"></span></summary><div class="details-body"><div id="nurseList" class="list"></div></div></details>
+        <details class="details"><summary>Aides-soignantes <span id="aideCount" class="muted"></span></summary><div class="details-body"><div id="aideList" class="list"></div></div></details>
+      </section>
+
+      <section id="panel-tasks" class="panel">
+        <div class="head">
+          <div><h3>Tâches</h3><div class="muted">Jours récurrents et horaires standards</div></div>
+          <button class="btn btn-primary btn-sm" id="addTaskBtn">+ Ajouter une tâche</button>
+        </div>
+        <div class="task-toolbar">
+          <div><label>Rechercher</label><input id="taskSearch" type="search" placeholder="Nom ou fonction de la tâche"></div>
+          <div><label>Statut</label><select id="taskStatusFilter"><option value="all">Toutes</option><option value="enabled">Activées</option><option value="disabled">Désactivées</option></select></div>
+          <div><label>Trier par</label><select id="taskSort"><option value="title">Nom</option><option value="status">Statut</option><option value="time">Heure de début</option><option value="priority">Priorité</option></select></div>
+        </div>
+        <div id="taskList" class="list"></div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<div id="personModal" class="modal">
+  <div class="modal-card">
+    <div class="modal-head"><h3 id="personModalTitle">Profil</h3><button class="close" data-close="personModal">×</button></div>
+    <input id="personId" type="hidden">
+    <div class="form-grid">
+      <div class="wide"><label>Fonction</label><select id="personRole"><option value="nurse">Infirmière</option><option value="aide">Aide-soignante</option></select></div>
+      <div class="wide"><label>Nom</label><input id="personLast"></div>
+      <div class="wide"><label>Prénom</label><input id="personFirst"></div>
+      <div class="wide"><label>Jours et shifts disponibles</label><div class="muted" style="margin-bottom:8px">Activez un jour puis cochez les shifts possibles.</div><div id="weekShiftGrid" class="week-shift-grid"></div></div>
+      <div class="wide">
+        <details class="shift-hours-details">
+          <summary>Horaires des shifts</summary>
+          <div class="shift-editor">
+            <div class="shift-edit-row"><b>Shift 1</b><input id="s1Start" type="time"><input id="s1End" type="time"></div>
+            <div class="shift-edit-row"><b>Shift 2</b><input id="s2Start" type="time"><input id="s2End" type="time"></div>
+            <div class="shift-edit-row"><b>Shift 3</b><input id="s3Start" type="time"><input id="s3End" type="time"></div>
+            <div class="shift-edit-row"><b>Back-up</b><input id="sbStart" type="time"><input id="sbEnd" type="time"></div>
+          </div>
+        </details>
+      </div>
+      <div class="wide"><div class="head"><b>Vacances et indisponibilités</b><button class="btn btn-soft btn-sm" id="addAbsenceBtn">+ Ajouter</button></div><div id="absenceRows" class="sublist"></div></div>
+      <div class="wide"><div class="head"><b>Exceptions</b><button class="btn btn-soft btn-sm" id="addExceptionBtn">+ Ajouter</button></div><div id="exceptionRows" class="sublist"></div></div>
+      <button class="btn btn-primary wide" id="savePersonBtn">Sauvegarder</button>
+    </div>
+  </div>
+</div>
+
+<div id="taskModal" class="modal">
+  <div class="modal-card">
+    <div class="modal-head"><h3>Ajouter une tâche</h3><button class="close" data-close="taskModal">×</button></div>
+    <div class="form-grid">
+      <div class="wide"><label>Titre</label><input id="taskTitle"></div>
+      <div><label>Fonction</label><select id="taskRole"><option value="nurse">Infirmière</option><option value="aide">Aide-soignante</option></select></div>
+      <div><label>Priorité</label><select id="taskPriority"><option value="normal">Normale</option><option value="high">Haute</option><option value="critical">Critique</option></select></div>
+      <div><label>Début</label><input id="taskStart" type="time" value="09:00"></div>
+      <div><label>Fin</label><input id="taskEnd" type="time" value="10:00"></div>
+      <div class="wide"><label>Jours</label><div id="taskDays" class="week"></div></div>
+      <button class="btn btn-primary wide" id="saveTaskBtn">Ajouter la tâche</button>
+    </div>
+  </div>
+</div>
+
+
+
+
+<div id="forceAssignModal" class="modal">
+  <div class="modal-card force-assign-card">
+    <div class="force-head">
+      <div>
+        <div class="manual-kicker">Affectation forcée · Version 2</div>
+        <h3 style="margin:3px 0 4px">Tâches encore en attente</h3>
+        <div class="muted">Choisissez une personne disponible ce jour-là, sans tenir compte de son shift ni de sa fonction.</div>
+      </div>
+      <div class="force-head-right">
+        <div class="manual-counter"><span id="forcePendingCount">0</span><small>en attente</small></div>
+        <button class="close" data-close="forceAssignModal">×</button>
+      </div>
+    </div>
+    <div class="manual-progress"><span id="forceProgressBar"></span></div>
+    <div id="forceAssignList" class="force-assign-list"></div>
+    <div class="manual-footer">
+      <div id="forceStatusText" class="muted">Aucune tâche affectée.</div>
+      <button class="btn btn-primary" id="closeForceAssignBtn">Terminer plus tard</button>
+    </div>
+  </div>
+</div>
+
+<div id="taskActionModal" class="modal">
+  <div class="modal-card task-action-card">
+    <div class="modal-head">
+      <div>
+        <div class="manual-kicker">Tâche du planning</div>
+        <h3 id="taskActionTitle" style="margin:3px 0 0">Modifier la tâche</h3>
+      </div>
+      <button class="close" data-close="taskActionModal">×</button>
+    </div>
+    <input id="taskActionId" type="hidden">
+    <div class="task-action-summary">
+      <div><span>Horaire</span><b id="taskActionTime"></b></div>
+      <div><span>Statut</span><b id="taskActionStatus"></b></div>
+    </div>
+    <div>
+      <label>Réassigner à</label>
+      <select id="taskActionPerson"></select>
+    </div>
+    <div class="task-action-buttons">
+      <button class="btn btn-soft" id="cancelTaskActionBtn">Annuler</button>
+      <button class="btn btn-primary" id="saveTaskActionBtn">Enregistrer</button>
+      <button class="btn btn-danger" id="deleteDayTaskBtn">Supprimer du planning</button>
+    </div>
+  </div>
+</div>
+
+<div id="deleteTaskModal" class="modal">
+  <div class="modal-card" style="width:min(480px,100%)">
+    <div class="modal-head">
+      <h3>Supprimer la tâche</h3>
+      <button class="close" data-close="deleteTaskModal">×</button>
+    </div>
+    <div class="confirm-copy">
+      Voulez-vous vraiment supprimer définitivement la tâche
+      <strong id="deleteTaskName"></strong> ?
+      <br>Cette action supprimera également les plannings déjà générés afin d’éviter de conserver d’anciennes affectations.
+    </div>
+    <div class="confirm-actions">
+      <button class="btn btn-soft" id="cancelDeleteTaskBtn">Annuler</button>
+      <button class="btn btn-danger" id="confirmDeleteTaskBtn">Supprimer définitivement</button>
+    </div>
+  </div>
+</div>
+
+<div id="manualModal" class="modal">
+  <div class="modal-card manual-modal-card">
+    <div class="manual-topbar">
+      <div>
+        <div class="manual-kicker">Affectation manuelle</div>
+        <h3>Tâches à compléter</h3>
+        <div class="muted">Choisissez une personne pour chaque tâche. La validation est immédiate.</div>
+      </div>
+      <div class="manual-top-actions">
+        <div class="manual-counter">
+          <span id="manualPendingCount">0</span>
+          <small>en attente</small>
+        </div>
+        <button class="close" data-close="manualModal">×</button>
+      </div>
+    </div>
+    <div class="manual-progress"><span id="manualProgressBar"></span></div>
+    <div id="manualList" class="manual-list"></div>
+    <div class="manual-footer">
+      <div id="manualStatusText" class="muted">Aucune tâche validée.</div>
+      <button class="btn btn-primary" id="saveManualBtn">Terminer</button>
+    </div>
+  </div>
+</div>
+
+<script>
+'use strict';
+
+const STORAGE_KEY='planning_maison_repos_clean_v10';
+const DAYS=['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
+const DEFAULT_SHIFT_HOURS={
+  1:{start:'06:30',end:'14:30'},
+  2:{start:'13:30',end:'21:30'},
+  3:{start:'21:00',end:'07:00'},
+  backup:{start:'06:30',end:'14:30'}
+};
+
+const PEOPLE_SEED=[
+ ['Sophie','Lambert','nurse',[1,1,0],0],['Nadia','El Amrani','nurse',[1,1,0],1],['Julie','Van den Broeck','nurse',[0,1,1],0],['Claire','Dubois','nurse',[1,0,1],1],['Amina','Benali','nurse',[0,1,1],1],
+ ['Laura','Peeters','aide',[1,1,0],0],['Sarah','Nguyen','aide',[1,1,0],1],['Fatima','Alaoui','aide',[1,0,1],0],['Manon','Leroy','aide',[0,1,1],1],['Isabelle','Martin','aide',[1,1,0],0],
+ ['Rachida','Boulahrouz','aide',[1,0,1],1],['Élodie','Simon','aide',[1,1,0],0],['Mélanie','Jacobs','aide',[0,1,1],0],['Khadija','Mansouri','aide',[1,1,0],1],['Nathalie','Willems','aide',[0,1,1],1],
+ ['Céline','Michel','aide',[1,0,1],0],['Samira','Haddad','aide',[1,1,0],1],['Ana','Costa','aide',[0,1,1],0],['Caroline','François','aide',[1,1,0],1],['Meryem','Ait Ali','aide',[0,1,1],1]
+];
+
+const TASK_SEED=[
+ ['Responsable étage 1','06:30','21:30','nurse','critical',1],
+ ['Responsable étage 2','06:30','21:30','nurse','critical',1],
+ ['Responsable étage 3','06:30','21:30','nurse','critical',1],
+ ['Contrôle des glycémies','06:45','07:30','nurse','critical',1],
+ ['Préparation des traitements matin','07:00','07:45','nurse','critical',1],
+ ['Distribution médicaments matin','07:45','09:00','nurse','critical',2],
+ ['Évaluation douleur et constantes','08:00','09:00','nurse','high',1],
+ ['Pansements et soins de plaies','09:15','10:45','nurse','high',1],
+ ['Injections et traitements prescrits','10:30','11:30','nurse','critical',1],
+ ['Tour médical et mise à jour dossiers','11:00','12:00','nurse','high',1],
+ ['Distribution médicaments midi','11:45','12:45','nurse','critical',1],
+ ['Suivi hydratation à risque','14:00','14:45','nurse','high',1],
+ ['Distribution médicaments soir','17:00','18:15','nurse','critical',1],
+ ['Transmissions infirmières','20:00','20:45','nurse','high',1],
+ ['Aide au lever secteur A','06:30','08:00','aide','high',2],
+ ['Aide au lever secteur B','06:45','08:15','aide','high',2],
+ ['Toilettes complètes résidents dépendants','07:00','09:00','aide','high',3],
+ ['Installation petit-déjeuner','07:30','08:30','aide','normal',2],
+ ['Aide alimentaire petit-déjeuner','08:00','09:00','aide','high',2],
+ ['Réfection lits et confort chambres','09:15','10:45','aide','normal',2],
+ ['Accompagnement kiné et consultations','10:00','11:15','aide','normal',1],
+ ['Collation et hydratation matin','10:15','11:00','aide','normal',1],
+ ['Installation repas midi','11:30','12:15','aide','normal',2],
+ ['Aide alimentaire repas midi','12:00','13:15','aide','high',2],
+ ['Changes et prévention escarres','13:30','15:00','aide','high',3],
+ ['Mobilisation et marche accompagnée','15:00','16:00','aide','normal',3],
+ ['Collation et hydratation après-midi','15:30','16:15','aide','normal',1],
+ ['Installation repas du soir','17:30','18:15','aide','normal',1],
+ ['Aide alimentaire repas soir','18:00','19:15','aide','high',2],
+ ['Préparation au coucher secteur A','19:00','20:30','aide','high',2],
+ ['Préparation au coucher secteur B','19:30','21:00','aide','high',2],
+ ['Changes du soir et confort','20:30','21:30','aide','high',2],
+ ['Ronde de nuit et sécurisation','22:00','23:30','aide','critical',2]
+];
+
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+const isoToday=()=>{const d=new Date();return new Date(d-d.getTimezoneOffset()*60000).toISOString().slice(0,10)};
+const addDays=(iso,n)=>{const d=new Date(iso+'T12:00:00');d.setDate(d.getDate()+n);return d.toISOString().slice(0,10)};
+const dayIndex=iso=>{const d=new Date(iso+'T12:00:00').getDay();return d===0?6:d-1};
+const toMin=t=>{const [h,m]=t.split(':').map(Number);return h*60+m};
+const durationMin=(start,end)=>(toMin(end)-toMin(start)+1440)%1440;
+const roleLabel=r=>r==='nurse'?'Infirmière':'Aide-soignante';
+const fullName=p=>p.first+' '+p.last;
+const clone=o=>JSON.parse(JSON.stringify(o));
+
+function makeSeed(){
+  const people=PEOPLE_SEED.map((x,i)=>{
+    const availability=[true,true,true,true,true,i%4!==0,i%5!==0];
+    const weeklyShifts=availability.map(active=>({
+      active,
+      s1:active&&!!x[3][0],
+      s2:active&&!!x[3][1],
+      s3:active&&!!x[3][2],
+      backup:active&&!!x[4]
+    }));
+    return {
+      id:'p'+(i+1),first:x[0],last:x[1],role:x[2],
+      weeklyShifts,shiftHours:clone(DEFAULT_SHIFT_HOURS),
+      absences:[],exceptions:[]
+    };
+  });
+  const tasks=TASK_SEED.map((x,i)=>({
+    id:'t'+(i+1),title:x[0],start:x[1],end:x[2],role:x[3],
+    priority:x[4],instances:x[5],enabled:true,
+    weeklyDays:[true,true,true,true,true,true,true]
+  }));
+  return {selectedDate:isoToday(),people,tasks,days:{}};
+}
+
+function loadState(){
+  try{
+    const saved=JSON.parse(localStorage.getItem(STORAGE_KEY));
+    if(saved&&Array.isArray(saved.people)&&Array.isArray(saved.tasks)){
+      saved.selectedDate=isoToday();
+      saved.days=saved.days||{};
+      saved.tasks=saved.tasks.map(t=>{delete t.instances;return t});
+      return saved;
+    }
+  }catch(e){}
+  return makeSeed();
+}
+let state=loadState();
+
+function save(){localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}
+function ensureDay(date){
+  if(!state.days[date])state.days[date]={generated:false,shifts:{},assignments:[],chiefNurse:'',chiefAide:'',floorBackups:[]};
+  return state.days[date];
+}
+function currentDay(){return ensureDay(state.selectedDate)}
+
+function isUnavailable(person,date){
+  const idx=dayIndex(date);
+  if(!person.weeklyShifts?.[idx]?.active)return true;
+  if((person.absences||[]).some(a=>date>=a.start&&date<=a.end))return true;
+  if((person.exceptions||[]).some(e=>e.date===date&&e.type==='day'))return true;
+  return false;
+}
+function availablePeople(date){return state.people.filter(p=>!isUnavailable(p,date))}
+function allowedShiftNumbers(person,date){
+  const w=person.weeklyShifts?.[dayIndex(date)]||{};
+  const arr=[];
+  if(w.s1)arr.push(1);if(w.s2)arr.push(2);if(w.s3)arr.push(3);
+  if(!arr.length&&w.backup)arr.push(1,2,3);
+  return arr;
+}
+function shiftHours(person,no){
+  const h=person.shiftHours?.[no]||DEFAULT_SHIFT_HOURS[no];
+  return {start:h.start,end:h.end};
+}
+function taskFits(task,shift){
+  const ts=toMin(task.start),te=toMin(task.end),ss=toMin(shift.start),se=toMin(shift.end);
+  if(se<ss)return ts>=ss||te<=se;
+  return ts>=ss&&te<=se;
+}
+function blocked(person,task,shiftNo,date){
+  return (person.exceptions||[]).some(e=>{
+    if(e.date!==date)return false;
+    if(e.type==='day')return true;
+    if(e.type==='shift')return String(e.shift)===String(shiftNo)||(e.shift==='backup'&&person.weeklyShifts?.[dayIndex(date)]?.backup);
+    if(e.type==='hours'&&e.start&&e.end)return toMin(task.start)<toMin(e.end)&&toMin(task.end)>toMin(e.start);
+    return false;
+  });
+}
+function tasksForDate(date){
+  const idx=dayIndex(date);
+  return state.tasks.filter(t=>t.enabled&&t.weeklyDays?.[idx]);
+}
+function floorNumberFromTask(task){
+  const m=String(task.title||'').match(/^Responsable étage ([123])$/i);
+  return m?Number(m[1]):0;
+}
+function isFloorResponsibilityTask(task){return floorNumberFromTask(task)>0}
+
+function buildInstances(date){
+  const rank={critical:0,high:1,normal:2};
+  return tasksForDate(date).map(t=>({...t,displayTitle:t.title}))
+    .sort((a,b)=>toMin(a.start)-toMin(b.start)||rank[a.priority]-rank[b.priority]);
+}
+function chooseShift(person,tasks,date,index){
+  const allowed=allowedShiftNumbers(person,date);
+  if(!allowed.length)return null;
+  return allowed.map(no=>{
+    const hours=shiftHours(person,no);
+    const score=tasks.filter(t=>taskFits(t,hours)&&!blocked(person,t,no,date)).length;
+    return {no,score,tie:(index+no+dayIndex(date))%3};
+  }).sort((a,b)=>b.score-a.score||a.tie-b.tie)[0].no;
+}
+function showAlert(message,type='warn'){
+  const el=$('alertBox');el.className='alert show '+type;el.textContent=message;el.onclick=null;
+}
+function clearAlert(){const el=$('alertBox');el.className='alert';el.textContent='';el.onclick=null}
+
+function generateDay(){
+  const day=currentDay();
+  const available=availablePeople(state.selectedDate);
+  const nurses=available.filter(p=>p.role==='nurse');
+  const aides=available.filter(p=>p.role==='aide');
+  if(nurses.length<3||aides.length<10){
+    showAlert(`Génération impossible : ${nurses.length} infirmière(s) et ${aides.length} aide(s) disponibles. Minimum : 3 infirmières et 10 aides-soignantes.`,'err');
+    return;
+  }
+
+  day.shifts={};
+  day.assignments=[];
+  day.floorBackups=[];
+
+  const instances=buildInstances(state.selectedDate);
+  const floorTasks=instances.filter(isFloorResponsibilityTask);
+  const regularTasks=instances.filter(t=>!isFloorResponsibilityTask(t));
+  const team=[...nurses,...aides];
+
+  team.forEach((p,i)=>{
+    const roleTasks=regularTasks.filter(t=>t.role===p.role);
+    const no=chooseShift(p,roleTasks,state.selectedDate,i);
+    if(no){
+      const h=shiftHours(p,no);
+      day.shifts[p.id]={active:true,shiftNo:no,start:h.start,end:h.end};
+    }
+  });
+
+  const activeNurses=nurses.filter(p=>day.shifts[p.id]?.active);
+  const rotation=activeNurses.length?dayIndex(state.selectedDate)%activeNurses.length:0;
+  const rotatedNurses=[...activeNurses.slice(rotation),...activeNurses.slice(0,rotation)];
+  const responsibleIds=new Set();
+
+  floorTasks
+    .sort((a,b)=>floorNumberFromTask(a)-floorNumberFromTask(b))
+    .forEach((task,idx)=>{
+      const person=rotatedNurses[idx%rotatedNurses.length]||null;
+      if(person)responsibleIds.add(person.id);
+      day.assignments.push({
+        id:'floor'+Date.now()+idx+Math.random().toString(16).slice(2),
+        taskId:task.id,
+        title:task.displayTitle,
+        start:task.start,
+        end:task.end,
+        role:'nurse',
+        priority:'critical',
+        personId:person?.id||'',
+        floorResponsibility:true,
+        floor:floorNumberFromTask(task)
+      });
+    });
+
+  day.floorBackups=activeNurses.filter(p=>!responsibleIds.has(p.id)).map(p=>p.id);
+
+  const loads={};
+  team.forEach(p=>loads[p.id]=day.assignments.filter(a=>a.personId===p.id).length);
+  const unresolved=day.assignments.filter(a=>!a.personId).map(a=>a.id);
+
+  regularTasks.forEach((task,idx)=>{
+    let candidates=team.filter(p=>{
+      const s=day.shifts[p.id];
+      return s?.active&&p.role===task.role&&taskFits(task,s)&&!blocked(p,task,s.shiftNo,state.selectedDate);
+    });
+    candidates.sort((a,b)=>(loads[a.id]===0?0:1)-(loads[b.id]===0?0:1)||loads[a.id]-loads[b.id]||fullName(a).localeCompare(fullName(b)));
+    const p=candidates[0]||null;
+    if(p)loads[p.id]++;
+    const a={
+      id:'a'+Date.now()+idx+Math.random().toString(16).slice(2),
+      taskId:task.id,
+      title:task.displayTitle,
+      start:task.start,
+      end:task.end,
+      role:task.role,
+      priority:task.priority,
+      personId:p?.id||''
+    };
+    day.assignments.push(a);
+    if(!p)unresolved.push(a.id);
+  });
+
+  if(!nurses.some(p=>p.id===day.chiefNurse))day.chiefNurse=nurses[0]?.id||'';
+  if(!aides.some(p=>p.id===day.chiefAide))day.chiefAide=aides[0]?.id||'';
+  day.generated=true;
+  save();
+  render();
+
+  if(unresolved.length)openManualModal(unresolved);
+  else showAlert(`Planning généré : ${day.assignments.length} tâche(s), dont 3 responsabilités d’étage.`,'warn');
+}
+
+function prerequisitesCovered(){
+  const day=currentDay();
+  if(!day.generated)return false;
+  const present=state.people.filter(p=>day.shifts[p.id]?.active);
+  const n=present.filter(p=>p.role==='nurse').length;
+  const a=present.filter(p=>p.role==='aide').length;
+  const expected=buildInstances(state.selectedDate).length;
+  const open=day.assignments.filter(x=>!x.personId).length;
+  const floorAssignments=day.assignments.filter(x=>x.floorResponsibility&&x.personId);
+  const floorNurses=floorAssignments.filter(x=>state.people.find(p=>p.id===x.personId)?.role==='nurse');
+  return n>=3&&a>=10&&day.assignments.length===expected&&open===0&&floorNurses.length===3&&!!day.chiefNurse&&!!day.chiefAide;
+}
+
+function renderChiefs(){
+  const day=currentDay();
+  const available=availablePeople(state.selectedDate);
+  const nurses=available.filter(p=>p.role==='nurse');
+  const aides=available.filter(p=>p.role==='aide');
+
+  $('chiefNurse').innerHTML='<option value="">Choisir</option>'+nurses.map(p=>`<option value="${p.id}">${esc(fullName(p))}</option>`).join('');
+  $('chiefAide').innerHTML='<option value="">Choisir</option>'+aides.map(p=>`<option value="${p.id}">${esc(fullName(p))}</option>`).join('');
+
+  if(day.chiefNurse&&!nurses.some(p=>p.id===day.chiefNurse))day.chiefNurse='';
+  if(day.chiefAide&&!aides.some(p=>p.id===day.chiefAide))day.chiefAide='';
+  $('chiefNurse').value=day.chiefNurse;
+  $('chiefAide').value=day.chiefAide;
+}
+
+function renderPlanning(){
+  const day=currentDay();
+  const root=$('dayPlanning');
+  if(!day.generated){
+    root.innerHTML='<div class="empty">Planning vierge. Les KPI et les responsables disponibles sont chargés. Appuyez sur Générer.</div>';
+    return;
+  }
+  const present=state.people.filter(p=>day.shifts[p.id]?.active);
+  root.innerHTML=`<div class="phead"><div>Personnel</div><div>Fonction</div><div>Shift</div><div>Tâches attribuées</div><div>Charge</div></div>`+
+    present.map(p=>{
+      const s=day.shifts[p.id];
+      const tasks=day.assignments.filter(a=>a.personId===p.id);
+      const star=day.chiefNurse===p.id||day.chiefAide===p.id?' ⭐':'';
+      return `<div class="prow">
+        <div class="name">${esc(fullName(p))}${star}</div>
+        <div><span class="role ${p.role}">${roleLabel(p.role)}</span></div>
+        <div>Shift ${s.shiftNo}<br><span class="muted">${s.start}–${s.end}</span></div>
+        <div class="task-pills">${tasks.map(t=>`<span class="pill ${t.floorResponsibility?'floor-responsibility':''}" data-assignment-pill="${t.id}" title="Maintenez 2 secondes pour modifier">${esc((t.floorResponsibility?'':t.start+' ')+t.title)}</span>`).join('')||'<span class="muted">Aucune tâche</span>'}${(day.floorBackups||[]).includes(p.id)?'<span class="floor-backup-badge">Back-up responsable étages 1, 2 et 3</span>':''}</div>
+        <div><b>${tasks.length}</b> tâche(s)</div>
+      </div>`;
+    }).join('');
+  bindTaskLongPress();
+}
+
+
+
+let forceAssignmentIds=[];
+
+function availableTodayRegardlessShift(){
+  const idx=dayIndex(state.selectedDate);
+  return state.people.filter(p=>{
+    const w=p.weeklyShifts?.[idx];
+    if(!w?.active)return false;
+    const absent=(p.absences||[]).some(a=>a.start&&a.end&&state.selectedDate>=a.start&&state.selectedDate<=a.end);
+    const fullDay=(p.exceptions||[]).some(e=>e.date===state.selectedDate&&e.type==='day');
+    return !absent&&!fullDay;
+  });
+}
+
+function forcePersonnelOptions(selectedId=''){
+  const people=availableTodayRegardlessShift();
+  const nurses=people.filter(p=>p.role==='nurse').sort((a,b)=>fullName(a).localeCompare(fullName(b),'fr'));
+  const aides=people.filter(p=>p.role==='aide').sort((a,b)=>fullName(a).localeCompare(fullName(b),'fr'));
+  const group=(label,list)=>list.length?`<optgroup label="${label}">${list.map(p=>`<option value="${p.id}" ${p.id===selectedId?'selected':''}>${esc(fullName(p))} (${personTaskCount(p.id)} tâche(s))</option>`).join('')}</optgroup>`:'';
+  return `<option value="">Choisir une personne</option>${group('Infirmières disponibles',nurses)}${group('Aides-soignantes disponibles',aides)}`;
+}
+
+function openForceAssignModal(ids){
+  forceAssignmentIds=[...ids];
+  const day=currentDay();
+  const available=availableTodayRegardlessShift();
+
+  $('forceAssignList').innerHTML=ids.map(id=>{
+    const a=day.assignments.find(x=>x.id===id);
+    return `<div class="force-row ${a.personId?'assigned':''}" data-force-assignment="${a.id}">
+      <div class="force-main">
+        <div class="manual-task-title">${esc(a.title)}</div>
+        <div class="manual-task-meta">
+          <span class="priority ${a.priority}">${a.priority}</span>
+          <span class="role ${a.role}">${roleLabel(a.role)}</span>
+        </div>
+      </div>
+      <div><label>Début</label><input class="force-start" type="time" value="${a.start}"></div>
+      <div><label>Fin</label><input class="force-end" type="time" value="${a.end}"></div>
+      <div class="force-person">
+        <label>Forcer l’affectation à</label>
+        ${available.length
+          ?`<select class="force-person-select">${forcePersonnelOptions(a.personId)}</select>`
+          :'<div class="manual-no-candidate">Aucune personne n’est disponible ce jour-là.</div>'}
+      </div>
+      <div class="force-note">Cette affectation ignore volontairement le shift et la fonction de la personne.</div>
+    </div>`;
+  }).join('');
+
+  document.querySelectorAll('.force-row').forEach(row=>{
+    const sync=()=>{
+      const a=currentDay().assignments.find(x=>x.id===row.dataset.forceAssignment);
+      if(!a)return;
+      a.start=row.querySelector('.force-start').value;
+      a.end=row.querySelector('.force-end').value;
+      const select=row.querySelector('.force-person-select');
+      a.personId=select?select.value:'';
+      row.classList.toggle('assigned',!!a.personId);
+      save();
+      updateForceCounter();
+      renderPlanning();
+    };
+    row.querySelector('.force-start').onchange=sync;
+    row.querySelector('.force-end').onchange=sync;
+    const select=row.querySelector('.force-person-select');
+    if(select)select.onchange=sync;
+  });
+
+  updateForceCounter();
+  $('forceAssignModal').classList.add('open');
+}
+
+function updateForceCounter(){
+  const pending=forceAssignmentIds.filter(id=>{
+    const a=currentDay().assignments.find(x=>x.id===id);
+    return !a?.personId;
+  }).length;
+  const total=forceAssignmentIds.length;
+  const done=total-pending;
+  $('forcePendingCount').textContent=pending;
+  $('forceProgressBar').style.width=(total?Math.round(done/total*100):100)+'%';
+  $('forceStatusText').textContent=pending?`${done} tâche(s) affectée(s) sur ${total}.`:'Toutes les tâches sont affectées.';
+  $('closeForceAssignBtn').textContent=pending?'Terminer plus tard':'Valider et fermer';
+  $('forcePendingCount').parentElement.classList.toggle('done',pending===0);
+}
+
+function closeForceAssign(){
+  const pending=forceAssignmentIds.filter(id=>{
+    const a=currentDay().assignments.find(x=>x.id===id);
+    return !a?.personId;
+  }).length;
+  $('forceAssignModal').classList.remove('open');
+  render();
+  if(pending)showPendingAlert(pending);
+  else showAlert('Toutes les tâches ont été affectées.','warn');
+}
+
+function allPersonnelOptions(selectedId=''){
+  const nurses=state.people.filter(p=>p.role==='nurse').sort((a,b)=>fullName(a).localeCompare(fullName(b),'fr'));
+  const aides=state.people.filter(p=>p.role==='aide').sort((a,b)=>fullName(a).localeCompare(fullName(b),'fr'));
+  const group=(label,list)=>`<optgroup label="${label}">${list.map(p=>`<option value="${p.id}" ${p.id===selectedId?'selected':''}>${esc(fullName(p))} (${personTaskCount(p.id)} tâche(s))</option>`).join('')}</optgroup>`;
+  return `<option value="">Non attribuée</option>${group('Infirmières',nurses)}${group('Aides-soignantes',aides)}`;
+}
+
+function openTaskActionModal(assignmentId){
+  const a=currentDay().assignments.find(x=>x.id===assignmentId);
+  if(!a)return;
+  $('taskActionId').value=a.id;
+  $('taskActionTitle').textContent=a.title;
+  $('taskActionTime').textContent=a.start+' – '+a.end;
+  $('taskActionStatus').textContent=a.personId?'Attribuée':'En attente';
+  $('taskActionPerson').innerHTML=allPersonnelOptions(a.personId);
+  $('taskActionModal').classList.add('open');
+}
+
+function saveTaskAction(){
+  const a=currentDay().assignments.find(x=>x.id===$('taskActionId').value);
+  if(!a)return;
+  a.personId=$('taskActionPerson').value;
+  save();
+  $('taskActionModal').classList.remove('open');
+  render();
+  const pending=currentDay().assignments.filter(x=>!x.personId).length;
+  if(pending)showPendingAlert(pending);
+  else showAlert('La tâche a été réattribuée.','warn');
+}
+
+function deleteDayTask(){
+  const id=$('taskActionId').value;
+  const a=currentDay().assignments.find(x=>x.id===id);
+  if(!a)return;
+  if(!confirm('Supprimer cette tâche du planning du jour ?'))return;
+  currentDay().assignments=currentDay().assignments.filter(x=>x.id!==id);
+  save();
+  $('taskActionModal').classList.remove('open');
+  render();
+  const pending=currentDay().assignments.filter(x=>!x.personId).length;
+  if(pending)showPendingAlert(pending);
+  else showAlert('La tâche a été supprimée du planning du jour.','warn');
+}
+
+function bindTaskLongPress(){
+  document.querySelectorAll('[data-assignment-pill]').forEach(el=>{
+    let timer=null;
+    const start=e=>{
+      e.preventDefault();
+      el.classList.add('longpress-active');
+      timer=setTimeout(()=>{
+        el.classList.remove('longpress-active');
+        openTaskActionModal(el.dataset.assignmentPill);
+      },2000);
+    };
+    const cancel=()=>{
+      if(timer){clearTimeout(timer);timer=null}
+      el.classList.remove('longpress-active');
+    };
+    el.onmousedown=start;
+    el.ontouchstart=start;
+    el.onmouseup=cancel;
+    el.onmouseleave=cancel;
+    el.ontouchend=cancel;
+    el.ontouchcancel=cancel;
+  });
+}
+
+function showPendingAlert(count){
+  const el=$('alertBox');
+  el.className='alert show warn clickable';
+  el.textContent=`${count} tâche(s) restent en attente d’affectation.`;
+  el.onclick=()=>{
+    const ids=currentDay().assignments.filter(a=>!a.personId).map(a=>a.id);
+    if(ids.length)openForceAssignModal(ids);
+  };
+}
+
+function renderPeople(){
+  const row=p=>`<button class="person-row" data-person="${p.id}">
+    <div><b>${esc(fullName(p))}</b><div class="muted">${roleLabel(p.role)}</div></div>
+  </button>`;
+  const nurses=state.people.filter(p=>p.role==='nurse');
+  const aides=state.people.filter(p=>p.role==='aide');
+  $('nurseList').innerHTML=nurses.map(row).join('');
+  $('aideList').innerHTML=aides.map(row).join('');
+  $('nurseCount').textContent=nurses.length+' personne(s)';
+  $('aideCount').textContent=aides.length+' personne(s)';
+  document.querySelectorAll('[data-person]').forEach(b=>b.onclick=()=>openPersonModal(b.dataset.person));
+}
+
+function renderTasks(){
+  const query=($('taskSearch')?.value||'').trim().toLowerCase();
+  const status=$('taskStatusFilter')?.value||'all';
+  const sort=$('taskSort')?.value||'title';
+  const priorityRank={critical:0,high:1,normal:2};
+
+  let tasks=state.tasks.filter(t=>{
+    const haystack=(t.title+' '+roleLabel(t.role)).toLowerCase();
+    const matchesSearch=!query||haystack.includes(query);
+    const matchesStatus=status==='all'||(status==='enabled'&&t.enabled)||(status==='disabled'&&!t.enabled);
+    return matchesSearch&&matchesStatus;
+  });
+
+  tasks.sort((a,b)=>{
+    if(sort==='status')return Number(b.enabled)-Number(a.enabled)||a.title.localeCompare(b.title,'fr');
+    if(sort==='time')return toMin(a.start)-toMin(b.start)||a.title.localeCompare(b.title,'fr');
+    if(sort==='priority')return priorityRank[a.priority]-priorityRank[b.priority]||a.title.localeCompare(b.title,'fr');
+    return a.title.localeCompare(b.title,'fr');
+  });
+
+  $('taskList').innerHTML=tasks.length?tasks.map(t=>`<div class="catalog-row">
+    <label class="task-toggle"><input type="checkbox" ${t.enabled?'checked':''} data-task-enabled="${t.id}" title="${t.enabled?'Désactiver':'Activer'}"></label>
+    <span class="priority ${t.priority}">${t.priority}</span>
+    <div class="task-config">
+      <div><b>${esc(t.title)}</b><div class="catalog-info">${roleLabel(t.role)}</div></div>
+      <div class="task-week-days">${DAYS.map((d,i)=>`<label><input type="checkbox" ${t.weeklyDays[i]?'checked':''} data-task-day="${t.id}:${i}"> ${d}</label>`).join('')}</div>
+      <div class="task-time-row">
+        <div class="task-time-field"><label>Début</label><input type="time" value="${t.start}" data-task-start="${t.id}"></div>
+        <div class="task-time-field"><label>Fin</label><input type="time" value="${t.end}" data-task-end="${t.id}"></div>
+      </div>
+      <div class="task-actions">
+        <button class="btn btn-danger task-delete-btn" data-delete-task="${t.id}">Supprimer la tâche</button>
+      </div>
+    </div>
+  </div>`).join(''):'<div class="task-empty">Aucune tâche ne correspond aux filtres.</div>';
+
+  document.querySelectorAll('[data-task-enabled]').forEach(el=>el.onchange=()=>updateTask(el.dataset.taskEnabled,'enabled',el.checked));
+  document.querySelectorAll('[data-task-start]').forEach(el=>el.onchange=()=>updateTask(el.dataset.taskStart,'start',el.value));
+  document.querySelectorAll('[data-task-end]').forEach(el=>el.onchange=()=>updateTask(el.dataset.taskEnd,'end',el.value));
+  document.querySelectorAll('[data-task-day]').forEach(el=>el.onchange=()=>{
+    const [id,i]=el.dataset.taskDay.split(':');
+    const t=state.tasks.find(x=>x.id===id);
+    if(!t)return;
+    t.weeklyDays[Number(i)]=el.checked;
+    invalidatePlans();save();render();
+  });
+  document.querySelectorAll('[data-delete-task]').forEach(el=>{
+    el.onclick=()=>openDeleteTaskModal(el.dataset.deleteTask);
+  });
+}
+function updateTask(id,key,value){
+  const t=state.tasks.find(x=>x.id===id);if(!t)return;t[key]=value;invalidatePlans();save();render();
+}
+function invalidatePlans(){Object.values(state.days).forEach(d=>{d.generated=false;d.shifts={};d.assignments=[]})}
+
+function render(){
+  ensureDay(state.selectedDate);
+  $('selectedDate').value=state.selectedDate;
+  const available=availablePeople(state.selectedDate);
+  const day=currentDay();
+  const present=state.people.filter(p=>day.shifts[p.id]?.active);
+  const totalN=state.people.filter(p=>p.role==='nurse').length,totalA=state.people.filter(p=>p.role==='aide').length;
+  const avN=available.filter(p=>p.role==='nurse').length,avA=available.filter(p=>p.role==='aide').length;
+  const plN=present.filter(p=>p.role==='nurse').length,plA=present.filter(p=>p.role==='aide').length;
+
+  $('totalStaffCount').textContent=state.people.length;
+  $('totalStaffBreakdown').textContent=`${totalN} infirmière(s) · ${totalA} aide(s)`;
+  $('availableStaffCount').textContent=available.length;
+  $('availableStaffBreakdown').textContent=`${avN} infirmière(s) · ${avA} aide(s)`;
+  $('plannedStaffCount').textContent=present.length;
+  $('plannedStaffBreakdown').textContent=`${plN} infirmière(s) · ${plA} aide(s)`;
+  $('taskCount').textContent=buildInstances(state.selectedDate).length;
+
+  renderChiefs();
+  const ok=prerequisitesCovered();
+  $('coverageValue').textContent=ok?'OUI':'NON';
+  $('coverageCard').className='status-card '+(ok?'ok':'bad');
+  renderPlanning();
+  renderPeople();
+  renderTasks();
+  const pending=day.generated?day.assignments.filter(a=>!a.personId).length:0;
+  if(pending)showPendingAlert(pending);
+  save();
+}
+
+function openPersonModal(id=''){
+  const p=id?state.people.find(x=>x.id===id):{
+    id:'',first:'',last:'',role:'aide',weeklyShifts:DAYS.map((_,i)=>({active:i<5,s1:i<5,s2:false,s3:false,backup:false})),
+    shiftHours:clone(DEFAULT_SHIFT_HOURS),absences:[],exceptions:[]
+  };
+  $('personModalTitle').textContent=id?'Modifier le profil':'Ajouter une personne';
+  $('personId').value=p.id;$('personRole').value=p.role;$('personLast').value=p.last;$('personFirst').value=p.first;
+  const h=p.shiftHours||clone(DEFAULT_SHIFT_HOURS);
+  $('s1Start').value=h[1].start;$('s1End').value=h[1].end;$('s2Start').value=h[2].start;$('s2End').value=h[2].end;
+  $('s3Start').value=h[3].start;$('s3End').value=h[3].end;$('sbStart').value=h.backup.start;$('sbEnd').value=h.backup.end;
+
+  $('weekShiftGrid').innerHTML=DAYS.map((d,i)=>{
+    const w=p.weeklyShifts?.[i]||{active:false,s1:false,s2:false,s3:false,backup:false};
+    return `<div class="day-shift-card" data-week-row="${i}">
+      <label class="day-shift-head"><input class="day-active" type="checkbox" ${w.active?'checked':''}> ${d}</label>
+      <div class="day-shift-options ${w.active?'':'disabled'}">
+        <label><input class="ds1" type="checkbox" ${w.s1?'checked':''}>Shift 1</label>
+        <label><input class="ds2" type="checkbox" ${w.s2?'checked':''}>Shift 2</label>
+        <label><input class="ds3" type="checkbox" ${w.s3?'checked':''}>Shift 3</label>
+        <label><input class="dsb" type="checkbox" ${w.backup?'checked':''}>Back-up</label>
+      </div>
+    </div>`;
+  }).join('');
+  document.querySelectorAll('[data-week-row]').forEach(row=>{
+    const validateRow=()=>{
+      const active=row.querySelector('.day-active').checked;
+      const hasShift=[...row.querySelectorAll('.ds1,.ds2,.ds3,.dsb')].some(x=>x.checked);
+      row.querySelector('.day-shift-options').classList.toggle('disabled',!active);
+      row.classList.toggle('invalid',active&&!hasShift);
+    };
+    row.querySelector('.day-active').onchange=validateRow;
+    row.querySelectorAll('.ds1,.ds2,.ds3,.dsb').forEach(cb=>cb.onchange=validateRow);
+    validateRow();
+  });
+
+  $('absenceRows').innerHTML='';(p.absences||[]).forEach(addAbsenceRow);
+  $('exceptionRows').innerHTML='';(p.exceptions||[]).forEach(addExceptionRow);
+  $('personModal').classList.add('open');
+}
+function addAbsenceRow(a={}){
+  const el=document.createElement('div');el.className='subrow absence-row';
+  el.innerHTML=`<input class="abs-start" type="date" value="${a.start||''}"><input class="abs-end" type="date" value="${a.end||''}">
+    <select class="abs-type"><option>Vacances</option><option>Maladie</option><option>Formation</option><option>Indisponibilité</option></select>
+    <button class="btn btn-danger btn-sm">×</button>`;
+  el.querySelector('.abs-type').value=a.type||'Vacances';el.querySelector('button').onclick=()=>el.remove();$('absenceRows').appendChild(el);
+}
+function exceptionSlot(type,e={}){
+  if(type==='shift')return `<select class="ex-shift"><option value="1">Shift 1</option><option value="2">Shift 2</option><option value="3">Shift 3</option><option value="backup">Back-up</option></select>`;
+  if(type==='hours')return `<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px"><input class="ex-start" type="time" value="${e.start||''}"><input class="ex-end" type="time" value="${e.end||''}"></div>`;
+  return `<select class="exception-choice" disabled><option>Journée entière</option></select>`;
+}
+function refreshException(el,e={}){
+  const type=el.querySelector('.ex-type').value;el.querySelector('.ex-slot').innerHTML=exceptionSlot(type,e);
+  if(type==='shift'&&e.shift)el.querySelector('.ex-shift').value=String(e.shift);
+}
+function addExceptionRow(e={}){
+  const el=document.createElement('div');el.className='subrow exception-row';
+  el.innerHTML=`<input class="ex-date" type="date" value="${e.date||state.selectedDate}">
+    <select class="ex-type"><option value="day">Jour complet</option><option value="shift">Shift d’indisponibilité</option><option value="hours">Heures d’indisponibilité</option></select>
+    <div class="ex-slot"></div><button class="btn btn-danger btn-sm">×</button>`;
+  el.querySelector('.ex-type').value=e.type||'day';el.querySelector('.ex-type').onchange=()=>refreshException(el);el.querySelector('button').onclick=()=>el.remove();
+  $('exceptionRows').appendChild(el);refreshException(el,e);
+}
+function savePerson(){
+  const id=$('personId').value;
+  if(!$('personLast').value.trim()||!$('personFirst').value.trim())return alert('Nom et prénom obligatoires.');
+  const weeklyShifts=[...document.querySelectorAll('[data-week-row]')].map(row=>({
+    active:row.querySelector('.day-active').checked,
+    s1:row.querySelector('.ds1').checked,
+    s2:row.querySelector('.ds2').checked,
+    s3:row.querySelector('.ds3').checked,
+    backup:row.querySelector('.dsb').checked
+  }));
+  const invalidDays=weeklyShifts.map((w,i)=>w.active&&!(w.s1||w.s2||w.s3||w.backup)?i:-1).filter(i=>i>=0);
+  document.querySelectorAll('[data-week-row]').forEach((row,i)=>row.classList.toggle('invalid',invalidDays.includes(i)));
+  if(invalidDays.length)return alert('Chaque jour coché doit contenir au moins un shift. Vérifiez : '+invalidDays.map(i=>DAYS[i]).join(', ')+'.');
+  if(!weeklyShifts.some(w=>w.active))return alert('Activez au moins un jour de disponibilité.');
+
+  const absences=[...document.querySelectorAll('.absence-row')].map(r=>({
+    start:r.querySelector('.abs-start').value,end:r.querySelector('.abs-end').value,type:r.querySelector('.abs-type').value
+  })).filter(x=>x.start&&x.end);
+  const exceptions=[...document.querySelectorAll('.exception-row')].map(r=>{
+    const type=r.querySelector('.ex-type').value;
+    const obj={date:r.querySelector('.ex-date').value,type};
+    if(type==='shift')obj.shift=r.querySelector('.ex-shift').value;
+    if(type==='hours'){obj.start=r.querySelector('.ex-start').value;obj.end=r.querySelector('.ex-end').value}
+    return obj;
+  }).filter(x=>x.date);
+
+  let p=id?state.people.find(x=>x.id===id):null;
+  if(!p){p={id:'p'+Date.now()};state.people.push(p)}
+  Object.assign(p,{
+    role:$('personRole').value,last:$('personLast').value.trim(),first:$('personFirst').value.trim(),
+    weeklyShifts,shiftHours:{
+      1:{start:$('s1Start').value,end:$('s1End').value},
+      2:{start:$('s2Start').value,end:$('s2End').value},
+      3:{start:$('s3Start').value,end:$('s3End').value},
+      backup:{start:$('sbStart').value,end:$('sbEnd').value}
+    },absences,exceptions
+  });
+  invalidatePlans();save();$('personModal').classList.remove('open');render();
+}
+
+
+let pendingDeleteTaskId='';
+
+function openDeleteTaskModal(id){
+  const task=state.tasks.find(t=>t.id===id);
+  if(!task)return;
+  pendingDeleteTaskId=id;
+  $('deleteTaskName').textContent='« '+task.title+' »';
+  $('deleteTaskModal').classList.add('open');
+}
+
+function closeDeleteTaskModal(){
+  pendingDeleteTaskId='';
+  $('deleteTaskModal').classList.remove('open');
+}
+
+function confirmDeleteTask(){
+  if(!pendingDeleteTaskId)return;
+  const task=state.tasks.find(t=>t.id===pendingDeleteTaskId);
+  if(!task){
+    closeDeleteTaskModal();
+    return;
+  }
+  state.tasks=state.tasks.filter(t=>t.id!==pendingDeleteTaskId);
+  invalidatePlans();
+  save();
+  closeDeleteTaskModal();
+  render();
+  showAlert('La tâche « '+task.title+' » a été supprimée définitivement.','warn');
+}
+
+function openTaskModal(){
+  $('taskTitle').value='';$('taskRole').value='aide';$('taskPriority').value='normal';
+  $('taskStart').value='09:00';$('taskEnd').value='10:00';
+  $('taskDays').innerHTML=DAYS.map((d,i)=>`<label><input type="checkbox" data-new-day="${i}" checked> ${d}</label>`).join('');
+  $('taskModal').classList.add('open');
+}
+function saveTask(){
+  const title=$('taskTitle').value.trim(),start=$('taskStart').value,end=$('taskEnd').value;
+  if(!title)return alert('Titre obligatoire.');
+  if(!start||!end||durationMin(start,end)===0)return alert('Heures invalides.');
+  const weeklyDays=[...document.querySelectorAll('[data-new-day]')].map(x=>x.checked);
+  if(!weeklyDays.some(Boolean))return alert('Sélectionnez au moins un jour.');
+  state.tasks.push({
+    id:'t'+Date.now(),title,start,end,role:$('taskRole').value,priority:$('taskPriority').value,
+    enabled:true,weeklyDays
+  });
+  invalidatePlans();save();$('taskModal').classList.remove('open');render();
+}
+
+let manualAssignmentIds=[];
+let manualUnrestricted=false;
+
+
+function intervalsOverlap(startA,endA,startB,endB){
+  const normalize=(start,end)=>{
+    let s=toMin(start),e=toMin(end);
+    if(e<=s)e+=1440;
+    return [s,e];
+  };
+  const a=normalize(startA,endA),b=normalize(startB,endB);
+  const variants=[b,[b[0]+1440,b[1]+1440],[b[0]-1440,b[1]-1440]];
+  return variants.some(v=>a[0]<v[1]&&a[1]>v[0]);
+}
+
+function personAvailableForManualTask(person,assignment){
+  const day=currentDay();
+  const shift=day.shifts[person.id];
+  if(!shift?.active)return false;
+  const taskLike={start:assignment.start,end:assignment.end};
+  if(!taskFits(taskLike,shift))return false;
+  if(blocked(person,taskLike,shift.shiftNo,state.selectedDate))return false;
+  const conflict=day.assignments.some(other=>
+    other.id!==assignment.id&&
+    other.personId===person.id&&
+    intervalsOverlap(assignment.start,assignment.end,other.start,other.end)
+  );
+  return !conflict;
+}
+
+function personTaskCount(personId,excludeAssignmentId=''){
+  return currentDay().assignments.filter(a=>a.personId===personId&&a.id!==excludeAssignmentId).length;
+}
+
+function manualCandidateOptions(assignment){
+  const candidates=state.people
+    .filter(p=>personAvailableForManualTask(p,assignment))
+    .sort((a,b)=>a.role.localeCompare(b.role)||personTaskCount(a.id)-personTaskCount(b.id)||fullName(a).localeCompare(fullName(b),'fr'));
+
+  const group=(role,label)=>{
+    const people=candidates.filter(p=>p.role===role);
+    if(!people.length)return '';
+    return `<optgroup label="${label}">${people.map(p=>`<option value="${p.id}" ${assignment.personId===p.id?'selected':''}>${esc(fullName(p))} (${personTaskCount(p.id,assignment.id)} tâche(s))</option>`).join('')}</optgroup>`;
+  };
+  return {html:group('nurse','Infirmières')+group('aide','Aides-soignantes'),count:candidates.length};
+}
+
+function refreshManualCandidates(){
+  document.querySelectorAll('.manual-task-card').forEach(row=>{
+    const a=currentDay().assignments.find(x=>x.id===row.dataset.assignment);
+    if(!a)return;
+    const wrap=row.querySelector('.manual-person-wrap');
+    const current=a.personId;
+    const options=unrestricted
+      ?{html:allPersonnelOptions(a.personId).replace('<option value="">Non attribuée</option>',''),count:state.people.length}
+      :manualCandidateOptions(a);
+    if(!options.count){
+      a.personId='';
+      wrap.innerHTML='<label>Attribuer à</label><div class="manual-no-candidate">Aucune automatisation possible : aucune personne n’est disponible pour ce jour et ce créneau. Utilisez « Terminer plus tard » pour continuer.</div>';
+      row.classList.remove('validated');
+      return;
+    }
+    wrap.innerHTML=`<label>Attribuer à</label><select class="manual-person"><option value="">Choisir une personne</option>${options.html}</select>`;
+    const select=wrap.querySelector('select');
+    select.value=options.html.includes(`value="${current}"`)?current:'';
+    a.personId=select.value;
+    select.onchange=()=>syncManualRow(row,true);
+  });
+}
+
+function syncManualRow(row,refreshOthers=false){
+  const a=currentDay().assignments.find(x=>x.id===row.dataset.assignment);
+  if(!a)return;
+  a.start=row.querySelector('.manual-start').value;
+  a.end=row.querySelector('.manual-end').value;
+  const select=row.querySelector('.manual-person');
+  a.personId=select?select.value:'';
+  row.classList.toggle('validated',!!a.personId);
+  save();
+  if(refreshOthers)refreshManualCandidates();
+  updateManualCounter();
+  renderPlanning();
+  const ok=prerequisitesCovered();
+  $('coverageValue').textContent=ok?'OUI':'NON';
+  $('coverageCard').className='status-card '+(ok?'ok':'bad');
+}
+
+function renderPrintSummary(){
+  const day=currentDay();
+  const pending=day.generated?day.assignments.filter(a=>!a.personId):[];
+  const dateLabel=new Date(state.selectedDate+'T12:00:00').toLocaleDateString('fr-BE',{weekday:'long',day:'2-digit',month:'long',year:'numeric'});
+  const nurse=state.people.find(p=>p.id===day.chiefNurse);
+  const aide=state.people.find(p=>p.id===day.chiefAide);
+  $('printSummary').innerHTML=`<div class="print-summary">
+    <div class="print-title">Planning du ${esc(dateLabel)}</div>
+    <div class="print-meta">Infirmière référente : ${esc(nurse?fullName(nurse):'Non définie')} · Aide-soignante référente : ${esc(aide?fullName(aide):'Non définie')}</div>
+    <div class="print-meta">${[1,2,3].map(f=>{const a=day.assignments.find(x=>x.floorResponsibility&&x.floor===f);const p=a?state.people.find(x=>x.id===a.personId):null;return `Étage ${f} : ${esc(p?fullName(p):'Non attribué')}`}).join(' · ')}</div>
+    ${pending.length?`<div class="print-warning">${pending.length} tâche(s) restent à compléter :<ul>${pending.map(a=>`<li>${esc(a.start+'–'+a.end+' · '+a.title)}</li>`).join('')}</ul></div>`:'<div class="print-warning" style="background:var(--greenbg);border-color:#95d5ad;color:var(--green)">Toutes les tâches sont attribuées.</div>'}
+  </div>`;
+}
+
+function openManualModal(ids,unrestricted=false){
+  manualAssignmentIds=[...ids];
+  manualUnrestricted=unrestricted;
+  const day=currentDay();
+  $('manualList').innerHTML=ids.map(id=>{
+    const a=day.assignments.find(x=>x.id===id);
+    const options=manualCandidateOptions(a);
+    return `<div class="manual-task-card ${a.personId?'validated':''}" data-assignment="${a.id}">
+      <div class="manual-task-main">
+        <div class="manual-task-title">${esc(a.title)}</div>
+        <div class="manual-task-meta">
+          <span class="priority ${a.priority}">${a.priority}</span>
+          <span class="role ${a.role}">${roleLabel(a.role)}</span>
+        </div>
+      </div>
+      <div><label>Début</label><input class="manual-start" type="time" value="${a.start}"></div>
+      <div><label>Fin</label><input class="manual-end" type="time" value="${a.end}"></div>
+      <div class="manual-person-wrap">
+        <label>Attribuer à</label>
+        ${options.count?`<select class="manual-person"><option value="">Choisir une personne</option>${options.html}</select>`:'<div class="manual-no-candidate">Aucune automatisation possible : aucune personne n’est disponible pour ce jour et ce créneau. Utilisez « Terminer plus tard » pour continuer.</div>'}
+      </div>
+    </div>`;
+  }).join('');
+
+  document.querySelectorAll('.manual-task-card').forEach(row=>{
+    const start=row.querySelector('.manual-start');
+    const end=row.querySelector('.manual-end');
+    if(row.querySelector('.manual-person'))row.querySelector('.manual-person').onchange=()=>syncManualRow(row,!manualUnrestricted);
+    start.onchange=()=>{syncManualRow(row,false);if(!manualUnrestricted)refreshManualCandidates();updateManualCounter()};
+    end.onchange=()=>{syncManualRow(row,false);if(!manualUnrestricted)refreshManualCandidates();updateManualCounter()};
+  });
+
+  updateManualCounter();
+  $('manualModal').classList.add('open');
+}
+
+function updateManualCounter(){
+  const day=currentDay();
+  const total=manualAssignmentIds.length;
+  const pending=manualAssignmentIds.filter(id=>{
+    const a=day.assignments.find(x=>x.id===id);
+    return !a?.personId;
+  }).length;
+  const done=total-pending;
+  $('manualPendingCount').textContent=pending;
+  $('manualProgressBar').style.width=(total?Math.round(done/total*100):100)+'%';
+  $('manualStatusText').textContent=pending
+    ?`${done} tâche(s) validée(s) sur ${total}.`
+    :`Toutes les tâches sont attribuées.`;
+  $('saveManualBtn').textContent=pending?'Terminer plus tard':'Valider et fermer';
+  $('manualPendingCount').parentElement.classList.toggle('done',pending===0);
+}
+
+function saveManual(){
+  const pending=manualAssignmentIds.filter(id=>{
+    const a=currentDay().assignments.find(x=>x.id===id);
+    return !a?.personId;
+  }).length;
+  save();
+  $('manualModal').classList.remove('open');
+  render();
+  if(pending)showPendingAlert(pending);
+  else showAlert('Toutes les tâches ont été attribuées et validées.','warn');
+}
+
+function bind(){
+  $('prevDay').onclick=()=>{state.selectedDate=addDays(state.selectedDate,-1);clearAlert();render()};
+  $('nextDay').onclick=()=>{state.selectedDate=addDays(state.selectedDate,1);clearAlert();render()};
+  $('selectedDate').onchange=e=>{state.selectedDate=e.target.value||isoToday();clearAlert();render()};
+  $('generateBtn').onclick=generateDay;
+  $('chiefNurse').onchange=()=>{currentDay().chiefNurse=$('chiefNurse').value;save();render()};
+  $('chiefAide').onchange=()=>{currentDay().chiefAide=$('chiefAide').value;save();render()};
+  $('settingsBtn').onclick=()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.tab==='people'));
+    document.querySelectorAll('.panel').forEach(x=>x.classList.toggle('active',x.id==='panel-people'));
+    document.querySelectorAll('#panel-people .details').forEach(x=>x.open=false);
+    $('settingsDrawer').classList.add('open');
+    renderPeople();
+    renderTasks();
+  };
+  $('closeSettings').onclick=()=>$('settingsDrawer').classList.remove('open');
+  $('settingsDrawer').onclick=e=>{if(e.target===$('settingsDrawer'))$('settingsDrawer').classList.remove('open')};
+  document.querySelectorAll('.tab').forEach(tab=>tab.onclick=()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
+    tab.classList.add('active');$('panel-'+tab.dataset.tab).classList.add('active');
+  });
+  $('addPersonBtn').onclick=()=>openPersonModal('');
+  $('addTaskBtn').onclick=openTaskModal;
+  $('taskSearch').oninput=renderTasks;
+  $('taskStatusFilter').onchange=renderTasks;
+  $('taskSort').onchange=renderTasks;
+  $('addAbsenceBtn').onclick=()=>addAbsenceRow();
+  $('addExceptionBtn').onclick=()=>addExceptionRow();
+  $('savePersonBtn').onclick=savePerson;
+  $('saveTaskBtn').onclick=saveTask;
+  $('cancelDeleteTaskBtn').onclick=closeDeleteTaskModal;
+  $('confirmDeleteTaskBtn').onclick=confirmDeleteTask;
+  $('saveManualBtn').onclick=saveManual;
+  $('closeForceAssignBtn').onclick=closeForceAssign;
+  $('cancelTaskActionBtn').onclick=()=>$('taskActionModal').classList.remove('open');
+  $('saveTaskActionBtn').onclick=saveTaskAction;
+  $('deleteDayTaskBtn').onclick=deleteDayTask;
+  window.addEventListener('beforeprint',renderPrintSummary);
+  document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>$((b.dataset.close)).classList.remove('open'));
+  document.querySelectorAll('.modal').forEach(m=>m.onclick=e=>{
+    if(e.target!==m)return;
+    if(m.id==='deleteTaskModal')closeDeleteTaskModal();
+    else if(m.id==='forceAssignModal')closeForceAssign();
+    else m.classList.remove('open');
+  });
+}
+
+bind();
+render();
+</script>
+</body>
+</html>
