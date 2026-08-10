@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Excel Assistant</title>
+<style>
+:root{
+  --bg:#f6f7f8;
+  --surface:#fff;
+  --text:#17211b;
+  --muted:#6d756f;
+  --line:#dfe4e1;
+  --excel:#107c41;
+  --excel-dark:#0b6133;
+  --soft:#edf7f1;
+  --danger:#b42318;
+  --radius:16px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,input,textarea{font:inherit}
+button{cursor:pointer}
+.shell{width:min(980px,100%);margin:0 auto;padding:28px 20px 44px}
+.header{display:flex;align-items:center;gap:12px;margin-bottom:24px}
+.logo{width:42px;height:42px;border-radius:10px;display:grid;place-items:center;overflow:hidden;flex:0 0 42px;background:transparent}
+.logo img{width:100%;height:100%;display:block;object-fit:contain}
+.header h1{font-size:22px;margin:0;letter-spacing:-.02em}.header p{margin:3px 0 0;color:var(--muted);font-size:13px}
+.mode-switch{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;background:#e9eeeb;padding:5px;border-radius:14px;margin-bottom:22px}
+.mode-btn{border:0;background:transparent;border-radius:10px;padding:12px 10px;font-weight:750;color:#657068}
+.mode-btn.active{background:#fff;color:var(--excel);box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.panel{display:none}.panel.active{display:block}
+.search-box{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px;margin-bottom:16px}
+.search-box h2{font-size:20px;margin:0 0 6px}.search-box p{margin:0 0 16px;color:var(--muted);font-size:13px;line-height:1.5}
+.search-row{display:flex;gap:10px}.search-row input{flex:1;min-width:0;border:1px solid #cfd7d2;border-radius:11px;padding:13px 14px;outline:none;background:#fff}.search-row input:focus{border-color:var(--excel);box-shadow:0 0 0 3px rgba(16,124,65,.09)}
+.search-row button,.send{border:0;background:var(--excel);color:#fff;border-radius:11px;padding:0 18px;font-weight:750}.search-row button:hover,.send:hover{background:var(--excel-dark)}
+.result-meta{font-size:12px;color:var(--muted);margin:0 0 10px 2px}
+.card-list{display:flex;flex-direction:column;gap:8px}
+.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px;min-width:0}
+.card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}.card h3{font-size:13px;margin:0}.tag{font-size:8px;font-weight:800;background:var(--soft);color:var(--excel-dark);border-radius:999px;padding:5px 8px;white-space:nowrap}
+.card p{font-size:10px;color:var(--muted);line-height:1.4;margin:6px 0 8px}.code{background:#f3f6f4;border:1px solid #e1e6e3;padding:8px 9px 8px 10px;border-radius:8px;font:10px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;overflow:visible;white-space:normal;overflow-wrap:anywhere;word-break:break-word;color:#183f29;display:flex;align-items:flex-start;gap:8px}.code-text{flex:1;min-width:0;overflow-wrap:anywhere;word-break:break-word}.copy-icon{flex:0 0 30px;width:30px;height:30px;border:1px solid #d6ded9;background:#fff;border-radius:7px;display:grid;place-items:center;color:#46604f;padding:0}.copy-icon:hover{border-color:var(--excel);color:var(--excel);background:var(--soft)}.copy-icon svg{width:15px;height:15px;display:block}
+.copy{margin:0;border:1px solid var(--line);background:#fff;border-radius:7px;padding:7px 10px;font-size:8px;font-weight:800;color:#48534c;min-height:31px;display:inline-flex;align-items:center;justify-content:center}
+.empty{display:none;background:#fff;border:1px dashed #cfd7d2;border-radius:14px;padding:28px;text-align:center;color:var(--muted);font-size:13px}
+.chat-wrap{background:#fff;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+#assistant.active{height:var(--assistant-height,calc(100dvh - 170px));min-height:360px}
+#assistant.active .chat-wrap{height:100%;display:flex;flex-direction:column}
+#assistant.active .messages{height:auto;flex:1;min-height:0}
+#assistant.active .composer{flex:0 0 auto}
+.chat-head{padding:18px 20px;border-bottom:1px solid var(--line)}.chat-head h2{font-size:19px;margin:0 0 5px}.chat-head p{font-size:12px;color:var(--muted);margin:0;line-height:1.5}
+.messages{height:430px;overflow:auto;padding:18px;display:flex;flex-direction:column;gap:12px;background:#fbfcfb}
+.msg{display:flex}.msg.user{justify-content:flex-end}.bubble{max-width:82%;padding:11px 13px;border-radius:13px;font-size:13px;line-height:1.55}.bot .bubble{background:#fff;border:1px solid var(--line)}.user .bubble{background:var(--excel);color:#fff}.formula-answer{margin-top:8px;background:#f2f6f3;border-radius:8px;padding:9px 10px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#114a2a;overflow:auto;white-space:nowrap}
+.composer{border-top:1px solid var(--line);padding:12px;background:#fff}.composer textarea{width:100%;min-height:92px;max-height:180px;resize:vertical;border:1px solid #cfd7d2;border-radius:11px;padding:12px;outline:none}.composer textarea:focus{border-color:var(--excel)}.composer-bottom{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:9px}.hint{font-size:11px;color:var(--muted)}.send{padding:10px 16px}
+.ai-answer h4{font-size:12px;margin:12px 0 5px;color:#173d27}.ai-answer h4:first-child{margin-top:0}.ai-answer ul{margin:5px 0 0;padding-left:18px}.ai-answer li{margin:4px 0}.ai-answer .formula-answer{white-space:normal;overflow-wrap:anywhere;word-break:break-word}.ai-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:8px}.ai-chip{border:1px solid var(--line);border-radius:9px;padding:8px;background:#fafcfb;font-size:11px;line-height:1.4}.ai-chip b{display:block;color:#234d34;margin-bottom:2px}.ai-action{cursor:pointer;text-align:left;color:inherit;font-family:inherit}.ai-action:hover{border-color:var(--excel);background:var(--soft)}.ai-note{margin-top:8px;padding:8px 9px;border-radius:9px;background:#f7f9f8;border:1px solid #e4e9e6;font-size:11px;color:#526057}.kb-badge{display:inline-flex;align-items:center;gap:5px;margin-top:7px;padding:5px 7px;border-radius:999px;background:var(--soft);color:var(--excel-dark);font-size:10px;font-weight:800}
+body.assistant-mode{position:fixed;inset:0;width:100%;height:100dvh;min-height:0;overflow:hidden;overscroll-behavior:none}
+body.assistant-mode .shell{height:100dvh;min-height:0;overflow:hidden;display:flex;flex-direction:column;padding-bottom:14px}
+body.assistant-mode .header,body.assistant-mode .mode-switch{flex:0 0 auto}
+body.assistant-mode #assistant.active{display:block;flex:1 1 auto;min-height:0;height:auto!important;overflow:hidden}
+body.assistant-mode #assistant.active .chat-wrap{height:100%;min-height:0}
+body.assistant-mode #assistant.active .messages{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain}
+body.assistant-mode #assistant.active .composer{flex:0 0 auto}
+.chat-head.compact{padding:12px 16px}.chat-head.compact h2{margin:0;font-size:17px}
+.composer textarea{resize:none!important;min-height:64px!important;max-height:96px!important}
+.composer-tools{display:flex;align-items:center;gap:8px;min-width:0}.upload-btn{height:38px;border:1px solid #cfd7d2;background:#fff;color:#314238;border-radius:10px;padding:0 11px;display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:800;white-space:nowrap}.upload-btn:hover{border-color:var(--excel);color:var(--excel);background:var(--soft)}.upload-btn svg{width:16px;height:16px;flex:0 0 16px}.file-status{font-size:10px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:260px}.file-status.ready{color:var(--excel-dark);font-weight:750}.file-status.error{color:var(--danger)}
+.typing-bubble{display:inline-flex!important;align-items:center;gap:4px;min-width:46px}.typing-dot{width:5px;height:5px;border-radius:50%;background:#9da8a1;animation:typingPulse 1.1s infinite ease-in-out}.typing-dot:nth-child(2){animation-delay:.16s}.typing-dot:nth-child(3){animation-delay:.32s}@keyframes typingPulse{0%,70%,100%{opacity:.3;transform:translateY(0)}35%{opacity:1;transform:translateY(-2px)}}
+.stream-part{animation:messageReveal .18s ease both}@keyframes messageReveal{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.upload-summary{margin-top:8px;padding:8px 9px;border:1px solid #dfe7e2;border-radius:9px;background:#f7faf8;font-size:10px;color:#506057;line-height:1.45}
+@media(max-width:620px){.ai-grid{grid-template-columns:1fr}.shell{padding:16px 12px 24px}.header{margin-bottom:12px}.mode-switch{margin-bottom:10px}.chat-head.compact{padding:10px 12px}.composer{padding:9px}.composer-bottom{gap:7px}.composer-tools{flex:1;min-width:0}.file-status{max-width:110px}.hint{display:none}.upload-btn{padding:0 9px}.messages{padding:12px;gap:9px}.bubble{font-size:12px}}
+.shortcuts-note{font-size:12px;color:var(--muted);margin:0 0 12px}.shortcut-list{display:flex;flex-direction:column;gap:8px}.shortcut-card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:11px 13px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px 12px;align-items:center}.shortcut-action{min-width:0;display:flex;align-items:center;justify-content:space-between;gap:10px;grid-column:1/-1}.shortcut-action h3{font-size:12px;margin:0}.shortcut-key{display:flex;align-items:center;justify-content:flex-start;gap:4px;flex-wrap:wrap;margin:0}.kbd{border:1px solid #cfd5d1;border-bottom-width:2px;background:#fafbfa;border-radius:6px;padding:4px 7px;font:700 8px ui-monospace,SFMono-Regular,Menlo,monospace;color:#334039;white-space:nowrap}.plus{font-size:8px;color:var(--muted)}.shortcut-desc{font-size:9px;color:var(--muted);line-height:1.35;margin:0;text-align:right}.shortcut-label{display:none}
+.category{font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:2px}
+
+.card-actions{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:8px;margin-top:8px}.action-left{display:flex;align-items:center;min-width:0}.action-center{display:none}.action-right{display:flex;align-items:center;justify-content:flex-end;gap:7px}.details-btn,.apply-btn{margin:0;border:1px solid var(--excel);background:var(--soft);color:var(--excel-dark);border-radius:7px;padding:7px 10px;font-size:8px;font-weight:800;min-height:31px;display:inline-flex;align-items:center;justify-content:center}.details-btn:hover,.apply-btn:hover{background:#e3f2e9}.formula-shortcut{display:flex;align-items:center;gap:5px;color:var(--muted);font-size:8px;white-space:nowrap}.modal{position:fixed;inset:0;background:rgba(16,24,20,.46);display:none;align-items:center;justify-content:center;padding:18px;z-index:1000}.modal.open{display:flex}.modal-card{width:min(760px,100%);max-height:88vh;overflow:auto;background:#fff;border-radius:18px;border:1px solid var(--line);box-shadow:0 24px 70px rgba(0,0,0,.18)}.modal-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;padding:18px 20px 14px;border-bottom:1px solid var(--line);position:sticky;top:0;background:#fff;z-index:2}.modal-head h2{margin:0;font-size:20px}.modal-head p{margin:4px 0 0;color:var(--muted);font-size:12px}.modal-close{border:1px solid var(--line);background:#fff;border-radius:9px;width:34px;height:34px;font-size:18px}.level-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;padding:14px 20px 0}.level-btn{border:1px solid var(--line);background:#fff;border-radius:10px;padding:9px 8px;font-size:12px;font-weight:800;color:#59645d}.level-btn.active{background:var(--excel);border-color:var(--excel);color:#fff}.lesson{padding:18px 20px 22px}.lesson h3{font-size:14px;margin:18px 0 7px}.lesson h3:first-child{margin-top:0}.lesson p,.lesson li{font-size:12px;line-height:1.55;color:#4f5a53}.lesson ul{padding-left:18px}.lesson-code{background:#f3f6f4;border:1px solid #e1e6e3;border-radius:9px;padding:10px 11px;font:12px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;color:#183f29;overflow:visible;white-space:normal;overflow-wrap:anywhere;word-break:break-word}.example-box{background:#fafcfb;border:1px solid var(--line);border-radius:10px;padding:11px 12px}.example-box strong{display:block;font-size:11px;margin-bottom:5px;color:var(--text)}
+
+
+.lesson-section{border:1px solid var(--line);border-radius:12px;padding:13px 14px;margin:10px 0;background:#fff}.lesson-section h3{display:flex;align-items:center;gap:7px;margin:0 0 8px!important;font-size:13px}.lesson-section p:last-child{margin-bottom:0}.lesson-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.lesson-mini{border:1px solid #e5e9e6;border-radius:10px;padding:10px;background:#fafcfb}.lesson-mini strong{display:block;font-size:11px;margin-bottom:5px}.lesson-mini p{margin:0}.syntax-parts{display:flex;flex-direction:column;gap:6px}.syntax-part{display:grid;grid-template-columns:115px 1fr;gap:8px;align-items:start;padding:7px 8px;border-radius:8px;background:#f7f9f8}.syntax-part b{font-size:11px;color:#234d34}.syntax-part span{font-size:11px;line-height:1.45;color:var(--muted)}
+.master-badge{display:inline-flex;align-items:center;gap:5px;border-radius:999px;background:#f2f6f3;padding:5px 8px;font-size:10px;font-weight:800;color:var(--excel-dark)}
+.apply-card{width:min(820px,100%)}.apply-body{padding:18px 20px 22px}.apply-intro{background:var(--soft);border:1px solid #d9eadf;border-radius:11px;padding:11px 12px;font-size:12px;line-height:1.5;color:#365442;margin-bottom:14px}.apply-grid{display:flex;flex-direction:column;gap:10px}.apply-row{border:1px solid var(--line);border-radius:12px;padding:11px 12px;background:#fff}.apply-row-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:9px}.apply-row-head strong{font-size:12px}.ref-chip{font:800 10px ui-monospace,SFMono-Regular,Menlo,monospace;background:#f1f4f2;border-radius:999px;padding:5px 8px;color:#355541}.apply-fields{display:grid;grid-template-columns:1fr 1fr;gap:8px}.field label{display:block;font-size:10px;font-weight:800;color:#536058;margin:0 0 5px}.field input,.field textarea{width:100%;border:1px solid #cfd7d2;border-radius:9px;padding:9px 10px;outline:none;font-size:12px;background:#fff}.field input:focus,.field textarea:focus{border-color:var(--excel);box-shadow:0 0 0 3px rgba(16,124,65,.08)}.field small{display:block;color:var(--muted);font-size:9px;line-height:1.35;margin-top:4px}.apply-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}.primary-btn{border:0;background:var(--excel);color:#fff;border-radius:9px;padding:10px 14px;font-size:11px;font-weight:850}.secondary-btn{border:1px solid var(--line);background:#fff;color:#48534c;border-radius:9px;padding:10px 14px;font-size:11px;font-weight:800}.preview{display:none;margin-top:16px;border-top:1px solid var(--line);padding-top:16px}.preview.show{display:block}.preview h3{font-size:13px;margin:0 0 8px}.preview-formula{background:#edf7f1;border:1px solid #d5e8dc;border-radius:10px;padding:11px 12px;font:12px/1.55 ui-monospace,SFMono-Regular,Menlo,monospace;color:#104628;white-space:normal;overflow-wrap:anywhere;word-break:break-word}.mapping-list{display:flex;flex-direction:column;gap:6px;margin-top:9px}.mapping{display:grid;grid-template-columns:110px 22px 1fr;gap:6px;align-items:center;font-size:11px;padding:7px 8px;background:#fafcfb;border-radius:8px}.mapping code{font-size:10px}.result-preview{margin-top:10px;border:1px solid var(--line);border-radius:10px;padding:11px 12px;background:#fff}.result-preview strong{display:block;font-size:11px;margin-bottom:5px}.result-value{font-size:18px;font-weight:850;color:var(--excel-dark);overflow-wrap:anywhere}.result-note{font-size:10px;line-height:1.45;color:var(--muted);margin-top:5px}.apply-help{margin-top:10px;font-size:11px;line-height:1.5;color:#4e5b53}.target-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:11px}
+@media(max-width:700px){
+  .shell{padding:18px 12px 30px}.header{margin-bottom:18px}.header h1{font-size:19px}.header p{font-size:11px}.logo{width:38px;height:38px;flex-basis:38px}
+  .mode-switch{gap:4px}.mode-btn{font-size:12px;padding:11px 4px}
+  .search-box{padding:16px}.search-box h2{font-size:18px}.search-row{flex-direction:column}.search-row button{height:44px}
+  .messages{height:390px}.bubble{max-width:92%}.composer-bottom{align-items:flex-end}.hint{max-width:65%}.card-actions{align-items:flex-end}.formula-shortcut{font-size:9px}.level-tabs{padding:12px 12px 0}.lesson{padding:15px 14px 18px}.modal-head{padding:15px 14px 12px}
+  .lesson-grid{grid-template-columns:1fr}.syntax-part{grid-template-columns:1fr}.apply-body{padding:14px}.apply-fields,.target-row{grid-template-columns:1fr}.mapping{grid-template-columns:82px 18px 1fr}.apply-actions{justify-content:stretch}.apply-actions button{flex:1}.card-actions{grid-template-columns:auto 1fr;gap:6px}.action-right{gap:5px}.details-btn,.apply-btn{padding-left:7px;padding-right:7px}.formula-shortcut>span:first-child{display:none}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+  <header class="header">
+    <div class="logo"><img src="https://upload.wikimedia.org/wikipedia/commons/6/60/Microsoft_Office_Excel_%282025%E2%80%93present%29.svg" alt="Microsoft Excel" referrerpolicy="no-referrer"></div>
+    <div><h1>Excel Assistant</h1><p>Formules Excel et assistant pratique.</p></div>
+  </header>
+
+  <div class="mode-switch" role="tablist">
+    <button class="mode-btn active" data-target="formules">ƒx Formules</button>
+    <button class="mode-btn" data-target="assistant">Assistant</button>
+  </div>
+
+  <section id="formules" class="panel active">
+    <div class="search-box">
+      <h2>Rechercher une formule</h2>
+      <p>Écris un nom de fonction ou ce que tu veux faire : recherche, somme, date, condition, texte, erreur…</p>
+      <div class="search-row">
+        <input id="formulaSearch" type="search" placeholder="Ex. rechercher une valeur, RECHERCHEX, somme avec critères…" autocomplete="off">
+        <button onclick="filterFormulas()">Rechercher</button>
+      </div>
+    </div>
+    <div class="result-meta" id="formulaMeta"></div>
+    <div class="card-list" id="formulaList"></div>
+    <div class="empty" id="formulaEmpty">Aucune formule trouvée. Essaie un autre mot-clé.</div>
+  </section>
+
+  <section id="assistant" class="panel">
+    <div class="chat-wrap">
+      <div class="chat-head compact"><h2>Assistant Excel</h2></div>
+      <div class="messages" id="messages">
+        <div class="msg bot"><div class="bubble">Bonjour, comment je peux vous aider ?</div></div>
+      </div>
+      <div class="composer">
+        <textarea id="chatInput" placeholder="Décrivez votre problème Excel, une formule, une cellule, une colonne ou le résultat attendu…"></textarea>
+        <div class="composer-bottom">
+          <div class="composer-tools">
+            <button class="upload-btn" type="button" id="uploadExcelBtn" aria-label="Importer un fichier Excel"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 16V4m0 0L8 8m4-4 4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 14v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span>Importer Excel</span></button>
+            <input id="excelFileInput" type="file" hidden accept=".xlsx,.xlsm,.xltx,.xltm,.csv,.tsv,.txt,.xml,.xls,.xlsb,.ods" />
+            <span class="file-status" id="fileStatus">Aucun fichier</span>
+          </div>
+          <span class="hint">Entrée = envoyer · Maj + Entrée = nouvelle ligne</span>
+          <button class="send" onclick="sendMessage()">Envoyer</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+
+<div class="modal" id="formulaModal" onclick="if(event.target===this)closeDetails()">
+  <div class="modal-card">
+    <div class="modal-head">
+      <div><h2 id="modalTitle">Cours Excel</h2><p id="modalSubtitle"></p></div>
+      <button class="modal-close" onclick="closeDetails()" aria-label="Fermer">×</button>
+    </div>
+    <div class="level-tabs">
+      <button class="level-btn active" data-level="debutant" onclick="setLevel('debutant')">Débutant</button>
+      <button class="level-btn" data-level="intermediaire" onclick="setLevel('intermediaire')">Intermédiaire</button>
+      <button class="level-btn" data-level="avance" onclick="setLevel('avance')">Avancé</button>
+    </div>
+    <div class="lesson" id="lessonContent"></div>
+  </div>
+</div>
+
+<div class="modal" id="applyModal" onclick="if(event.target===this)closeApply()">
+  <div class="modal-card apply-card">
+    <div class="modal-head">
+      <div><h2 id="applyTitle">Appliquer la formule</h2><p id="applySubtitle">Adapte la formule à ton fichier Excel.</p></div>
+      <button class="modal-close" onclick="closeApply()" aria-label="Fermer">×</button>
+    </div>
+    <div class="apply-body">
+      <div class="apply-intro">🧩 Indique où se trouvent tes données dans Excel. Pour chaque référence utilisée dans l’exemple, remplace-la par la cellule ou la plage réelle de ton fichier. Tu peux aussi ajouter une valeur d’exemple pour obtenir un aperçu plus concret.</div>
+      <div class="target-row">
+        <div class="field"><label>Cellule où mettre le résultat</label><input id="targetCell" placeholder="Ex. D2"><small>Optionnel, mais utile pour visualiser où coller la formule.</small></div>
+        <div class="field"><label>Feuille du résultat</label><input id="targetSheet" placeholder="Ex. Synthèse"><small>Optionnel. Laisse vide si tu restes sur la feuille actuelle.</small></div>
+      </div>
+      <div class="apply-grid" id="applyFields"></div>
+      <div class="apply-actions"><button class="secondary-btn" onclick="resetApply()">Réinitialiser</button><button class="primary-btn" onclick="buildAppliedFormula()">Générer ma formule</button></div>
+      <div class="preview" id="applyPreview"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const formulas=[
+ {name:'RECHERCHEX',cat:'Recherche',desc:'Recherche une valeur et renvoie la valeur correspondante depuis une autre plage.',code:'=RECHERCHEX(A2;Feuil2!A:A;Feuil2!D:D;"Non trouvé")',keys:'recherche chercher trouver valeur xlookup correspondance'},
+ {name:'RECHERCHEV',cat:'Recherche',desc:'Recherche verticalement une valeur dans la première colonne d’une plage.',code:'=RECHERCHEV(A2;Feuil2!A:D;4;FAUX)',keys:'recherche vlookup vertical ancien'},
+ {name:'RECHERCHEH',cat:'Recherche',desc:'Recherche horizontalement une valeur dans la première ligne d’une plage.',code:'=RECHERCHEH(B1;A1:H5;3;FAUX)',keys:'recherche hlookup horizontal'},
+ {name:'INDEX',cat:'Recherche',desc:'Renvoie une valeur située à une position donnée dans une plage.',code:'=INDEX(D2:D100;5)',keys:'index position valeur'},
+ {name:'EQUIV',cat:'Recherche',desc:'Renvoie la position d’une valeur dans une plage.',code:'=EQUIV(A2;Feuil2!A:A;0)',keys:'equiv match position correspondance'},
+ {name:'INDEX + EQUIV',cat:'Recherche',desc:'Combine INDEX et EQUIV pour réaliser une recherche flexible.',code:'=INDEX(D:D;EQUIV(A2;A:A;0))',keys:'index equiv recherche correspondance trouver'},
+ {name:'CHOISIR',cat:'Recherche',desc:'Renvoie un élément choisi dans une liste selon son numéro.',code:'=CHOISIR(A2;"Bas";"Moyen";"Haut")',keys:'choisir choose liste position'},
+ {name:'INDIRECT',cat:'Références',desc:'Transforme un texte en référence de cellule ou de plage.',code:'=INDIRECT("B"&A2)',keys:'indirect reference texte cellule'},
+ {name:'ADRESSE',cat:'Références',desc:'Crée une adresse de cellule à partir d’un numéro de ligne et de colonne.',code:'=ADRESSE(5;3)',keys:'adresse cellule ligne colonne'},
+ {name:'DECALER',cat:'Références',desc:'Renvoie une référence décalée par rapport à une cellule de départ.',code:'=DECALER(A1;2;1)',keys:'decaler offset reference'},
+ {name:'LIGNE',cat:'Références',desc:'Renvoie le numéro de ligne d’une référence.',code:'=LIGNE(A10)',keys:'ligne row numero'},
+ {name:'COLONNE',cat:'Références',desc:'Renvoie le numéro de colonne d’une référence.',code:'=COLONNE(D1)',keys:'colonne column numero'},
+ {name:'LIGNES',cat:'Références',desc:'Compte le nombre de lignes d’une plage.',code:'=LIGNES(A2:A100)',keys:'lignes rows compter'},
+ {name:'COLONNES',cat:'Références',desc:'Compte le nombre de colonnes d’une plage.',code:'=COLONNES(A1:F10)',keys:'colonnes columns compter'},
+ {name:'TRANSPOSE',cat:'Références',desc:'Inverse lignes et colonnes d’une plage.',code:'=TRANSPOSE(A1:D5)',keys:'transpose inverser lignes colonnes'},
+
+ {name:'SI',cat:'Logique',desc:'Renvoie un résultat différent selon qu’une condition est vraie ou fausse.',code:'=SI(B2>=10;"OK";"À vérifier")',keys:'si condition if logique vrai faux'},
+ {name:'SI + ET',cat:'Logique',desc:'Teste plusieurs conditions qui doivent toutes être vraies.',code:'=SI(ET(B2>0;C2="Payé");"Validé";"Non")',keys:'si et condition multiple and logique'},
+ {name:'SI + OU',cat:'Logique',desc:'Teste plusieurs conditions dont au moins une doit être vraie.',code:'=SI(OU(B2="Oui";C2="Oui");"OK";"Non")',keys:'si ou condition multiple or logique'},
+ {name:'ET',cat:'Logique',desc:'Renvoie VRAI uniquement si toutes les conditions sont vraies.',code:'=ET(B2>0;C2="Oui")',keys:'et and logique conditions'},
+ {name:'OU',cat:'Logique',desc:'Renvoie VRAI si au moins une condition est vraie.',code:'=OU(B2="Oui";C2="Oui")',keys:'ou or logique conditions'},
+ {name:'NON',cat:'Logique',desc:'Inverse une valeur logique VRAI ou FAUX.',code:'=NON(A2="Fermé")',keys:'non not logique inverse'},
+ {name:'VRAI',cat:'Logique',desc:'Renvoie la valeur logique VRAI.',code:'=VRAI()',keys:'vrai true logique'},
+ {name:'FAUX',cat:'Logique',desc:'Renvoie la valeur logique FAUX.',code:'=FAUX()',keys:'faux false logique'},
+ {name:'SIERREUR',cat:'Erreurs',desc:'Remplace une erreur par une valeur ou un texte choisi.',code:'=SIERREUR(A2/B2;0)',keys:'erreur na valeur ref div0 iferror cacher'},
+ {name:'SI.NON.DISP',cat:'Erreurs',desc:'Remplace uniquement l’erreur #N/A par une autre valeur.',code:'=SI.NON.DISP(RECHERCHEX(A2;A:A;D:D);"Absent")',keys:'erreur non disponible na ifna'},
+ {name:'ESTERREUR',cat:'Erreurs',desc:'Teste si une expression renvoie une erreur.',code:'=ESTERREUR(A2/B2)',keys:'erreur tester iserror'},
+ {name:'ESTNA',cat:'Erreurs',desc:'Teste si une expression renvoie l’erreur #N/A.',code:'=ESTNA(A2)',keys:'erreur na isna'},
+ {name:'ESTVIDE',cat:'Information',desc:'Teste si une cellule est vide.',code:'=ESTVIDE(A2)',keys:'vide blank cellule'},
+ {name:'ESTNUM',cat:'Information',desc:'Teste si une valeur est numérique.',code:'=ESTNUM(A2)',keys:'nombre numerique isnumeric'},
+ {name:'ESTTEXTE',cat:'Information',desc:'Teste si une valeur est du texte.',code:'=ESTTEXTE(A2)',keys:'texte istext type'},
+
+ {name:'SOMME',cat:'Calcul',desc:'Additionne une plage de nombres.',code:'=SOMME(B2:B100)',keys:'somme addition total calcul'},
+ {name:'SOMME.SI',cat:'Calcul',desc:'Additionne uniquement les valeurs qui respectent un critère.',code:'=SOMME.SI(A:A;E2;B:B)',keys:'somme si condition critere total sumif'},
+ {name:'SOMME.SI.ENS',cat:'Calcul',desc:'Additionne des valeurs selon plusieurs critères.',code:'=SOMME.SI.ENS(D:D;A:A;G2;B:B;"Payé")',keys:'somme plusieurs criteres condition total sumifs'},
+ {name:'PRODUIT',cat:'Calcul',desc:'Multiplie plusieurs nombres ou plages entre eux.',code:'=PRODUIT(B2:B5)',keys:'produit multiplication product'},
+ {name:'SOMMEPROD',cat:'Calcul',desc:'Multiplie des éléments correspondants puis additionne les résultats.',code:'=SOMMEPROD(B2:B10;C2:C10)',keys:'sommeprod sumproduct multiplication somme'},
+ {name:'ABS',cat:'Calcul',desc:'Renvoie la valeur absolue d’un nombre.',code:'=ABS(A2)',keys:'absolue negatif positif'},
+ {name:'PUISSANCE',cat:'Calcul',desc:'Élève un nombre à une puissance donnée.',code:'=PUISSANCE(A2;2)',keys:'puissance power carre'},
+ {name:'RACINE',cat:'Calcul',desc:'Renvoie la racine carrée positive d’un nombre.',code:'=RACINE(A2)',keys:'racine sqrt carre'},
+ {name:'MOD',cat:'Calcul',desc:'Renvoie le reste d’une division.',code:'=MOD(A2;2)',keys:'modulo reste division pair impair'},
+ {name:'ENT',cat:'Calcul',desc:'Arrondit un nombre à l’entier inférieur.',code:'=ENT(A2)',keys:'entier int arrondir'},
+ {name:'ARRONDI',cat:'Calcul',desc:'Arrondit un nombre au nombre de décimales indiqué.',code:'=ARRONDI(A2;2)',keys:'arrondi round decimales'},
+ {name:'ARRONDI.SUP',cat:'Calcul',desc:'Arrondit un nombre en s’éloignant de zéro.',code:'=ARRONDI.SUP(A2;0)',keys:'arrondi superieur roundup'},
+ {name:'ARRONDI.INF',cat:'Calcul',desc:'Arrondit un nombre en se rapprochant de zéro.',code:'=ARRONDI.INF(A2;0)',keys:'arrondi inferieur rounddown'},
+ {name:'SOUS.TOTAL',cat:'Calcul',desc:'Calcule un sous-total en pouvant ignorer les lignes filtrées.',code:'=SOUS.TOTAL(9;B2:B100)',keys:'sous total filtre subtotal'},
+ {name:'AGREGAT',cat:'Calcul',desc:'Effectue un calcul en pouvant ignorer erreurs ou lignes masquées.',code:'=AGREGAT(9;6;B2:B100)',keys:'agregat aggregate erreurs filtre'},
+ {name:'ALEA',cat:'Calcul',desc:'Renvoie un nombre aléatoire compris entre 0 et 1.',code:'=ALEA()',keys:'aleatoire random hasard'},
+ {name:'ALEA.ENTRE.BORNES',cat:'Calcul',desc:'Renvoie un entier aléatoire entre deux bornes.',code:'=ALEA.ENTRE.BORNES(1;100)',keys:'aleatoire entier random entre bornes'},
+
+ {name:'NB',cat:'Comptage',desc:'Compte les cellules contenant des nombres.',code:'=NB(B2:B100)',keys:'nb count nombres compter'},
+ {name:'NBVAL',cat:'Comptage',desc:'Compte les cellules non vides.',code:'=NBVAL(A2:A100)',keys:'nbval counta non vides compter'},
+ {name:'NB.VIDE',cat:'Comptage',desc:'Compte les cellules vides.',code:'=NB.VIDE(A2:A100)',keys:'nb vide countblank vides'},
+ {name:'NB.SI',cat:'Comptage',desc:'Compte les cellules correspondant à un critère.',code:'=NB.SI(A:A;"Oui")',keys:'compter nombre critere countif'},
+ {name:'NB.SI.ENS',cat:'Comptage',desc:'Compte les lignes répondant à plusieurs critères.',code:'=NB.SI.ENS(A:A;"Oui";B:B;">100")',keys:'compter plusieurs criteres countifs'},
+
+ {name:'MOYENNE',cat:'Statistiques',desc:'Calcule la moyenne d’une série de nombres.',code:'=MOYENNE(B2:B100)',keys:'moyenne average calcul'},
+ {name:'MOYENNE.SI',cat:'Statistiques',desc:'Calcule la moyenne des valeurs répondant à un critère.',code:'=MOYENNE.SI(A:A;"Paris";B:B)',keys:'moyenne si critere averageif'},
+ {name:'MOYENNE.SI.ENS',cat:'Statistiques',desc:'Calcule une moyenne selon plusieurs critères.',code:'=MOYENNE.SI.ENS(D:D;A:A;"Paris";B:B;">0")',keys:'moyenne plusieurs criteres averageifs'},
+ {name:'MEDIANE',cat:'Statistiques',desc:'Renvoie la médiane d’une série de nombres.',code:'=MEDIANE(B2:B100)',keys:'mediane median statistique'},
+ {name:'MAX',cat:'Statistiques',desc:'Renvoie la plus grande valeur d’une plage.',code:'=MAX(B2:B100)',keys:'maximum plus grand valeur'},
+ {name:'MIN',cat:'Statistiques',desc:'Renvoie la plus petite valeur d’une plage.',code:'=MIN(B2:B100)',keys:'minimum plus petit valeur'},
+ {name:'MAX.SI.ENS',cat:'Statistiques',desc:'Renvoie le maximum parmi les valeurs répondant à des critères.',code:'=MAX.SI.ENS(D:D;A:A;"Actif")',keys:'maximum criteres maxifs'},
+ {name:'MIN.SI.ENS',cat:'Statistiques',desc:'Renvoie le minimum parmi les valeurs répondant à des critères.',code:'=MIN.SI.ENS(D:D;A:A;"Actif")',keys:'minimum criteres minifs'},
+ {name:'GRANDE.VALEUR',cat:'Statistiques',desc:'Renvoie la n-ième plus grande valeur d’une plage.',code:'=GRANDE.VALEUR(B2:B100;3)',keys:'grande valeur large classement'},
+ {name:'PETITE.VALEUR',cat:'Statistiques',desc:'Renvoie la n-ième plus petite valeur d’une plage.',code:'=PETITE.VALEUR(B2:B100;3)',keys:'petite valeur small classement'},
+ {name:'RANG.EQ',cat:'Statistiques',desc:'Renvoie le rang d’un nombre dans une liste.',code:'=RANG.EQ(B2;B$2:B$100;0)',keys:'rang classement rank'},
+ {name:'ECARTYPE.STANDARD',cat:'Statistiques',desc:'Estime l’écart-type à partir d’un échantillon.',code:'=ECARTYPE.STANDARD(B2:B100)',keys:'ecart type standard deviation statistique'},
+ {name:'VAR.S',cat:'Statistiques',desc:'Estime la variance à partir d’un échantillon.',code:'=VAR.S(B2:B100)',keys:'variance statistique'},
+
+ {name:'CONCAT',cat:'Texte',desc:'Assemble plusieurs contenus texte.',code:'=CONCAT(A2;" ";B2)',keys:'texte joindre concatener assembler nom prenom'},
+ {name:'JOINDRE.TEXTE',cat:'Texte',desc:'Assemble une plage avec un séparateur choisi.',code:'=JOINDRE.TEXTE(", ";VRAI;A2:A10)',keys:'texte joindre liste separateur concatener textjoin'},
+ {name:'GAUCHE',cat:'Texte',desc:'Extrait les premiers caractères d’un texte.',code:'=GAUCHE(A2;3)',keys:'texte gauche extraire caracteres debut'},
+ {name:'DROITE',cat:'Texte',desc:'Extrait les derniers caractères d’un texte.',code:'=DROITE(A2;4)',keys:'texte droite extraire caracteres fin'},
+ {name:'STXT',cat:'Texte',desc:'Extrait des caractères à partir d’une position donnée.',code:'=STXT(A2;3;5)',keys:'texte extraire milieu caracteres mid'},
+ {name:'NBCAR',cat:'Texte',desc:'Compte le nombre de caractères d’un texte.',code:'=NBCAR(A2)',keys:'nbcar len longueur texte caracteres'},
+ {name:'SUPPRESPACE',cat:'Nettoyage',desc:'Supprime les espaces inutiles dans un texte.',code:'=SUPPRESPACE(A2)',keys:'nettoyer espace trim texte'},
+ {name:'NETTOYER',cat:'Nettoyage',desc:'Supprime les caractères non imprimables d’un texte.',code:'=NETTOYER(A2)',keys:'nettoyer clean caracteres invisibles'},
+ {name:'SUBSTITUE',cat:'Texte',desc:'Remplace un texte par un autre dans une chaîne.',code:'=SUBSTITUE(A2;"ancien";"nouveau")',keys:'substitue substitute remplacer texte'},
+ {name:'REMPLACER',cat:'Texte',desc:'Remplace une partie d’un texte selon sa position.',code:'=REMPLACER(A2;1;3;"ABC")',keys:'remplacer replace texte position'},
+ {name:'CHERCHE',cat:'Texte',desc:'Recherche du texte sans tenir compte des majuscules et minuscules.',code:'=CHERCHE("client";A2)',keys:'cherche search texte position'},
+ {name:'TROUVE',cat:'Texte',desc:'Recherche du texte en respectant majuscules et minuscules.',code:'=TROUVE("ABC";A2)',keys:'trouve find texte sensible casse'},
+ {name:'MAJUSCULE',cat:'Texte',desc:'Convertit un texte en majuscules.',code:'=MAJUSCULE(A2)',keys:'majuscule upper texte'},
+ {name:'MINUSCULE',cat:'Texte',desc:'Convertit un texte en minuscules.',code:'=MINUSCULE(A2)',keys:'minuscule lower texte'},
+ {name:'NOMPROPRE',cat:'Texte',desc:'Met la première lettre de chaque mot en majuscule.',code:'=NOMPROPRE(A2)',keys:'nompropre proper majuscule mots'},
+ {name:'EXACT',cat:'Texte',desc:'Compare deux textes en respectant la casse.',code:'=EXACT(A2;B2)',keys:'exact comparer texte casse'},
+ {name:'CNUM',cat:'Conversion',desc:'Convertit un texte représentant un nombre en valeur numérique.',code:'=CNUM(A2)',keys:'cnum value convertir texte nombre'},
+ {name:'TEXTE',cat:'Conversion',desc:'Convertit une valeur en texte selon un format choisi.',code:'=TEXTE(A2;"jj/mm/aaaa")',keys:'texte format nombre date conversion'},
+ {name:'REPT',cat:'Texte',desc:'Répète un texte un certain nombre de fois.',code:'=REPT("-";10)',keys:'rept repeat repeter texte'},
+
+ {name:'AUJOURDHUI',cat:'Date',desc:'Renvoie la date du jour.',code:'=AUJOURDHUI()',keys:'date aujourd hui today jour'},
+ {name:'MAINTENANT',cat:'Date',desc:'Renvoie la date et l’heure actuelles.',code:'=MAINTENANT()',keys:'date heure maintenant now'},
+ {name:'DATE',cat:'Date',desc:'Construit une date à partir d’une année, d’un mois et d’un jour.',code:'=DATE(2026;8;10)',keys:'date annee mois jour construire'},
+ {name:'JOUR',cat:'Date',desc:'Extrait le numéro du jour d’une date.',code:'=JOUR(A2)',keys:'jour day date'},
+ {name:'MOIS',cat:'Date',desc:'Extrait le numéro du mois d’une date.',code:'=MOIS(A2)',keys:'mois month date'},
+ {name:'ANNEE',cat:'Date',desc:'Extrait l’année d’une date.',code:'=ANNEE(A2)',keys:'annee year date'},
+ {name:'HEURE',cat:'Date',desc:'Extrait l’heure d’une date ou heure.',code:'=HEURE(A2)',keys:'heure hour temps'},
+ {name:'MINUTE',cat:'Date',desc:'Extrait les minutes d’une heure.',code:'=MINUTE(A2)',keys:'minute temps'},
+ {name:'SECONDE',cat:'Date',desc:'Extrait les secondes d’une heure.',code:'=SECONDE(A2)',keys:'seconde temps'},
+ {name:'TEMPS',cat:'Date',desc:'Construit une heure à partir d’heures, minutes et secondes.',code:'=TEMPS(14;30;0)',keys:'temps time heure construire'},
+ {name:'DATEDIF',cat:'Date',desc:'Calcule l’écart entre deux dates en jours, mois ou années.',code:'=DATEDIF(A2;B2;"y")',keys:'date difference age annee mois jours'},
+ {name:'JOURSEM',cat:'Date',desc:'Renvoie le numéro du jour de la semaine.',code:'=JOURSEM(A2;2)',keys:'jour semaine weekday date'},
+ {name:'NO.SEMAINE',cat:'Date',desc:'Renvoie le numéro de semaine d’une date.',code:'=NO.SEMAINE(A2;2)',keys:'numero semaine weeknum date'},
+ {name:'FIN.MOIS',cat:'Date',desc:'Renvoie le dernier jour du mois avant ou après une date.',code:'=FIN.MOIS(A2;0)',keys:'fin mois eomonth date'},
+ {name:'MOIS.DECALER',cat:'Date',desc:'Décale une date d’un certain nombre de mois.',code:'=MOIS.DECALER(A2;3)',keys:'decaler mois edate date'},
+ {name:'NB.JOURS.OUVRES',cat:'Date',desc:'Compte les jours ouvrés entre deux dates.',code:'=NB.JOURS.OUVRES(A2;B2)',keys:'jours ouvrables travail networkdays'},
+ {name:'NB.JOURS.OUVRES.INTL',cat:'Date',desc:'Compte les jours ouvrés avec un week-end personnalisable.',code:'=NB.JOURS.OUVRES.INTL(A2;B2;1)',keys:'jours ouvrables intl weekend networkdays'},
+ {name:'SERIE.JOUR.OUVRE',cat:'Date',desc:'Renvoie une date située un certain nombre de jours ouvrés avant ou après une date.',code:'=SERIE.JOUR.OUVRE(A2;10)',keys:'jour ouvre workday date'},
+ {name:'SERIE.JOUR.OUVRE.INTL',cat:'Date',desc:'Renvoie une date ouvrée avec un week-end personnalisable.',code:'=SERIE.JOUR.OUVRE.INTL(A2;10;1)',keys:'jour ouvre intl workday date'},
+
+ {name:'FILTRE',cat:'Dynamique',desc:'Renvoie uniquement les lignes répondant à un critère.',code:'=FILTRE(A2:D100;D2:D100="Actif")',keys:'filtre filter dynamique lignes condition'},
+ {name:'UNIQUE',cat:'Dynamique',desc:'Renvoie la liste des valeurs uniques d’une plage.',code:'=UNIQUE(A2:A100)',keys:'unique doublons distinct liste'},
+ {name:'TRIER',cat:'Dynamique',desc:'Trie dynamiquement une plage.',code:'=TRIER(A2:D100;2;1)',keys:'trier sort ordre dynamique'},
+ {name:'TRIERPAR',cat:'Dynamique',desc:'Trie une plage selon les valeurs d’une autre plage.',code:'=TRIERPAR(A2:D100;D2:D100;-1)',keys:'trierpar sortby dynamique'},
+ {name:'SEQUENCE',cat:'Dynamique',desc:'Génère automatiquement une suite de nombres.',code:'=SEQUENCE(12;1;1;1)',keys:'sequence suite nombres dynamique'},
+ {name:'LET',cat:'Avancé',desc:'Attribue des noms à des calculs intermédiaires dans une formule.',code:'=LET(total;SOMME(B2:B100);total*0,21)',keys:'let variable formule avance performance'},
+ {name:'LAMBDA',cat:'Avancé',desc:'Permet de créer une fonction personnalisée sans VBA.',code:'=LAMBDA(x;x*2)(A2)',keys:'lambda fonction personnalisee avance'},
+
+ {name:'VPM',cat:'Finance',desc:'Calcule le paiement périodique d’un emprunt à annuités constantes.',code:'=VPM(5%/12;60;-20000)',keys:'vpm pmt emprunt mensualite finance'},
+ {name:'VA',cat:'Finance',desc:'Calcule la valeur actuelle d’un investissement ou d’un emprunt.',code:'=VA(5%/12;60;-400)',keys:'va pv valeur actuelle finance'},
+ {name:'VC',cat:'Finance',desc:'Calcule la valeur future d’un investissement.',code:'=VC(5%/12;60;-400;0)',keys:'vc fv valeur future finance'},
+ {name:'NPM',cat:'Finance',desc:'Calcule le nombre de périodes nécessaires pour un investissement ou un emprunt.',code:'=NPM(5%/12;-400;20000)',keys:'npm nper periodes finance'},
+ {name:'TAUX',cat:'Finance',desc:'Calcule le taux d’intérêt par période.',code:'=TAUX(60;-400;20000)',keys:'taux rate interet finance'},
+ {name:'VAN',cat:'Finance',desc:'Calcule la valeur actuelle nette de flux de trésorerie.',code:'=VAN(8%;B2:B10)+A2',keys:'van npv valeur actuelle nette finance'},
+ {name:'TRI',cat:'Finance',desc:'Calcule le taux de rentabilité interne d’une série de flux.',code:'=TRI(A2:A10)',keys:'tri irr taux rentabilite finance'}
+];
+
+
+function formulaShortcut(f){
+ const n=norm(f.name);
+ if(n==='somme') return ['Alt','='];
+ return ['Shift','F3'];
+}
+function renderKey(keys){return keys.map((k,i)=>`${i?'<span class="plus">+</span>':''}<span class="kbd">${escapeHtml(k)}</span>`).join('')}
+function renderFormulas(items){
+ const list=document.getElementById('formulaList'), empty=document.getElementById('formulaEmpty');
+ list.innerHTML=items.map((f)=>{
+   const idx=formulas.indexOf(f);
+   return `<article class="card" data-formula-index="${idx}"><div class="card-top"><h3>${escapeHtml(f.name)}</h3><span class="tag">${escapeHtml(f.cat)}</span></div><p>${escapeHtml(f.desc)}</p><div class="code"><span class="code-text">${escapeHtml(f.code)}</span><button class="copy-icon" type="button" data-action="copy" data-index="${idx}" aria-label="Copier la formule" title="Copier la formule"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="8" y="8" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button></div><div class="card-actions"><div class="action-left"><div class="formula-shortcut"><span>Raccourci</span>${renderKey(formulaShortcut(f))}</div></div><div class="action-right"><button class="details-btn" type="button" data-action="details" data-index="${idx}">Détails</button><button class="apply-btn" type="button" data-action="apply" data-index="${idx}">Appliquer</button></div></div></article>`;
+ }).join('');
+ empty.style.display=items.length?'none':'block'; document.getElementById('formulaMeta').textContent=`${items.length} formule${items.length>1?'s':''} affichée${items.length>1?'s':''}`;
+}
+function filterFormulas(){const q=norm(document.getElementById('formulaSearch').value);renderFormulas(!q?formulas:formulas.filter(f=>norm(`${f.name} ${f.cat} ${f.desc} ${f.keys}`).includes(q)))}
+function norm(v){return v.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim()}
+function escapeHtml(v){return String(v).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+async function copyText(text,button){
+ let ok=false;
+ try{
+   if(navigator.clipboard && window.isSecureContext){await navigator.clipboard.writeText(text);ok=true}
+ }catch(e){}
+ if(!ok){
+   const ta=document.createElement('textarea');ta.value=text;ta.setAttribute('readonly','');ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();
+   try{ok=document.execCommand('copy')}catch(e){}
+   ta.remove();
+ }
+ if(button){const original=button.textContent;button.textContent=ok?'Copié':'À copier';setTimeout(()=>button.textContent=original,1200)}
+ return ok;
+}
+
+document.getElementById('formulaList').addEventListener('click',e=>{
+ const btn=e.target.closest('button[data-action]'); if(!btn)return;
+ const f=formulas[Number(btn.dataset.index)]; if(!f)return;
+ const action=btn.dataset.action;
+ if(action==='copy') copyText(f.code,btn);
+ else if(action==='details') openDetails(f.name);
+ else if(action==='apply') openApply(f.name);
+});
+
+function syncAssistantViewport(){
+ const vh=window.visualViewport?window.visualViewport.height:window.innerHeight;
+ document.documentElement.style.setProperty('--live-vh',Math.max(320,Math.floor(vh))+'px');
+ if(document.body.classList.contains('assistant-mode')){
+   document.body.style.height=Math.max(320,Math.floor(vh))+'px';
+   document.querySelector('.shell').style.height=Math.max(320,Math.floor(vh))+'px';
+ }
+}
+
+document.querySelectorAll('.mode-btn').forEach(btn=>btn.addEventListener('click',()=>{
+ const target=btn.dataset.target;
+ document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active');
+ document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active')); document.getElementById(target).classList.add('active');
+ document.body.classList.toggle('assistant-mode',target==='assistant');
+ document.body.style.height='';document.querySelector('.shell').style.height='';
+ if(target==='assistant'){
+   window.scrollTo(0,0);syncAssistantViewport();
+   requestAnimationFrame(()=>document.getElementById('messages').scrollTop=document.getElementById('messages').scrollHeight);
+ }else{document.body.style.overflow='';}
+}));
+window.addEventListener('resize',syncAssistantViewport);
+window.addEventListener('orientationchange',()=>setTimeout(syncAssistantViewport,60));
+if(window.visualViewport){window.visualViewport.addEventListener('resize',syncAssistantViewport);window.visualViewport.addEventListener('scroll',syncAssistantViewport)}
+document.getElementById('formulaSearch').addEventListener('input',filterFormulas);
+
+let currentFormula=null,currentLevel='debutant';
+function openDetails(name){
+ currentFormula=formulas.find(f=>f.name===name); currentLevel='debutant';
+ if(!currentFormula)return;
+ document.getElementById('modalTitle').textContent=currentFormula.name;
+ document.getElementById('modalSubtitle').textContent=currentFormula.desc;
+ document.querySelectorAll('.level-btn').forEach(b=>b.classList.toggle('active',b.dataset.level==='debutant'));
+ renderLesson(); document.getElementById('formulaModal').classList.add('open'); document.body.style.overflow='hidden';
+}
+function closeDetails(){document.getElementById('formulaModal').classList.remove('open');document.body.style.overflow=''}
+function setLevel(level){currentLevel=level;document.querySelectorAll('.level-btn').forEach(b=>b.classList.toggle('active',b.dataset.level===level));renderLesson()}
+function formulaArgs(f){
+ const special={
+  'RECHERCHEX':['valeur_cherchée : ce que tu veux retrouver','tableau_recherche : où Excel doit chercher','tableau_renvoyé : colonne/plage du résultat','si_non_trouvé : résultat de secours'],
+  'RECHERCHEV':['valeur_cherchée : valeur à retrouver','table_matrice : tableau contenant la recherche','no_index_col : numéro de la colonne à renvoyer','valeur_proche : FAUX pour une correspondance exacte'],
+  'SI':['test_logique : la condition à vérifier','valeur_si_vrai : résultat si la condition est vraie','valeur_si_faux : résultat sinon'],
+  'SOMME.SI.ENS':['somme_plage : valeurs à additionner','plage_critères1 : première colonne à tester','critère1 : première condition','plage_critères2 / critère2 : conditions supplémentaires'],
+  'NB.SI.ENS':['plage_critères : colonne à analyser','critère : condition à compter','paires supplémentaires : autres conditions éventuelles'],
+  'FILTRE':['tableau : données à renvoyer','inclure : condition VRAI/FAUX par ligne','si_vide : résultat si aucune ligne ne correspond'],
+  'INDEX + EQUIV':['INDEX : plage du résultat','EQUIV : position de la valeur recherchée','0 : correspondance exacte'],
+  'SIERREUR':['valeur : calcul principal','valeur_si_erreur : résultat de secours'],
+  'DATEDIF':['date_début : première date','date_fin : seconde date','unité : y, m, d, ym, yd ou md'],
+  'LET':['nom : variable lisible','valeur : calcul stocké dans la variable','calcul_final : résultat utilisant cette variable']
+ };
+ if(special[f.name]) return special[f.name];
+ return ['argument(s) : les cellules, plages, critères ou paramètres placés entre parenthèses','séparateur ; : sépare les arguments dans Excel en français'];
+}
+function categoryContext(f){
+ const m={
+  'Recherche':'Les fonctions de recherche relient deux zones de données. La qualité du résultat dépend surtout de la clé de recherche, de l’unicité des identifiants et de la cohérence des types de données.',
+  'Logique':'Les fonctions logiques transforment des règles métier en décisions automatiques. Une bonne formule logique doit couvrir le cas vrai, le cas faux et les exceptions.',
+  'Calcul':'Les fonctions de calcul agrègent ou transforment des nombres. Vérifie toujours les unités, les cellules vides et les valeurs stockées comme texte.',
+  'Statistiques':'Les fonctions statistiques résument une distribution. Avant de conclure, contrôle les valeurs aberrantes, la taille de l’échantillon et les cellules exclues.',
+  'Texte':'Les fonctions texte servent à normaliser, découper, assembler ou analyser des chaînes. Elles sont très utiles avant une recherche ou un rapprochement de données.',
+  'Date':'Excel stocke les dates comme des nombres sériels. Le format affiché et la valeur réelle sont donc deux choses différentes.',
+  'Finance':'Les fonctions financières exigent une convention cohérente pour les signes, les périodes et les taux. Un taux annuel doit souvent être ramené à la période du paiement.',
+  'Avancé':'Ces fonctions deviennent particulièrement puissantes lorsqu’elles structurent une logique complexe en blocs lisibles et réutilisables.',
+  'Dynamique':'Les fonctions dynamiques peuvent renvoyer plusieurs cellules à partir d’une seule formule. Il faut donc prévoir un espace libre pour la plage déversée.'
+ };
+ return m[f.cat]||'Cette fonction devient fiable lorsqu’on comprend précisément ses arguments, les types de données attendus et les cas limites.';
+}
+function lessonData(f,level){
+ const basic=`${f.name} : ${f.desc}`;
+ const examples={
+  'RECHERCHEX':['Retrouver le prix d’un produit à partir de son code.','A2 contient PRD-004. La feuille Tarifs contient les codes en A et les prix en D.','Le résultat affiché peut être 24,90 € si PRD-004 correspond à ce prix.'],
+  'SI':['Décider automatiquement si un dossier est validé.','B2 contient 14 et la règle est : 10 ou plus = OK.','Le résultat affiché est « OK ».'],
+  'SOMME':['Additionner les ventes du mois.','B2:B5 contient 120, 80, 50 et 150.','Le résultat affiché est 400.'],
+  'SOMME.SI.ENS':['Additionner seulement les factures payées d’un client.','A = client, B = statut, D = montant. On cible Client A + Payé.','Le résultat est le total des montants répondant aux deux conditions.'],
+  'NB.SI':['Compter le nombre de dossiers marqués Oui.','A2:A10 contient six fois « Oui ».','Le résultat affiché est 6.'],
+  'FILTRE':['Créer automatiquement une vue des lignes actives.','A2:D100 contient les données et D contient le statut.','Excel renvoie uniquement les lignes dont le statut est Actif.'],
+  'UNIQUE':['Créer une liste de clients sans doublons.','A2:A100 répète plusieurs noms de clients.','Chaque client apparaît une seule fois dans le résultat.'],
+  'DATEDIF':['Calculer un âge en années complètes.','A2 = 17/06/2020 et B2 = 10/08/2026.','Le résultat en unité "y" est 6.']
+ };
+ const ex=examples[f.name]||[`Automatiser une tâche avec ${f.name}.`,`Teste la fonction sur quelques cellules simples avant de l’étendre à toute la feuille.`,`Le résultat doit correspondre à ce que tu pourrais vérifier manuellement sur ce petit échantillon.`];
+ const common={
+  intro:basic, context:categoryContext(f), args:formulaArgs(f), example:ex,
+  mistakes:['Références décalées après recopie de la formule.','Nombre stocké comme texte, espace invisible ou date mal interprétée.','Plage trop grande ou plage de critères de taille différente.','Résultat correct sur un cas simple mais non testé sur cellules vides, erreurs ou valeurs absentes.']
+ };
+ if(level==='debutant') return {...common,
+   objective:'Savoir lire la formule, identifier les cellules utilisées, la saisir correctement et vérifier le résultat sans dépendre d’un copier-coller aveugle.',
+   steps:['Repère la cellule où le résultat doit apparaître.','Identifie les cellules ou plages qui contiennent les données nécessaires.','Lis la formule de gauche à droite : le nom de fonction indique l’action, chaque argument fournit une information.','Remplace les références d’exemple par celles de ton tableau.','Valide avec Entrée puis vérifie le résultat à la main sur une ligne simple.'],
+   exercise:`Reproduis ${f.name} sur 3 à 5 lignes, modifie volontairement une valeur source et observe si le résultat se met à jour comme prévu.`,
+   mastery:['Je sais ce que la fonction cherche ou calcule.','Je sais quelles cellules remplacer.','Je peux expliquer le résultat obtenu avec mes propres mots.'],
+   tip:'Ne commence pas par un tableau de 20 000 lignes. Utilise un petit exemple que tu peux contrôler mentalement.'};
+ if(level==='intermediaire') return {...common,
+   objective:'Construire une formule robuste, maîtriser ses arguments, gérer la recopie, les erreurs courantes et les références relatives/absolues.',
+   steps:['Décompose la formule en arguments et valide chacun séparément si nécessaire.','Décide quelles références doivent bouger à la recopie et lesquelles doivent rester fixes avec $.','Teste les cellules vides, les valeurs non trouvées, les doublons et les mauvais types de données.','Privilégie des tableaux Excel structurés lorsque les données grandissent régulièrement.','Ajoute SIERREUR uniquement après avoir compris la cause possible des erreurs.'],
+   exercise:`Construis une version de ${f.name} qui fonctionne sur une première ligne, recopie-la sur 20 lignes puis contrôle au moins trois cas limites.`,
+   mastery:['Je distingue références relatives et absolues.','Je sais diagnostiquer une erreur plutôt que seulement la masquer.','Je peux rendre la formule recopiable et lisible.'],
+   tip:'F4 pendant l’édition d’une référence permet de basculer entre A1, $A$1, A$1 et $A1.'};
+ return {...common,
+   objective:'Utiliser la fonction dans un modèle maintenable : performance, architecture du classeur, contrôle des erreurs, auditabilité et réutilisation.',
+   steps:['Travaille avec des Tables Excel et des noms explicites afin de réduire les références opaques.','Évite les colonnes entières dans les calculs lourds lorsque les volumes deviennent importants.','Décompose les calculs complexes avec LET ou des colonnes intermédiaires documentées.','Teste les hypothèses métier, doublons, valeurs manquantes et changements de structure.','Mesure le coût de recalcul lorsque la fonction est volatile ou répétée des milliers de fois.','Prévois une méthode d’audit : cellule de contrôle, total de rapprochement ou cas de test connu.'],
+   exercise:`Intègre ${f.name} dans un mini-modèle avec données source, contrôle d’erreur, test de cohérence et cellule de validation indépendante.`,
+   mastery:['Je peux expliquer la formule à un autre utilisateur.','Je sais anticiper son comportement si le tableau s’agrandit ou change.','Je sais arbitrer entre formule compacte, colonne intermédiaire, Power Query ou autre outil Excel.'],
+   tip:'Une formule « avancée » n’est pas celle qui contient le plus de fonctions : c’est celle qui reste compréhensible, testable et fiable six mois plus tard.'};
+}
+function renderLesson(){
+ if(!currentFormula)return; const d=lessonData(currentFormula,currentLevel);
+ const lvl=currentLevel==='debutant'?'Débutant':currentLevel==='intermediaire'?'Intermédiaire':'Avancé';
+ document.getElementById('lessonContent').innerHTML=`
+ <span class="master-badge">🎓 Parcours ${lvl}</span>
+ <div class="lesson-section"><h3>🎯 Objectif du cours</h3><p>${escapeHtml(d.objective)}</p></div>
+ <div class="lesson-section"><h3>🧠 Comprendre la fonction</h3><p><strong>${escapeHtml(d.intro)}</strong></p><p>${escapeHtml(d.context)}</p></div>
+ <div class="lesson-section"><h3>🧩 Anatomie de la syntaxe</h3><div class="lesson-code">${escapeHtml(currentFormula.code)}</div><div class="syntax-parts">${d.args.map((a,i)=>{const parts=a.split(' : ');return `<div class="syntax-part"><b>${escapeHtml(parts[0]||`Argument ${i+1}`)}</b><span>${escapeHtml(parts.slice(1).join(' : ')||'Paramètre de la fonction')}</span></div>`}).join('')}</div></div>
+ <div class="lesson-section"><h3>🛠️ Méthode pas à pas</h3><ol>${d.steps.map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ol></div>
+ <div class="lesson-section"><h3>📊 Exemple concret</h3><div class="lesson-grid"><div class="lesson-mini"><strong>Situation</strong><p>${escapeHtml(d.example[0])}</p></div><div class="lesson-mini"><strong>Données</strong><p>${escapeHtml(d.example[1])}</p></div></div><div class="lesson-mini" style="margin-top:9px"><strong>Résultat attendu</strong><p>${escapeHtml(d.example[2])}</p></div></div>
+ <div class="lesson-section"><h3>⚠️ Erreurs à savoir diagnostiquer</h3><ul>${d.mistakes.map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ul></div>
+ <div class="lesson-section"><h3>🧪 Exercice de maîtrise</h3><p>${escapeHtml(d.exercise)}</p></div>
+ <div class="lesson-section"><h3>✅ Tu maîtrises cette formule si…</h3><ul>${d.mastery.map(x=>`<li>${escapeHtml(x)}</li>`).join('')}</ul></div>
+ <div class="lesson-section"><h3>💡 Réflexe Excel</h3><p>${escapeHtml(d.tip)}</p></div><div class="apply-actions" style="margin-top:14px"><button class="primary-btn" onclick="applyFromDetails()">Appliquer cette formule à mon fichier</button></div>`;
+}
+
+function applyFromDetails(){
+ if(!currentFormula)return;
+ const name=currentFormula.name;
+ closeDetails();
+ openApply(name);
+}
+let applyFormula=null,applyRefs=[];
+function extractRefs(code){
+ const re=/(?:'[^']+'|[A-Za-zÀ-ÿ0-9_ .-]+)!\$?[A-Z]{1,3}\$?\d*(?::\$?[A-Z]{1,3}\$?\d*)?|\$?[A-Z]{1,3}\$?\d+(?::\$?[A-Z]{1,3}\$?\d+)?|\$?[A-Z]{1,3}:\$?[A-Z]{1,3}/g;
+ const found=code.match(re)||[];
+ return [...new Set(found.map(x=>x.trim()))];
+}
+function humanRef(ref){
+ if(ref.includes('!')) return 'Référence située sur une autre feuille';
+ if(ref.includes(':')) return 'Plage de cellules utilisée par la formule';
+ return 'Cellule utilisée par la formule';
+}
+function openApply(name){
+ applyFormula=formulas.find(f=>f.name===name); if(!applyFormula)return;
+ applyRefs=extractRefs(applyFormula.code);
+ document.getElementById('applyTitle').textContent=`Appliquer · ${applyFormula.name}`;
+ document.getElementById('applySubtitle').textContent=applyFormula.desc;
+ document.getElementById('targetCell').value=''; document.getElementById('targetSheet').value='';
+ const host=document.getElementById('applyFields');
+ if(!applyRefs.length){host.innerHTML=`<div class="apply-row"><div class="apply-row-head"><strong>Cette formule ne nécessite pas de cellule source dans son exemple.</strong><span class="ref-chip">${escapeHtml(applyFormula.name)}</span></div><div class="field"><label>Valeur / paramètre à utiliser si nécessaire</label><input data-extra="1" placeholder="Ex. 10, 2026, texte…"><small>Si la fonction n’a aucun argument, tu peux laisser ce champ vide.</small></div></div>`}
+ else host.innerHTML=applyRefs.map((r,i)=>`<div class="apply-row"><div class="apply-row-head"><strong>${escapeHtml(humanRef(r))}</strong><span class="ref-chip">${escapeHtml(r)}</span></div><div class="apply-fields"><div class="field"><label>Où sont tes données ?</label><input class="ref-input" data-i="${i}" value="${escapeHtml(r)}" placeholder="Ex. Feuil2!B2:B500"><small>Adresse réelle dans ton fichier Excel.</small></div><div class="field"><label>Valeur(s) d’exemple</label><input class="sample-input" data-i="${i}" placeholder="Ex. 120 ou 10,20,30 ou PRD-004"><small>Pour une plage, sépare plusieurs valeurs par des virgules.</small></div></div></div>`).join('');
+ document.getElementById('applyPreview').classList.remove('show'); document.getElementById('applyPreview').innerHTML='';
+ document.getElementById('applyModal').classList.add('open');document.body.style.overflow='hidden';
+}
+function closeApply(){document.getElementById('applyModal').classList.remove('open');document.body.style.overflow=''}
+function resetApply(){if(applyFormula)openApply(applyFormula.name)}
+function parseSample(v){
+ const parts=String(v||'').split(',').map(x=>x.trim()).filter(Boolean);
+ return parts.map(x=>{const n=Number(x.replace(',','.')); return Number.isFinite(n)&&x!==''?n:x});
+}
+function simulateResult(name,samples){
+ const vals=samples.flat(); const nums=vals.filter(x=>typeof x==='number'&&!Number.isNaN(x));
+ try{
+  if(name==='SOMME'&&nums.length) return String(nums.reduce((a,b)=>a+b,0));
+  if(name==='MOYENNE'&&nums.length) return String(nums.reduce((a,b)=>a+b,0)/nums.length);
+  if(name==='MAX'&&nums.length) return String(Math.max(...nums));
+  if(name==='MIN'&&nums.length) return String(Math.min(...nums));
+  if(name==='NB') return String(nums.length);
+  if(name==='NBVAL') return String(vals.filter(x=>x!==''&&x!=null).length);
+  if(name==='ABS'&&nums.length) return String(Math.abs(nums[0]));
+  if(name==='RACINE'&&nums.length) return String(Math.sqrt(nums[0]));
+  if(name==='PUISSANCE'&&nums.length>=2) return String(Math.pow(nums[0],nums[1]));
+  if(name==='ARRONDI'&&nums.length) return String(Math.round(nums[0]*100)/100);
+  if(name==='CONCAT'||name==='JOINDRE.TEXTE') return vals.join(' ');
+  if(name==='MAJUSCULE'&&vals.length) return String(vals[0]).toUpperCase();
+  if(name==='MINUSCULE'&&vals.length) return String(vals[0]).toLowerCase();
+  if(name==='NBCAR'&&vals.length) return String(vals[0]).length;
+  if(name==='UNIQUE'&&vals.length) return [...new Set(vals.map(String))].join(' · ');
+  if(name==='AUJOURDHUI') return new Date().toLocaleDateString('fr-BE');
+  if(name==='MAINTENANT') return new Date().toLocaleString('fr-BE');
+ }catch(e){}
+ return null;
+}
+function buildAppliedFormula(){
+ if(!applyFormula)return;
+ let final=applyFormula.code; const mappings=[]; const samples=[];
+ document.querySelectorAll('#applyFields .ref-input').forEach(inp=>{
+   const i=Number(inp.dataset.i), old=applyRefs[i], neu=inp.value.trim()||old;
+   final=final.split(old).join(neu); mappings.push([old,neu]);
+ });
+ document.querySelectorAll('#applyFields .sample-input').forEach(inp=>samples.push(parseSample(inp.value)));
+ const target=document.getElementById('targetCell').value.trim(), sheet=document.getElementById('targetSheet').value.trim();
+ const sim=simulateResult(applyFormula.name,samples);
+ const resultText=sim!==null?escapeHtml(sim):'Aperçu structurel : le résultat apparaîtra ici après calcul par Excel avec les données réelles.';
+ const mappingHtml=mappings.length?`<div class="mapping-list">${mappings.map(m=>`<div class="mapping"><code>${escapeHtml(m[0])}</code><span>→</span><code>${escapeHtml(m[1])}</code></div>`).join('')}</div>`:'<p class="apply-help">Aucune référence de cellule n’était nécessaire dans la formule d’exemple.</p>';
+ document.getElementById('applyPreview').innerHTML=`<h3>1. Ta formule adaptée</h3><div class="preview-formula">${escapeHtml(final)}</div>${target?`<p class="apply-help">📍 À coller dans <strong>${escapeHtml(sheet?sheet+'!'+target:target)}</strong>.</p>`:''}<h3 style="margin-top:14px">2. Ce qui a été remplacé</h3>${mappingHtml}<h3 style="margin-top:14px">3. Aperçu du résultat</h3><div class="result-preview"><strong>À quoi doit ressembler le résultat</strong><div class="result-value">${resultText}</div><div class="result-note">${sim!==null?'Cet aperçu est calculé avec les valeurs d’exemple que tu as fournies. Vérifie toujours le résultat final dans Excel.':'Pour les fonctions complexes de recherche, logique, finance ou dates, le navigateur montre la structure attendue mais Excel reste le moteur de calcul de référence.'}</div></div><h3 style="margin-top:14px">4. Lecture de la formule</h3><p class="apply-help">${escapeHtml(applyFormula.name)} exécute l’action suivante : ${escapeHtml(applyFormula.desc.charAt(0).toLowerCase()+applyFormula.desc.slice(1))} Les adresses affichées ci-dessus correspondent désormais à ton propre classeur.</p><div class="apply-actions"><button class="secondary-btn" onclick="copyText(${JSON.stringify('${FINAL_FORMULA}')})" id="copyApplied">Copier</button></div>`;
+ document.getElementById('copyApplied').onclick=()=>copyText(final);
+ document.getElementById('applyPreview').classList.add('show');
+ document.getElementById('applyPreview').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeDetails();closeApply()}});
+
+const excelKnowledge=[
+ {topic:'Références de cellules',keys:'reference cellule absolue relative mixte dollar $ a1 b2 recopie',text:'A1 est relative, $A$1 est absolue, $A1 bloque la colonne et A$1 bloque la ligne. Choisis le type de référence selon la direction de recopie.'},
+ {topic:'Tableaux Excel',keys:'tableau structure structuree ctrl t colonne nom table',text:'Convertir une plage en Tableau (Ctrl+T) apporte filtres, extension automatique, références structurées et formules recopiées automatiquement. Exemple : =SOMME(TableVentes[Montant]).'},
+ {topic:'Recherche moderne',keys:'recherche rechercher xlookup recherchex index equiv recherchev',text:'Privilégie RECHERCHEX quand elle est disponible : recherche à gauche ou à droite, valeur si non trouvé et correspondance exacte par défaut. INDEX+EQUIV reste très robuste pour la compatibilité.'},
+ {topic:'Recherche multi-critères',keys:'recherche plusieurs criteres multi critere filtre recherchex',text:'Pour plusieurs critères, on peut utiliser RECHERCHEX(1;(plage1=critère1)*(plage2=critère2);plage_retour) ou FILTRE pour renvoyer plusieurs lignes.'},
+ {topic:'Sommes conditionnelles',keys:'somme condition critere somme.si somme.si.ens total',text:'SOMME.SI convient à un critère ; SOMME.SI.ENS à plusieurs critères. Les plages de critères et la plage à sommer doivent être cohérentes en dimensions.'},
+ {topic:'Logique',keys:'si condition et ou si.conditions switch',text:'SI traite un test. ET impose que tous les tests soient vrais ; OU qu’au moins un le soit. Pour de nombreuses branches, SI.CONDITIONS ou SWITCH rendent souvent la formule plus lisible.'},
+ {topic:'Gestion des erreurs',keys:'erreur sierreur si.na #n/a #valeur #ref #div/0 #nom',text:'Ne masque pas une erreur trop tôt. #N/A indique souvent une recherche sans correspondance, #VALEUR! un type incompatible, #REF! une référence supprimée, #DIV/0! une division par zéro, #NOM? un nom ou une fonction non reconnu.'},
+ {topic:'Dates Excel',keys:'date heure aujourd hui datedif fin.mois mois.decaler jours ouvres',text:'Excel stocke les dates comme numéros de série. Utilise DATE, AUJOURDHUI, FIN.MOIS, MOIS.DECALER, NB.JOURS.OUVRES et formate ensuite la cellule comme date.'},
+ {topic:'Texte et nettoyage',keys:'texte nettoyer supprespace substitue gauche droite stxt concat joindre',text:'Les erreurs de rapprochement viennent souvent d’espaces ou caractères invisibles. SUPPRESPACE et NETTOYER sont des réflexes utiles avant une recherche ou comparaison.'},
+ {topic:'Nombres stockés en texte',keys:'nombre texte cnum valeur apostrophe conversion',text:'Un nombre stocké comme texte peut casser sommes et comparaisons. CNUM, une multiplication par 1 ou Texte en colonnes peuvent convertir les données.'},
+ {topic:'Fonctions dynamiques',keys:'filtre unique trier sequence dynamique spill #propagation',text:'FILTRE, UNIQUE, TRIER et SEQUENCE renvoient des plages dynamiques. Laisse de l’espace autour de la cellule source et surveille les erreurs de propagation.'},
+ {topic:'LET',keys:'let performance lisibilite variable formule longue',text:'LET permet de nommer des calculs intermédiaires dans une formule. Cela améliore la lisibilité et peut éviter de recalculer plusieurs fois la même expression.'},
+ {topic:'LAMBDA',keys:'lambda fonction personnalisee reusable nom gestionnaire noms',text:'LAMBDA permet de créer des fonctions personnalisées sans VBA et de les enregistrer dans le Gestionnaire de noms.'},
+ {topic:'Mise en forme conditionnelle',keys:'mise forme conditionnelle couleur doublon alerte',text:'La mise en forme conditionnelle peut utiliser une formule. Écris la formule comme si elle s’appliquait à la première cellule de la plage, en contrôlant soigneusement les références relatives et absolues.'},
+ {topic:'Validation des données',keys:'validation donnees liste deroulante dropdown saisie',text:'Validation des données permet de contrôler la saisie et créer des listes déroulantes. Pour une liste évolutive, une Table Excel ou une plage dynamique est préférable.'},
+ {topic:'Tableaux croisés dynamiques',keys:'tcd tableau croise dynamique pivot synthese regroupement',text:'Un TCD est adapté pour synthétiser rapidement beaucoup de lignes : dimensions en lignes/colonnes, mesures en valeurs, filtres et segments pour l’analyse interactive.'},
+ {topic:'Power Query',keys:'power query importer nettoyer fusionner combiner transformer actualiser',text:'Power Query est préférable aux formules lorsque le besoin consiste surtout à importer, nettoyer, fusionner, empiler ou répéter une transformation de données.'},
+ {topic:'Power Pivot et modèle de données',keys:'power pivot dax modele donnees relation mesure',text:'Pour plusieurs tables liées et de gros volumes, utilise le Modèle de données/Power Pivot. Les mesures DAX sont calculées selon le contexte de filtre.'},
+ {topic:'Tri et filtres',keys:'trier filtre automatique avance',text:'Les filtres standards conviennent à l’exploration manuelle. FILTRE/TRIER conviennent à des sorties dynamiques ; Power Query convient aux transformations répétables.'},
+ {topic:'Doublons',keys:'doublon duplicate unique nb.si supprimer doublons',text:'Pour détecter les doublons, NB.SI($A:$A;A2)>1 fonctionne bien. UNIQUE permet d’extraire une liste distincte ; Supprimer les doublons modifie les données.'},
+ {topic:'Performance',keys:'lent performance volatil colonne entiere calcul lourd optimisation',text:'Évite autant que possible les références de colonnes entières dans des milliers de formules, les fonctions volatiles en masse et les répétitions de calculs. Préfère Tables, LET, plages bornées, Power Query ou le modèle de données selon le cas.'},
+ {topic:'Fonctions volatiles',keys:'volatile indirect decaler maintenant aujourd hui alea',text:'INDIRECT, DECALER, MAINTENANT, AUJOURDHUI et ALEA peuvent provoquer des recalculs fréquents. Sur de gros classeurs, surveille leur usage.'},
+ {topic:'INDIRECT',keys:'indirect texte reference feuille dynamique',text:'INDIRECT transforme du texte en référence mais est volatile et ne suit pas bien les changements structurels. À utiliser seulement lorsqu’une référence textuelle dynamique est réellement nécessaire.'},
+ {topic:'DECALER',keys:'decaler offset plage dynamique volatile',text:'DECALER crée une référence décalée mais est volatile. INDEX peut souvent produire une plage dynamique de manière plus efficace.'},
+ {topic:'Noms définis',keys:'nom defini gestionnaire noms plage nommee',text:'Les noms définis rendent les formules plus lisibles et peuvent représenter une cellule, une plage, une constante ou une formule.'},
+ {topic:'Protection',keys:'proteger feuille classeur verrouiller cellule formule',text:'La protection de feuille limite les modifications accidentelles. Déverrouille d’abord les cellules de saisie, puis protège la feuille. Ce n’est pas un mécanisme de sécurité cryptographique complet.'},
+ {topic:'Audit de formules',keys:'audit precedent dependant evaluer formule trace erreur',text:'Utilise Repérer les antécédents/dépendants et Évaluer la formule pour comprendre un calcul complexe. La touche F2 aide à visualiser les références d’une formule.'},
+ {topic:'Séparateurs régionaux',keys:'separateur virgule point virgule francais anglais formule',text:'Selon les paramètres régionaux, Excel peut utiliser ; ou , comme séparateur d’arguments et des noms de fonctions traduits. Cette application utilise les noms français et le point-virgule dans ses exemples.'},
+ {topic:'Valeurs exactes et approximatives',keys:'correspondance exacte approximative vrai faux 0 1 recherche',text:'Pour les recherches, choisis explicitement exacte ou approximative. Une recherche approximative exige souvent des données triées et peut donner un résultat trompeur si le mode est mal choisi.'},
+ {topic:'Critères avec opérateurs',keys:'critere > < >= <= somme.si nb.si moyenne.si concatener operateur',text:'Dans les fonctions conditionnelles, un opérateur avec une cellule s’écrit souvent ">"&A1. Exemple : =NB.SI(B:B;">="&D1).'},
+ {topic:'Wildcards',keys:'joker * ? critere texte nb.si somme.si recherche',text:'Dans plusieurs critères texte, * remplace plusieurs caractères et ? un seul caractère. Pour rechercher réellement * ou ?, utilise le caractère d’échappement ~.'},
+ {topic:'Calculs financiers',keys:'finance van tri vpm paiement interet investissement',text:'Les fonctions financières supposent une convention de signes cohérente : les sorties de trésorerie sont généralement négatives et les entrées positives.'},
+ {topic:'Statistiques',keys:'moyenne mediane ecart type percentile quartile rang',text:'Choisis l’indicateur selon la distribution : la médiane résiste mieux aux valeurs extrêmes que la moyenne. Le rang, percentiles et quartiles servent à positionner une valeur dans une distribution.'},
+ {topic:'Import CSV',keys:'csv import delimiter encodage separateur utf8',text:'Pour un CSV, préfère Données > À partir d’un texte/CSV afin de contrôler séparateur, encodage et types de colonnes au lieu d’un simple double-clic.'},
+ {topic:'Heures et durées',keys:'heure duree 24 h temps format [h]:mm',text:'Pour afficher une durée dépassant 24 h, utilise un format personnalisé comme [h]:mm. Une heure Excel est une fraction de journée.'},
+ {topic:'Pourcentages',keys:'pourcentage % taux multiplication division',text:'50 % est stocké comme 0,5. Pour appliquer une hausse de 10 %, multiplie par 1+10%; pour une baisse de 10 %, par 1-10%.'},
+ {topic:'Arrondis',keys:'arrondi decimal entier monetaire precision',text:'Le format d’affichage ne change pas la valeur réelle. Si la précision de calcul doit être modifiée, utilise ARRONDI/ARRONDI.SUP/ARRONDI.INF.'},
+ {topic:'Formules matricielles',keys:'matrice matricielle sommeprod dynamique',text:'Les versions modernes d’Excel gèrent nativement beaucoup de calculs matriciels. SOMMEPROD reste utile pour des calculs conditionnels compacts et compatibles.'},
+ {topic:'SOMMEPROD',keys:'sommeprod plusieurs criteres produit condition',text:'SOMMEPROD peut multiplier puis sommer des tableaux et simuler certains calculs multicritères. Exemple : =SOMMEPROD((A2:A100="Paris")*(B2:B100>0)*C2:C100).'},
+ {topic:'VBA et macros',keys:'vba macro automatiser code boucle bouton',text:'VBA est utile pour automatiser des actions dans le classeur lorsque les formules, Power Query ou Office Scripts ne suffisent pas. Évite d’utiliser une macro pour un calcul qu’une formule simple peut faire.'},
+ {topic:'Graphiques',keys:'graphique chart visualisation histogramme courbe nuage',text:'Choisis le graphique selon la question : courbe pour évolution temporelle, barres pour comparaison, nuage de points pour relation entre deux variables. Évite les graphiques 3D qui déforment la lecture.'},
+ {topic:'Bon modèle de données',keys:'structure donnees ligne colonne base tableau propre',text:'Une base Excel robuste a une ligne d’en-têtes, une ligne par observation, une colonne par variable, aucun sous-total au milieu, pas de cellules fusionnées dans les données et des types cohérents.'},
+ {topic:'Cellules fusionnées',keys:'fusion cellule merged probleme tri filtre',text:'Évite les cellules fusionnées dans les zones de données : elles gênent tris, filtres, tableaux, formules et Power Query. Utilise plutôt Centrer sur la sélection pour la présentation.'},
+ {topic:'Liens externes',keys:'lien externe classeur source casse liaison',text:'Les liens vers d’autres classeurs sont fragiles si les fichiers sont déplacés. Pour des flux réguliers, Power Query ou une source centralisée est souvent plus robuste.'},
+ {topic:'Compatibilité versions',keys:'version excel 365 2021 2019 compatibilite fonction disponible',text:'Certaines fonctions comme RECHERCHEX, FILTRE, UNIQUE, LET ou LAMBDA nécessitent des versions récentes. Pour un fichier partagé avec d’anciennes versions, prévois une alternative.'}
+];
+
+const errorKnowledge=[
+ ['#N/A','La recherche ne trouve aucune correspondance. Vérifie espaces, types texte/nombre, valeur recherchée et mode de correspondance.'],
+ ['#VALEUR!','Un argument a un type incompatible. Vérifie nombres stockés en texte, dates, plages et opérations sur du texte.'],
+ ['#REF!','Une référence n’est plus valide, souvent après suppression ou déplacement d’une cellule/colonne.'],
+ ['#DIV/0!','La formule divise par zéro ou par une cellule vide. Teste le dénominateur avant la division.'],
+ ['#NOM?','Excel ne reconnaît pas un nom de fonction, un nom défini ou un texte non placé entre guillemets.'],
+ ['#NOMBRE!','Une valeur numérique est hors domaine ou un calcul numérique n’aboutit pas.'],
+ ['#PROPAGATION!','Une formule dynamique ne peut pas se déployer parce que des cellules de la zone de sortie sont occupées ou fusionnées.'],
+ ['#CALC!','Une formule matricielle/dynamique rencontre un cas de calcul non pris en charge, par exemple un résultat vide selon la fonction.']
+];
+
+const expertKnowledge=[
+ {topic:'Architecture d’un classeur',keys:'architecture classeur structure feuilles saisie calcul parametre sortie reporting',text:'Sépare idéalement les données sources, les paramètres, les calculs et les restitutions. Une structure claire réduit les erreurs et facilite l’audit.'},
+ {topic:'Plages structurées',keys:'table plage structuree tableau colonne reference structuree',text:'Les Tableaux Excel donnent des références lisibles, s’étendent automatiquement et limitent les formules cassées quand de nouvelles lignes arrivent.'},
+ {topic:'Choix formule ou Power Query',keys:'formule power query choisir transformation repetee importer nettoyer',text:'Une formule est idéale pour un calcul vivant cellule par cellule. Power Query est meilleur pour importer et transformer de manière répétable des données avant analyse.'},
+ {topic:'Choix formule ou TCD',keys:'formule tcd pivot synthese agregation groupes analyse',text:'Pour résumer rapidement des données par catégories, dates ou équipes, un TCD est souvent plus simple qu’un grand réseau de SOMME.SI.ENS.'},
+ {topic:'Choix formule ou VBA',keys:'formule vba macro automatiser bouton fichiers actions repetitives',text:'VBA devient pertinent quand il faut orchestrer des actions, boucler sur des fichiers, générer des exports ou automatiser une interface, pas seulement calculer une cellule.'},
+ {topic:'Données sources propres',keys:'source propre tidy data ligne colonne base plate normalisee',text:'Une ligne doit représenter un enregistrement, une colonne une variable et chaque colonne doit garder un type cohérent. C’est la base d’un classeur fiable.'},
+ {topic:'Contrôle qualité',keys:'qualite controles coherence doublons vides types anomalies',text:'Avant d’analyser, contrôle les doublons, valeurs manquantes, types incohérents, dates impossibles et identifiants non uniques.'},
+ {topic:'Colonnes calculées',keys:'colonne calculee table formule recopie',text:'Dans un Tableau Excel, une formule saisie dans une colonne calculée se propage automatiquement et reste cohérente quand les lignes sont ajoutées.'},
+ {topic:'Références 3D',keys:'reference 3d plusieurs feuilles somme feuille janvier decembre',text:'Les références 3D permettent certains calculs sur une série de feuilles, mais deviennent fragiles si l’organisation des onglets change souvent.'},
+ {topic:'Formules matricielles',keys:'matrice matricielle dynamique arrays tableau calcul plusieurs valeurs',text:'Les versions modernes d’Excel propagent naturellement de nombreuses formules matricielles. Évite les anciens raccourcis Ctrl+Maj+Entrée quand une formule dynamique suffit.'},
+ {topic:'RECHERCHEX robuste',keys:'recherchex exact approximate sens recherche dernier premier wildcard',text:'RECHERCHEX permet de choisir le mode de correspondance et le sens de recherche. Pour des données métier, explicite toujours ce qui doit se passer si aucune valeur n’est trouvée.'},
+ {topic:'INDEX + EQUIV',keys:'index equiv match lookup compatibilite recherche bidirectionnelle',text:'INDEX+EQUIV sépare la recherche de position et le retour de valeur. C’est une combinaison très robuste, notamment pour les versions sans RECHERCHEX.'},
+ {topic:'Critères avec jokers',keys:'joker wildcard asterisque point interrogation critere texte nb.si somme.si',text:'Dans les critères texte, * représente plusieurs caractères et ? un caractère. Pour rechercher littéralement ces symboles, utilise ~ devant eux.'},
+ {topic:'Dates et heures réelles',keys:'date heure serial texte date conversion time',text:'Une date affichée comme date peut être du texte. Vérifie le type réel avant de calculer des écarts, filtrer par période ou grouper dans un TCD.'},
+ {topic:'Calendrier ouvré',keys:'jours ouvres jours feries weekend workday networkdays',text:'Pour les délais métier, utilise les fonctions de jours ouvrés avec une plage de jours fériés plutôt que de soustraire simplement deux dates.'},
+ {topic:'Nettoyage Unicode',keys:'unicode espace insecable caracteres invisibles nettoyer substitue car code',text:'SUPPRESPACE ne supprime pas tous les espaces spéciaux. Les données web peuvent contenir des espaces insécables ou caractères Unicode à traiter avec SUBSTITUE/UNICODE.'},
+ {topic:'Comparaison texte/nombre',keys:'texte nombre comparaison egalite recherche identifiant zero initial',text:'Un identifiant peut être numérique dans une source et texte dans une autre. Harmonise le type avant RECHERCHEX, NB.SI ou comparaison.'},
+ {topic:'Zéros initiaux',keys:'zero initial code postal identifiant format texte',text:'Les identifiants avec zéros initiaux doivent souvent rester en texte. Un format personnalisé peut seulement changer l’affichage, pas la valeur sous-jacente.'},
+ {topic:'Arrondis financiers',keys:'arrondi financier centime precision flottant ecart',text:'Pour les montants, applique un arrondi explicite au bon niveau métier. Des écarts peuvent apparaître si tu additionnes des valeurs non arrondies mais affichées à deux décimales.'},
+ {topic:'Calcul manuel',keys:'calcul manuel automatique recalc f9 performance',text:'Un classeur peut être en mode de calcul manuel. Si les résultats semblent figés, contrôle ce paramètre avant de chercher une erreur de formule.'},
+ {topic:'Dépendances',keys:'dependance antecedent precedent formule reference chaine calcul',text:'Une cellule peut être correcte localement mais fausse à cause d’un antécédent erroné. Pour diagnostiquer, remonte la chaîne de dépendances.'},
+ {topic:'Formules incohérentes',keys:'formule incoherente rupture pattern copie ligne colonne anomalie',text:'Dans une colonne calculée, une formule différente au milieu d’une série est souvent une anomalie. Compare les motifs de formules voisins.'},
+ {topic:'Constantes en dur',keys:'hardcode constante en dur formule taux parametre',text:'Évite de répéter des taux ou seuils directement dans de nombreuses formules. Place les paramètres dans des cellules nommées ou une table de paramètres.'},
+ {topic:'Mise en forme vs donnée',keys:'format cellule valeur pourcentage devise date affichage',text:'Le format ne change pas toujours la valeur. 0,15 formaté en pourcentage devient 15 %, tandis que 15 formaté en pourcentage devient 1500 %.'},
+ {topic:'Validation robuste',keys:'validation liste dynamique erreur saisie message entrée',text:'Une validation de données fiable inclut une source maintenable, un message de saisie clair et une alerte adaptée au risque métier.'},
+ {topic:'TCD et source dynamique',keys:'tcd source dynamique tableau actualiser refresh cache',text:'Alimente les TCD depuis un Tableau Excel ou le Modèle de données pour éviter qu’une nouvelle ligne reste hors de la source après actualisation.'},
+ {topic:'Segments et chronologies',keys:'segment slicer chronologie timeline tcd filtre visuel',text:'Segments et chronologies rendent les TCD plus accessibles et réduisent les erreurs de filtrage manuel dans les reportings.'},
+ {topic:'Power Query typage',keys:'power query type colonne date nombre texte erreur etape',text:'Dans Power Query, le typage des colonnes doit être explicite. Une étape de type incorrecte peut créer des erreurs ou transformer silencieusement les données.'},
+ {topic:'Power Query fusion',keys:'merge fusion jointure left inner anti power query',text:'Choisis la jointure selon le besoin : Left Outer conserve la table principale, Inner garde seulement les correspondances, Left Anti permet d’identifier les éléments absents.'},
+ {topic:'Power Query empiler',keys:'append ajouter requetes empiler fichiers dossier',text:'Ajouter des requêtes sert à empiler des tables ayant la même structure. Pour des fichiers récurrents, l’import depuis un dossier est souvent la meilleure architecture.'},
+ {topic:'DAX mesure vs colonne',keys:'dax mesure colonne calculee power pivot contexte filtre ligne',text:'Une colonne calculée est évaluée ligne par ligne et stockée. Une mesure DAX est calculée à la demande selon le contexte de filtre du rapport.'},
+ {topic:'VBA sécurité',keys:'vba macro securite xlsm signature confiance',text:'Les macros nécessitent un format prenant en charge VBA, typiquement .xlsm, et doivent être utilisées avec des règles de confiance adaptées.'},
+ {topic:'VBA gestion erreurs',keys:'vba on error gestion erreur debug option explicit',text:'En VBA, Option Explicit, des noms de variables clairs et une gestion d’erreurs ciblée sont essentiels. Évite On Error Resume Next comme solution générale.'},
+ {topic:'VBA performance',keys:'vba performance screenupdating calculation array range boucle cellule',text:'Pour accélérer VBA, évite les boucles cellule par cellule, travaille avec des tableaux en mémoire et restaure toujours ScreenUpdating/Calculation après traitement.'},
+ {topic:'Graphiques',keys:'graphique chart choix courbe barre secteur scatter nuage points',text:'Choisis le graphique selon la question : courbe pour l’évolution, barres pour comparer, nuage de points pour une relation, secteurs seulement pour peu de parts d’un total.'},
+ {topic:'Reporting lisible',keys:'reporting dashboard lisible kpi graphique couleur',text:'Un bon reporting met d’abord les décisions à prendre : peu de KPI, unités explicites, périodes comparables, couleurs cohérentes et sources traçables.'},
+ {topic:'Import CSV',keys:'csv separateur encodage utf8 virgule point virgule decimal',text:'Les CSV dépendent du séparateur, de l’encodage et des paramètres régionaux. Vérifie UTF-8, séparateur de champs et séparateur décimal.'},
+ {topic:'Protection des données',keys:'donnees sensibles local offline externe confidentiel',text:'Pour des données sensibles, privilégie un traitement local, limite les copies, protège les fichiers et ne diffuse que les extraits strictement nécessaires.'},
+ {topic:'Audit avant livraison',keys:'audit livraison verifier erreur nom lien formule protection documentation',text:'Avant livraison, vérifie erreurs visibles, noms définis, liens externes, formules incohérentes, zones de saisie, protection, impression et documentation minimale.'},
+ {topic:'Documentation',keys:'documentation notice commentaire feuille aide utilisateur',text:'Un classeur métier doit expliquer ses entrées, sorties, règles et boutons. Une feuille “Lisez-moi” ou une aide intégrée réduit les erreurs d’usage.'}
+];
+
+function tokenize(v){return norm(v).replace(/[^a-z0-9#.$!]+/g,' ').split(/\s+/).filter(x=>x.length>1)}
+function scoreText(q,text){const qs=tokenize(q), t=norm(text);let score=0;qs.forEach(w=>{if(t.includes(w))score+=w.length>5?3:1});return score}
+function bestFormulas(q,limit=4){return formulas.map(f=>({f,s:scoreText(q,`${f.name} ${f.cat} ${f.desc} ${f.keys} ${f.code}`)})).filter(x=>x.s>0).sort((a,b)=>b.s-a.s).slice(0,limit).map(x=>x.f)}
+function allKnowledge(){return excelKnowledge.concat(expertKnowledge)}
+function bestKnowledge(q,limit=4){return allKnowledge().map(k=>({k,s:scoreText(q,`${k.topic} ${k.keys} ${k.text}`)})).filter(x=>x.s>0).sort((a,b)=>b.s-a.s).slice(0,limit).map(x=>x.k)}
+function extractMentionedFormula(q){const nq=norm(q);return formulas.find(f=>nq.includes(norm(f.name)))||null}
+function detectError(q){const upper=q.toUpperCase();return errorKnowledge.find(([code])=>upper.includes(code))||null}
+function detectLevel(q){const t=norm(q);if(/avance|expert|technique|performance|architecture|audit|optimis|lambda|dax|vba/.test(t))return 'Avancé';if(/intermedia|explique bien|pourquoi|comprendre|methode/.test(t))return 'Intermédiaire';return 'Débutant'}
+function detectIntent(q){const t=norm(q);if(/#(n\/a|valeur|ref|div\/0|nom|nombre|propagation|calc)/i.test(q)||t.includes('erreur'))return 'error';if(/export|telecharg|rapport|restitu/.test(t))return 'export';if(/analyse|audite|diagnostic|verifie|controle/.test(t))return 'audit';if(/raccourci|clavier/.test(t))return 'shortcut';if(/nettoy|espace|doublon|vide|qualite/.test(t))return 'clean';if(/tcd|croise dynamique|pivot/.test(t))return 'pivot';if(/power query|import|fusionner des fichiers|combiner|empiler/.test(t))return 'powerquery';if(/vba|macro|automatis/.test(t))return 'vba';if(/graphique|chart|courbe|histogramme|dashboard/.test(t))return 'chart';if(/lent|performance|optimis|recalcul/.test(t))return 'performance';if(/date|jour|mois|annee|heure|ouvr/.test(t))return 'date';if(/formule|calcul|somme|recherch|condition|compter|moyenne/.test(t))return 'formula';return 'general'}
+function recommendApproach(q){const t=norm(q),intent=detectIntent(q);if(intent==='powerquery'||(/plusieurs fichiers|tous les mois|repet/.test(t)&&/import|nettoy|fusion/.test(t)))return ['Power Query','Importer, nettoyer et répéter la transformation de manière fiable.'];if(intent==='pivot'||(/resume|synthese|par categorie|par mois/.test(t)&&/lignes|donnees/.test(t)))return ['Tableau croisé dynamique','Synthétiser rapidement les données par dimensions et mesures.'];if(intent==='vba'||(/bouton|automatiquement|ouvrir.*fichier|generer.*fichier/.test(t)))return ['VBA / automatisation','Orchestrer plusieurs actions ou manipulations de fichiers.'];if(/structure|base|organis|refaire le fichier/.test(t))return ['Restructuration du classeur','Séparer sources, paramètres, calculs et restitution avant d’ajouter des formules.'];return ['Formule Excel','Résoudre directement le calcul dans les cellules avec une logique maintenable.']}
+function needsMoreInfo(q){const t=norm(q);let missing=[];if(!/[a-z]{1,3}\$?\d+/i.test(q)&&!t.includes('colonne')&&!t.includes('plage'))missing.push('les cellules ou colonnes concernées');if(!t.includes('veux')&&!t.includes('resultat')&&!t.includes('obtenir'))missing.push('le résultat exact attendu');if(q.length<80)missing.push('un petit exemple de données');return missing.slice(0,2)}
+function formulaExplain(f){if(!f)return '';const refs=extractRefs(f.code);return `${f.desc}${refs.length?` Références de l’exemple : ${refs.join(', ')}.`:''}`}
+function buildOfflineAnswer(q){
+ const intent=detectIntent(q), level=detectLevel(q), mentioned=extractMentionedFormula(q), matches=bestFormulas(q,5), knowledge=bestKnowledge(q,4), err=detectError(q), approach=recommendApproach(q);let missing=needsMoreInfo(q);
+ let html='<div class="ai-answer">';
+ html+=`<h4>Compréhension</h4><p>Je traiterais cette demande comme un besoin de <strong>${escapeHtml(intent)}</strong>. Approche recommandée : <strong>${escapeHtml(approach[0])}</strong> — ${escapeHtml(approach[1])}</p>`;
+ if(err)html+=`<h4>Diagnostic prioritaire</h4><p><strong>${escapeHtml(err[0])}</strong> — ${escapeHtml(err[1])}</p>`;
+ if(workbookContext){html+=workbookInsight(q);missing=[];}
+ if(mentioned){html+=`<h4>Fonction détectée : ${escapeHtml(mentioned.name)}</h4><p>${escapeHtml(formulaExplain(mentioned))}</p><div class="formula-answer">${escapeHtml(mentioned.code)}</div>`;}
+ if(!mentioned&&matches.length&&['formula','error','clean','date','general'].includes(intent)){
+   const primary=matches[0];html+=`<h4>Solution que je testerais d’abord</h4><div class="formula-answer">${escapeHtml(primary.code)}</div><p>${escapeHtml(primary.desc)}</p>`;
+   if(matches.length>1)html+=`<div class="ai-grid">${matches.slice(1,4).map(f=>`<div class="ai-chip"><b>${escapeHtml(f.name)}</b>${escapeHtml(f.desc)}</div>`).join('')}</div>`;
+ }
+ if(knowledge.length){html+=`<h4>Explication ${escapeHtml(level.toLowerCase())}</h4><ul>${knowledge.map(k=>`<li><strong>${escapeHtml(k.topic)} :</strong> ${escapeHtml(k.text)}</li>`).join('')}</ul>`;}
+ if(intent==='powerquery')html+=`<div class="ai-note"><strong>Méthode :</strong> Source → types de colonnes → nettoyage → jointures/ajouts → contrôles qualité → chargement. Garde les étapes nommées et actualisables.</div>`;
+ if(intent==='pivot')html+=`<div class="ai-note"><strong>Méthode :</strong> transforme d’abord la source en Tableau, crée le TCD, place dimensions en lignes/colonnes, mesures en valeurs puis ajoute filtres ou segments.</div>`;
+ if(intent==='vba')html+=`<div class="ai-note"><strong>Méthode :</strong> définis précisément l’entrée, l’action, la sortie et les erreurs possibles avant d’écrire la macro. Privilégie Option Explicit et évite les Select/Activate inutiles.</div>`;
+ if(intent==='performance')html+=`<div class="ai-note"><strong>Audit performance :</strong> fonctions volatiles, colonnes entières, formules répétées, liens externes, calcul manuel, formules matricielles lourdes et VBA cellule par cellule.</div>`;
+ if(intent==='shortcut')html+=`<div class="ai-note"><strong>Raccourcis utiles :</strong> F2 édition, F4 références absolues/relatives, Ctrl+T Tableau, Alt+= SOMME, Ctrl+1 format, Ctrl+Maj+L filtres, Ctrl+Accent grave : affichage des formules.</div>`;
+ if(intent==='export'&&workbookContext)html+=`<h4>Restitution</h4><div class="ai-grid"><button class="ai-chip ai-action" onclick="downloadWorkbookReport()"><b>Rapport diagnostic</b>Télécharger un rapport JSON complet.</button><button class="ai-chip ai-action" onclick="downloadActiveSheetCSV()"><b>Feuille en CSV</b>Exporter la feuille analysée ou la première feuille.</button></div>`;
+ if(missing.length)html+=`<h4>Informations encore utiles</h4><p>Pour une réponse exacte avec ta propre structure, indique ${escapeHtml(missing.join(' et '))}.</p>`;
+ html+=`<span class="kb-badge">Moteur local · ${formulas.length} fonctions · ${allKnowledge().length} thèmes · niveau ${escapeHtml(level)}${workbookContext?' · classeur analysé':''}</span></div>`;return html;
+}
+
+
+
+let workbookContext=null;
+const uploadBtn=document.getElementById('uploadExcelBtn');
+const fileInput=document.getElementById('excelFileInput');
+const fileStatus=document.getElementById('fileStatus');
+uploadBtn.addEventListener('click',()=>fileInput.click());
+fileInput.addEventListener('change',async()=>{const file=fileInput.files&&fileInput.files[0];if(!file)return;await handleWorkbookUpload(file);fileInput.value='';});
+
+function scrollMessages(){const m=document.getElementById('messages');requestAnimationFrame(()=>m.scrollTop=m.scrollHeight)}
+function addPlainMessage(text,who='bot',progressive=true){
+ const messages=document.getElementById('messages');
+ const row=document.createElement('div');row.className='msg '+who;
+ const bubble=document.createElement('div');bubble.className='bubble';row.appendChild(bubble);messages.appendChild(row);scrollMessages();
+ if(!progressive||who==='user'){bubble.textContent=text;scrollMessages();return Promise.resolve(bubble)}
+ return typePlainText(bubble,text);
+}
+async function typePlainText(el,text){
+ el.textContent='';const step=text.length>160?4:text.length>80?2:1;
+ for(let i=0;i<text.length;i+=step){el.textContent+=text.slice(i,i+step);if(i%12===0){scrollMessages();await new Promise(r=>setTimeout(r,12));}}
+ scrollMessages();return el;
+}
+function addTyping(){const messages=document.getElementById('messages');const row=document.createElement('div');row.className='msg bot';row.innerHTML='<div class="bubble typing-bubble"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></div>';messages.appendChild(row);scrollMessages();return row}
+async function streamNode(source,parent){
+ if(source.nodeType===Node.TEXT_NODE){const text=source.textContent||'';const parts=text.split(/(\s+)/);const tn=document.createTextNode('');parent.appendChild(tn);for(let i=0;i<parts.length;i++){tn.textContent+=parts[i];if(i%4===0){scrollMessages();await new Promise(r=>setTimeout(r,14));}}return;}
+ if(source.nodeType!==Node.ELEMENT_NODE)return;
+ const el=source.cloneNode(false);el.classList.add('stream-part');parent.appendChild(el);for(const child of source.childNodes)await streamNode(child,el);
+}
+async function streamHtmlAnswer(html){
+ const messages=document.getElementById('messages');const row=document.createElement('div');row.className='msg bot';const bubble=document.createElement('div');bubble.className='bubble';row.appendChild(bubble);messages.appendChild(row);
+ const tmp=document.createElement('div');tmp.innerHTML=html;for(const node of [...tmp.childNodes])await streamNode(node,bubble);scrollMessages();return bubble;
+}
+
+function guessDelimiter(text){const first=(text.split(/\r?\n/).find(l=>l.trim())||'');const opts=[';','\t',',','|'];return opts.map(d=>[d,(first.match(new RegExp(d==='\t'?'\\t':'\\'+d,'g'))||[]).length]).sort((a,b)=>b[1]-a[1])[0][0]}
+function parseDelimitedLine(line,delim){let out=[],cur='',q=false;for(let i=0;i<line.length;i++){const c=line[i];if(c==='"'){if(q&&line[i+1]==='"'){cur+='"';i++}else q=!q}else if(c===delim&&!q){out.push(cur);cur=''}else cur+=c}out.push(cur);return out}
+function colLetters(n){let s='';while(n>0){n--;s=String.fromCharCode(65+n%26)+s;n=Math.floor(n/26)}return s}
+function colFromRef(ref){const m=String(ref).match(/^\$?([A-Z]{1,3})/i);return m?m[1].toUpperCase():''}
+function rowFromRef(ref){const m=String(ref).match(/(\d+)$/);return m?Number(m[1]):0}
+function extractFunctionNames(formula){return [...String(formula||'').matchAll(/([A-ZÀ-Ü][A-ZÀ-Ü0-9._]*)\s*\(/gi)].map(m=>m[1].toUpperCase())}
+function decodeXml(v){const d=document.createElement('textarea');d.innerHTML=v;return d.value}
+
+async function analyzeDelimited(file){
+ const text=await file.text();const delim=file.name.toLowerCase().endsWith('.tsv')?'\t':guessDelimiter(text);const lines=text.replace(/^\uFEFF/,'').split(/\r?\n/);const cells=[];let maxCols=0,formulaCount=0;
+ lines.forEach((line,ri)=>{if(line===''&&ri===lines.length-1)return;const vals=parseDelimitedLine(line,delim);maxCols=Math.max(maxCols,vals.length);vals.forEach((v,ci)=>{if(v==='')return;const formula=String(v).startsWith('=')?v:null;if(formula)formulaCount++;cells.push({address:colLetters(ci+1)+(ri+1),row:ri+1,col:ci+1,value:formula?'':v,formula,type:'text'});});});
+ return {fileName:file.name,fileSize:file.size,format:file.name.split('.').pop().toUpperCase(),sheetCount:1,sheets:[{name:'Données',state:'visible',range:`A1:${colLetters(maxCols||1)}${Math.max(lines.length,1)}`,rows:lines.length,columns:maxCols,cells,formulaCount,merged:[],validations:[],conditionalFormats:[],columnSettings:[]}],definedNames:[],tables:[],charts:[],media:[],comments:[],hasMacros:false,totalCells:cells.length,totalFormulas:formulaCount,delimiter:delim};
+}
+
+async function unzipOOXML(buffer){
+ const u8=new Uint8Array(buffer),dv=new DataView(buffer);let eocd=-1;for(let i=u8.length-22;i>=Math.max(0,u8.length-65557);i--){if(dv.getUint32(i,true)===0x06054b50){eocd=i;break}}
+ if(eocd<0)throw new Error('Archive Excel invalide ou format non OOXML.');
+ const total=dv.getUint16(eocd+10,true),cdOffset=dv.getUint32(eocd+16,true);let pos=cdOffset;const entries={};
+ for(let k=0;k<total;k++){
+  if(dv.getUint32(pos,true)!==0x02014b50)break;
+  const method=dv.getUint16(pos+10,true),csize=dv.getUint32(pos+20,true),usize=dv.getUint32(pos+24,true),nlen=dv.getUint16(pos+28,true),elen=dv.getUint16(pos+30,true),clen=dv.getUint16(pos+32,true),loff=dv.getUint32(pos+42,true);
+  const name=new TextDecoder().decode(u8.slice(pos+46,pos+46+nlen));
+  const lnlen=dv.getUint16(loff+26,true),lelen=dv.getUint16(loff+28,true),start=loff+30+lnlen+lelen,compressed=u8.slice(start,start+csize);
+  let data;
+  if(method===0)data=compressed;
+  else if(method===8){if(typeof DecompressionStream==='undefined')throw new Error('Ce navigateur ne fournit pas le décompresseur nécessaire aux fichiers XLSX offline.');const ds=new DecompressionStream('deflate-raw');const ab=await new Response(new Blob([compressed]).stream().pipeThrough(ds)).arrayBuffer();data=new Uint8Array(ab)}
+  else{pos+=46+nlen+elen+clen;continue}
+  entries[name]={name,data,size:usize};pos+=46+nlen+elen+clen;
+ }
+ return entries;
+}
+function entryText(entries,name){const e=entries[name];return e?new TextDecoder('utf-8').decode(e.data):''}
+function xmlDoc(text){if(!text)return null;const d=new DOMParser().parseFromString(text,'application/xml');if(d.querySelector('parsererror'))return null;return d}
+function relPath(base,target){if(target.startsWith('/'))return target.slice(1);const parts=base.split('/');parts.pop();for(const x of target.split('/')){if(x==='..')parts.pop();else if(x!=='.')parts.push(x)}return parts.join('/')}
+function nodeText(node){return node?[...node.querySelectorAll('t')].map(x=>x.textContent||'').join(''):''}
+
+function parseSheetXml(doc,shared){
+ const dim=doc.querySelector('dimension')?.getAttribute('ref')||'';const cells=[];let maxRow=0,maxCol=0,formulaCount=0;
+ doc.querySelectorAll('sheetData c').forEach(c=>{const address=c.getAttribute('r')||'';const t=c.getAttribute('t')||'n',style=c.getAttribute('s');const fnode=c.querySelector('f'),vnode=c.querySelector('v');let formula=fnode?fnode.textContent||'':null;let value='';
+   if(t==='inlineStr')value=nodeText(c.querySelector('is'));else if(t==='s')value=shared[Number(vnode?.textContent||0)]??'';else if(t==='b')value=(vnode?.textContent==='1');else value=vnode?.textContent??'';
+   if(formula)formulaCount++;const row=rowFromRef(address),letters=colFromRef(address);let col=0;for(const ch of letters)col=col*26+ch.charCodeAt(0)-64;maxRow=Math.max(maxRow,row);maxCol=Math.max(maxCol,col);cells.push({address,row,col,value,formula:formula?('='+formula):null,type:t,style:style===null?null:Number(style)});
+ });
+ const merged=[...doc.querySelectorAll('mergeCell')].map(x=>x.getAttribute('ref')).filter(Boolean);
+ const validations=[...doc.querySelectorAll('dataValidation')].map(x=>({range:x.getAttribute('sqref')||'',type:x.getAttribute('type')||'',operator:x.getAttribute('operator')||'',allowBlank:x.getAttribute('allowBlank')==='1',formula1:x.querySelector('formula1')?.textContent||'',formula2:x.querySelector('formula2')?.textContent||''}));
+ const conditionalFormats=[...doc.querySelectorAll('conditionalFormatting')].map(x=>({range:x.getAttribute('sqref')||'',rules:[...x.querySelectorAll('cfRule')].map(r=>({type:r.getAttribute('type')||'',operator:r.getAttribute('operator')||'',priority:r.getAttribute('priority')||'',formulas:[...r.querySelectorAll('formula')].map(f=>f.textContent||'')}))}));
+ const columnSettings=[...doc.querySelectorAll('cols col')].map(x=>({min:Number(x.getAttribute('min')||0),max:Number(x.getAttribute('max')||0),width:Number(x.getAttribute('width')||0),hidden:x.getAttribute('hidden')==='1'}));
+ const rowSettings=[...doc.querySelectorAll('sheetData row')].filter(r=>r.getAttribute('hidden')==='1'||r.getAttribute('ht')).map(r=>({row:Number(r.getAttribute('r')||0),height:Number(r.getAttribute('ht')||0),hidden:r.getAttribute('hidden')==='1'}));
+ return {range:dim||(`A1:${colLetters(maxCol||1)}${maxRow||1}`),rows:maxRow,columns:maxCol,cells,formulaCount,merged,validations,conditionalFormats,columnSettings,rowSettings};
+}
+
+async function analyzeOOXML(file){
+ const entries=await unzipOOXML(await file.arrayBuffer());const wbDoc=xmlDoc(entryText(entries,'xl/workbook.xml'));if(!wbDoc)throw new Error('Le classeur ne contient pas de workbook.xml lisible.');
+ const relDoc=xmlDoc(entryText(entries,'xl/_rels/workbook.xml.rels'));const rels={};relDoc?.querySelectorAll('Relationship').forEach(r=>rels[r.getAttribute('Id')]=r.getAttribute('Target'));
+ const sharedDoc=xmlDoc(entryText(entries,'xl/sharedStrings.xml'));const shared=sharedDoc?[...sharedDoc.querySelectorAll('si')].map(si=>nodeText(si)):[];
+ const definedNames=[...wbDoc.querySelectorAll('definedNames definedName')].map(n=>({name:n.getAttribute('name')||'',scope:n.getAttribute('localSheetId'),ref:n.textContent||''}));
+ const sheets=[];
+ for(const sn of wbDoc.querySelectorAll('sheets sheet')){const name=sn.getAttribute('name')||'Feuille',state=sn.getAttribute('state')||'visible',rid=sn.getAttribute('r:id')||sn.getAttributeNS('http://schemas.openxmlformats.org/officeDocument/2006/relationships','id');const target=rels[rid];if(!target)continue;const path=relPath('xl/workbook.xml',target);const sd=xmlDoc(entryText(entries,path));if(!sd)continue;sheets.push({name,state,path,...parseSheetXml(sd,shared)});}
+ const tables=[];Object.keys(entries).filter(n=>/^xl\/tables\/table\d+\.xml$/i.test(n)).forEach(n=>{const d=xmlDoc(entryText(entries,n));const t=d?.querySelector('table');if(t)tables.push({name:t.getAttribute('displayName')||t.getAttribute('name')||'',ref:t.getAttribute('ref')||'',columns:[...d.querySelectorAll('tableColumn')].map(c=>c.getAttribute('name')||'')})});
+ const charts=Object.keys(entries).filter(n=>/^xl\/charts\/chart\d+\.xml$/i.test(n));const media=Object.keys(entries).filter(n=>/^xl\/media\//i.test(n));
+ const comments=[];Object.keys(entries).filter(n=>/^xl\/comments\d+\.xml$/i.test(n)).forEach(n=>{const d=xmlDoc(entryText(entries,n));d?.querySelectorAll('comment').forEach(c=>comments.push({ref:c.getAttribute('ref')||'',authorId:c.getAttribute('authorId')||'',text:nodeText(c)}))});
+ const totalCells=sheets.reduce((a,s)=>a+s.cells.length,0),totalFormulas=sheets.reduce((a,s)=>a+s.formulaCount,0);
+ const funcs={};sheets.forEach(sh=>sh.cells.forEach(c=>extractFunctionNames(c.formula).forEach(fn=>funcs[fn]=(funcs[fn]||0)+1)));
+ const core=xmlDoc(entryText(entries,'docProps/core.xml'));const app=xmlDoc(entryText(entries,'docProps/app.xml'));
+ return {fileName:file.name,fileSize:file.size,format:file.name.split('.').pop().toUpperCase(),sheetCount:sheets.length,sheets,definedNames,tables,charts,media,comments,hasMacros:!!entries['xl/vbaProject.bin'],totalCells,totalFormulas,functionUsage:funcs,properties:{title:core?.querySelector('title')?.textContent||'',creator:core?.querySelector('creator')?.textContent||'',created:core?.querySelector('created')?.textContent||'',modified:core?.querySelector('modified')?.textContent||'',application:app?.querySelector('Application')?.textContent||''}};
+}
+
+async function analyzeSpreadsheetML(file){
+ const text=await file.text(),doc=xmlDoc(text);if(!doc)throw new Error('XML Excel illisible.');const sheets=[];for(const ws of doc.querySelectorAll('Worksheet')){const name=ws.getAttribute('ss:Name')||ws.getAttribute('Name')||'Feuille';const cells=[];let r=0,maxCol=0,formulaCount=0;for(const row of ws.querySelectorAll('Table > Row')){r++;let c=0;for(const cell of row.querySelectorAll(':scope > Cell')){c++;const idx=Number(cell.getAttribute('ss:Index')||0);if(idx)c=idx;const data=cell.querySelector('Data');const formula=cell.getAttribute('ss:Formula')||cell.getAttribute('Formula');cells.push({address:colLetters(c)+r,row:r,col:c,value:data?.textContent||'',formula:formula?formula.replace(/^=/,'='):null,type:data?.getAttribute('ss:Type')||'text'});if(formula)formulaCount++;maxCol=Math.max(maxCol,c);}}sheets.push({name,state:'visible',range:`A1:${colLetters(maxCol||1)}${r||1}`,rows:r,columns:maxCol,cells,formulaCount,merged:[],validations:[],conditionalFormats:[],columnSettings:[]});}
+ const totalCells=sheets.reduce((a,s)=>a+s.cells.length,0),totalFormulas=sheets.reduce((a,s)=>a+s.formulaCount,0);return {fileName:file.name,fileSize:file.size,format:'XML',sheetCount:sheets.length,sheets,definedNames:[],tables:[],charts:[],media:[],comments:[],hasMacros:false,totalCells,totalFormulas};
+}
+
+
+function scalarType(v){if(v===null||v===undefined||v==='')return 'vide';if(typeof v==='boolean')return 'booleen';if(typeof v==='number'||(!isNaN(Number(v))&&String(v).trim()!==''))return 'nombre';if(/^#(N\/A|VALEUR!|REF!|DIV\/0!|NOM\?|NOMBRE!|PROPAGATION!|CALC!)/i.test(String(v)))return 'erreur';if(/^\d{1,2}[\/\-.]\d{1,2}[\/\-.]\d{2,4}/.test(String(v)))return 'date-texte';return 'texte'}
+function profileSheet(sh){
+ const byCol={};sh.cells.forEach(c=>{(byCol[c.col]??=[]).push(c)});const columns=Object.keys(byCol).map(Number).sort((a,b)=>a-b).map(col=>{const arr=byCol[col],header=arr.find(c=>c.row===1)?.value??'',data=arr.filter(c=>c.row>1),types={};data.forEach(c=>{const t=scalarType(c.value);types[t]=(types[t]||0)+1});const vals=data.map(c=>String(c.value??'').trim()).filter(Boolean),uniq=new Set(vals);return {col,letter:colLetters(col),header:String(header||''),filled:data.length,blankEstimate:Math.max(0,(sh.rows-1)-data.length),types,unique:uniq.size,duplicates:Math.max(0,vals.length-uniq.size)};});
+ const errorCells=sh.cells.filter(c=>scalarType(c.value)==='erreur').map(c=>({address:c.address,value:c.value,formula:c.formula}));
+ const formulaCells=sh.cells.filter(c=>c.formula);const patterns={};formulaCells.forEach(c=>{const p=c.formula.replace(/\$?[A-Z]{1,3}\$?\d+/g,'REF').replace(/\d+/g,'N');patterns[p]=(patterns[p]||0)+1});const rarePatterns=Object.entries(patterns).filter(([,n])=>n===1).slice(0,20).map(([pattern])=>pattern);
+ const firstCol=columns[0];return {columns,errorCells,formulaCells:formulaCells.length,rareFormulaPatterns:rarePatterns,possibleKey:firstCol&&firstCol.unique===firstCol.filled&&firstCol.filled>1?firstCol.letter:null};
+}
+function enrichWorkbookContext(ctx){ctx.profiles={};ctx.sheets.forEach(sh=>ctx.profiles[sh.name]=profileSheet(sh));ctx.totalErrors=Object.values(ctx.profiles).reduce((a,p)=>a+p.errorCells.length,0);ctx.suspiciousFormulaPatterns=Object.values(ctx.profiles).reduce((a,p)=>a+p.rareFormulaPatterns.length,0);return ctx}
+function workbookAuditSummary(ctx){const issues=[];if(ctx.totalErrors)issues.push(`${ctx.totalErrors} cellule(s) avec erreur visible`);if(ctx.suspiciousFormulaPatterns)issues.push(`${ctx.suspiciousFormulaPatterns} motif(s) de formule isolé(s) à vérifier`);ctx.sheets.forEach(sh=>{const p=ctx.profiles?.[sh.name];if(!p)return;const mixed=p.columns.filter(c=>Object.keys(c.types).filter(t=>!['vide'].includes(t)).length>1);if(mixed.length)issues.push(`${sh.name}: types mélangés dans ${mixed.slice(0,4).map(c=>c.letter).join(', ')}`);const dup=p.columns.filter(c=>c.duplicates>0&&c.filled>2);if(dup.length)issues.push(`${sh.name}: doublons détectables dans ${dup.slice(0,3).map(c=>c.letter).join(', ')}`)});return issues.slice(0,12)}
+function downloadBlob(name,type,text){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)}
+function downloadWorkbookReport(){if(!workbookContext)return;const report={generatedAt:new Date().toISOString(),file:workbookContext.fileName,summary:workbookSummary(workbookContext),issues:workbookAuditSummary(workbookContext),sheets:workbookContext.sheets.map(sh=>({name:sh.name,range:sh.range,rows:sh.rows,columns:sh.columns,cells:sh.cells.length,formulas:sh.formulaCount,profile:workbookContext.profiles?.[sh.name]})),functionUsage:workbookContext.functionUsage||{},tables:workbookContext.tables||[],definedNames:workbookContext.definedNames||[]};downloadBlob((workbookContext.fileName||'classeur').replace(/\.[^.]+$/,'')+'_diagnostic.json','application/json;charset=utf-8',JSON.stringify(report,null,2))}
+function csvEscape(v){const x=String(v??'');return /[;"\n\r]/.test(x)?'"'+x.replace(/"/g,'""')+'"':x}
+function downloadActiveSheetCSV(){if(!workbookContext)return;const sh=workbookContext.sheets[0];if(!sh)return;const map=new Map(sh.cells.map(c=>[`${c.row}:${c.col}`,c.formula||c.value]));const lines=[];for(let r=1;r<=sh.rows;r++){const row=[];for(let c=1;c<=sh.columns;c++)row.push(csvEscape(map.get(`${r}:${c}`)??''));lines.push(row.join(';'))}downloadBlob(`${sh.name}.csv`,'text/csv;charset=utf-8','\ufeff'+lines.join('\r\n'))}
+
+function workbookSummary(ctx){return `${ctx.sheetCount} feuille${ctx.sheetCount>1?'s':''} · ${ctx.totalCells.toLocaleString('fr-FR')} cellules renseignées · ${ctx.totalFormulas.toLocaleString('fr-FR')} formules${ctx.tables?.length?` · ${ctx.tables.length} tableau${ctx.tables.length>1?'x':''}`:''}${ctx.charts?.length?` · ${ctx.charts.length} graphique${ctx.charts.length>1?'s':''}`:''}`}
+async function handleWorkbookUpload(file){
+ fileStatus.className='file-status';fileStatus.textContent='Analyse en cours…';const typing=addTyping();
+ try{
+   const ext=(file.name.split('.').pop()||'').toLowerCase();let ctx;
+   if(['csv','tsv','txt'].includes(ext))ctx=await analyzeDelimited(file);
+   else if(['xlsx','xlsm','xltx','xltm'].includes(ext))ctx=await analyzeOOXML(file);
+   else if(ext==='xml')ctx=await analyzeSpreadsheetML(file);
+   else if(['xls','xlsb','ods'].includes(ext))throw new Error(`Le format .${ext} est reconnu, mais son décodage binaire complet n'est pas encore intégré à ce moteur offline. Convertis-le en .xlsx ou .csv pour une analyse cellule par cellule.`);
+   else throw new Error('Format non reconnu.');
+   workbookContext=enrichWorkbookContext(ctx);typing.remove();fileStatus.className='file-status ready';fileStatus.textContent=file.name;
+   await addPlainMessage(`Fichier importé : ${file.name}. ${workbookSummary(ctx)}.`, 'bot', true);
+   await addPlainMessage('J’ai bien analysé le fichier, je suis prêt.', 'bot', true);
+ }catch(err){typing.remove();fileStatus.className='file-status error';fileStatus.textContent='Import impossible';await addPlainMessage(`Je n’ai pas pu analyser ce fichier : ${err.message}`,'bot',true);}
+}
+
+function findSheetByText(q){if(!workbookContext)return null;const nq=norm(q);return workbookContext.sheets.find(s=>nq.includes(norm(s.name)))||null}
+function workbookInsight(q){
+ if(!workbookContext)return '';const ctx=workbookContext,nq=norm(q),sheet=findSheetByText(q);let bits=[];const refs=[...String(q).matchAll(/\b([A-Z]{1,3}\d+)\b/gi)].map(m=>m[1].toUpperCase());
+ if(refs.length){const targets=sheet?[sheet]:ctx.sheets;for(const ref of refs.slice(0,10)){for(const sh of targets){const c=sh.cells.find(x=>x.address.toUpperCase()===ref);if(c){bits.push(`${sh.name}!${ref} = ${c.formula?c.formula+' → ':''}${String(c.value)}`);break}}}}
+ if(sheet){const p=ctx.profiles?.[sheet.name];bits.push(`${sheet.name} : ${sheet.range}, ${sheet.cells.length} cellules renseignées, ${sheet.formulaCount} formules`);const headers=(p?.columns||[]).filter(c=>c.header).slice(0,18).map(c=>`${c.letter}=${c.header}`);if(headers.length)bits.push('Colonnes : '+headers.join(', '));if(/doublon/.test(nq)){const d=(p?.columns||[]).filter(c=>c.duplicates>0);bits.push(d.length?'Doublons potentiels : '+d.slice(0,8).map(c=>`${c.letter} (${c.duplicates})`).join(', '):'Aucun doublon simple détecté par colonne.');}if(/erreur|audit|analyse|diagnostic/.test(nq)&&p?.errorCells?.length)bits.push('Erreurs visibles : '+p.errorCells.slice(0,8).map(e=>`${e.address}=${e.value}`).join(', '));}
+ if(/formule|audit|analyse|diagnostic/.test(nq)&&ctx.totalFormulas){const top=Object.entries(ctx.functionUsage||{}).sort((a,b)=>b[1]-a[1]).slice(0,10);if(top.length)bits.push('Fonctions les plus utilisées : '+top.map(([k,v])=>`${k} (${v})`).join(', '));}
+ if(/feuille|onglet|analyse|classeur/.test(nq))bits.push('Feuilles : '+ctx.sheets.map(s=>`${s.name} [${s.range}]`).join(' · '));
+ if(/analyse|audit|diagnostic|probleme|erreur|qualite/.test(nq)){const issues=workbookAuditSummary(ctx);bits.push(issues.length?'Points à vérifier : '+issues.join(' | '):'Aucune anomalie structurelle simple détectée par le premier audit local.');}
+ return bits.length?`<h4>Analyse du fichier importé</h4><ul>${bits.map(b=>`<li>${escapeHtml(b)}</li>`).join('')}</ul>`:'';
+}
+
+
+async function sendMessage(){
+ const input=document.getElementById('chatInput'), v=input.value.trim(); if(!v)return;
+ input.value='';await addPlainMessage(v,'user',false);const typing=addTyping();await new Promise(r=>setTimeout(r,280));const answer=buildOfflineAnswer(v);typing.remove();await streamHtmlAnswer(answer);scrollMessages();
+}
+document.getElementById('chatInput').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMessage()}});
+renderFormulas(formulas);
+</script>
+</body>
+</html>

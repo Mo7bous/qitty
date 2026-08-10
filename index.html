@@ -4890,6 +4890,35 @@ header img[src*="mascot"]{
 }
 </style>
 
+
+
+<style id="qitty-v122-office-excel-specs-standard-popup-style">
+/* Assistant Office Excel : même esprit que les autres popups techniques */
+.tech-spec-section{
+  margin-top:16px !important;
+  padding:15px 16px !important;
+  border:1px solid #dce6ff !important;
+  border-radius:16px !important;
+  background:#f6f8ff !important;
+}
+.tech-spec-section h4{
+  margin:0 0 8px !important;
+  color:#071b55 !important;
+}
+.tech-spec-section ul{
+  margin:0 !important;
+  padding-left:18px !important;
+}
+.tech-spec-section li{
+  margin:5px 0 !important;
+}
+.tech-spec-actions{
+  margin-top:18px !important;
+  display:flex !important;
+  justify-content:flex-start !important;
+}
+</style>
+
 </head>
 <body>
 
@@ -5154,14 +5183,14 @@ header img[src*="mascot"]{
 <p style="text-align:center">
               Solution prête à commercialiser pour générer des CV, lettres et candidatures adaptées aux offres d’emploi avec logique ATS, automatisation et accompagnement utilisateur.
             </p>
-<div class="service-actions"><a class="btn blue solution-action-btn demo-btn" href="https://qitty.space/EA.html" target="_blank" rel="noopener">Consulter Démo →</a><button class="btn blue-light solution-action-btn technical-spec-btn" type="button" data-tech-key="Easy Apply">Spécificités techniques →</button></div>
+<div class="service-actions"><a class="btn blue solution-action-btn demo-btn" href="https://qitty.space/EA.html" target="_blank" rel="noopener">Ouvrir →</a><button class="btn blue-light solution-action-btn technical-spec-btn" type="button" data-tech-key="Easy Apply">Spécificités techniques →</button></div>
           </article>
 <article class="service-card invest-card">
             <div class="qitty-card-carousel-wrap">
               <div class="qitty-auto-carousel" data-carousel-delay="3000">
-                <img class="qitty-carousel-slide active" src="Qitty/excel.png" alt="Assistant Office Excel Qitty">
-                <img class="qitty-carousel-slide" src="Qitty/excel.png" alt="Assistant Office Excel Qitty">
-                <img class="qitty-carousel-slide" src="Qitty/excel.png" alt="Assistant Office Excel Qitty">
+                <img class="qitty-carousel-slide active" src="Qitty/excel1.png" alt="Assistant Office Excel Qitty">
+                <img class="qitty-carousel-slide" src="Qitty/excel2.png" alt="Assistant Office Excel Qitty">
+                <img class="qitty-carousel-slide" src="Qitty/excel3.png" alt="Assistant Office Excel Qitty">
                 <div class="qitty-carousel-dots">
                 <span class="qitty-carousel-dot active"></span>
                 <span class="qitty-carousel-dot"></span>
@@ -5170,7 +5199,7 @@ header img[src*="mascot"]{
               </div>
             </div>
 <h3 style="text-align:center" class="qitty-platform-card-title">Assistant Office Excel</h3>
-            <p style="text-align:center">Assistant Excel et chatbot spécialisé en Excel, conçu pour fonctionner hors ligne ou en local selon le déploiement. Il aide à analyser, nettoyer, structurer et automatiser les fichiers Excel sans envoyer les données sensibles vers des plateformes IA externes. L’objectif est de protéger les informations précieuses tout en offrant une aide rapide sur les formules, tableaux, macros, VBA, reporting et tâches bureautiques.</p>
+            <p style="text-align:center">Assistant Excel local/offline qui aide à analyser, nettoyer et automatiser les fichiers sans envoyer les données sensibles vers des plateformes IA externes.</p>
 <div class="service-actions"><a class="btn blue solution-action-btn demo-btn" href="https://qitty.space/excel.html" target="_blank" rel="noopener">Consulter Démo →</a><button class="btn blue-light solution-action-btn technical-spec-btn" type="button" data-tech-key="Assistant Office Excel">Spécificités techniques →</button></div>
           </article>
 <article class="service-card invest-card qitty-added-platform-card">
@@ -5191,7 +5220,7 @@ header img[src*="mascot"]{
               Plateforme de répertorisation des tombes, lieux de mémoire et données associées, avec fiches, recherche, carte et consultation simplifiée.
             </p>
             <div class="service-actions">
-              <a class="btn blue solution-action-btn demo-btn" href="https://quboor.org/" target="_blank" rel="noopener">Consulter Démo →</a>
+              <a class="btn blue solution-action-btn demo-btn" href="https://quboor.org/" target="_blank" rel="noopener">Ouvrir →</a>
               <button class="btn blue-light solution-action-btn technical-spec-btn" type="button" data-tech-key="Quboor">Spécificités techniques →</button>
             </div>
           </article>
@@ -5279,7 +5308,7 @@ header img[src*="mascot"]{
             <h3 style="text-align:center" class="qitty-platform-card-title">Jeu de cartes </h3>
             <p style="text-align:center">Jeu de cartes digital inspiré de l’univers asiatique, avec modes de jeu, interface immersive, logique de manches, règles spéciales, sons et visuels personnalisés.</p>
             <div class="service-actions">
-              <a class="btn blue solution-action-btn demo-btn" href="https://mo7bous.github.io/Dobon/" target="_blank" rel="noopener">Consulter Démo →</a>
+              <a class="btn blue solution-action-btn demo-btn" href="https://mo7bous.github.io/Dobon/" target="_blank" rel="noopener">Ouvrir →</a>
               <button class="btn blue-light solution-action-btn technical-spec-btn" type="button" data-tech-key="DOBON">Spécificités techniques →</button>
             </div>
           </article>
@@ -8224,6 +8253,154 @@ document.addEventListener('DOMContentLoaded', function(){
   }, true);
 
   ensureSpec();
+});
+</script>
+
+
+
+<script id="qitty-v122-office-excel-specs-standard-popup-script">
+document.addEventListener('DOMContentLoaded', function(){
+  const OFFICE_SPEC = "<h3>Assistant Office Excel</h3>\n<p>Assistant Excel et chatbot spécialisé, pensé pour travailler sur les fichiers Office en local ou offline selon le déploiement, sans exposer les données sensibles à des plateformes IA externes.</p>\n\n<div class=\"tech-spec-section\">\n  <h4>Fonctions principales</h4>\n  <ul>\n    <li>Analyse de feuilles, colonnes, cellules, tableaux et structures Excel.</li>\n    <li>Aide aux formules, erreurs, calculs, tableaux croisés, reporting et modèles.</li>\n    <li>Assistance VBA, macros, automatisation et nettoyage de données.</li>\n    <li>Explications adaptées aux niveaux débutant, intermédiaire et avancé.</li>\n  </ul>\n</div>\n\n<div class=\"tech-spec-section\">\n  <h4>Architecture & confidentialité</h4>\n  <ul>\n    <li>Déploiement local/offline possible selon le besoin.</li>\n    <li>Pas d’envoi automatique de fichiers sensibles vers des plateformes IA externes.</li>\n    <li>Protection des données métiers, financières, administratives ou clients.</li>\n  </ul>\n</div>\n\n<div class=\"tech-spec-section\">\n  <h4>Cas d’usage</h4>\n  <ul>\n    <li>Corriger ou comprendre un fichier Excel complexe.</li>\n    <li>Automatiser les tâches répétitives et générer des rapports.</li>\n    <li>Créer des modèles Excel plus fiables pour PME, indépendants ou équipes internes.</li>\n  </ul>\n</div>\n\n<div class=\"tech-spec-actions\">\n  <a class=\"btn blue solution-action-btn demo-btn\" href=\"https://qitty.space/excel.html\" target=\"_blank\" rel=\"noopener\">Consulter Démo →</a>\n</div>";
+  const OFFICE_DESC = "Assistant Excel local/offline qui aide à analyser, nettoyer et automatiser les fichiers sans envoyer les données sensibles vers des plateformes IA externes.";
+  const OFFICE_URL = 'https://qitty.space/excel.html';
+
+  function cleanText(el){
+    return (el && el.textContent ? el.textContent : '').replace(/\s+/g,' ').trim();
+  }
+
+  function applyOfficeExcelCard(){
+    document.querySelectorAll('[data-section="solutions"] article').forEach(function(card){
+      if(cleanText(card.querySelector('h3')) !== 'Assistant Office Excel') return;
+
+      ['Qitty/excel1.png','Qitty/excel2.png','Qitty/excel3.png'].forEach(function(src, i){
+        const img = card.querySelectorAll('img.qitty-carousel-slide')[i];
+        if(img){
+          img.setAttribute('src', src);
+          img.setAttribute('alt', 'Assistant Office Excel Qitty');
+        }
+      });
+
+      const p = card.querySelector('p');
+      if(p) p.textContent = OFFICE_DESC;
+
+      const demo = card.querySelector('.demo-btn');
+      if(demo){
+        demo.setAttribute('href', OFFICE_URL);
+        demo.setAttribute('target', '_blank');
+        demo.setAttribute('rel', 'noopener');
+      }
+
+      const tech = card.querySelector('.technical-spec-btn');
+      if(tech) tech.setAttribute('data-tech-key', 'Assistant Office Excel');
+    });
+
+    try {
+      if(window.techSpecs && typeof window.techSpecs === 'object'){
+        window.techSpecs['Assistant Office Excel'] = OFFICE_SPEC;
+      }
+    } catch(e) {}
+  }
+
+  function openStandardTechPopup(){
+    const modal =
+      document.getElementById('techModal') ||
+      document.getElementById('technicalModal') ||
+      document.getElementById('technicalSpecModal') ||
+      document.getElementById('techSpecModal') ||
+      document.querySelector('.tech-modal') ||
+      document.querySelector('.technical-spec-modal');
+
+    const content =
+      document.getElementById('techModalContent') ||
+      document.getElementById('technicalModalContent') ||
+      document.getElementById('technicalSpecContent') ||
+      document.getElementById('techSpecContent') ||
+      (modal ? modal.querySelector('.modal-content, .modal-body, .content, .body, .tech-content') : null);
+
+    if(modal && content){
+      content.innerHTML = OFFICE_SPEC;
+      modal.classList.add('open','active','show');
+      modal.style.display = 'flex';
+      modal.removeAttribute('aria-hidden');
+      return true;
+    }
+
+    // Last-resort: create with existing modal class names, not a custom card design.
+    let fallback = document.getElementById('techModal');
+    if(!fallback){
+      fallback = document.createElement('div');
+      fallback.id = 'techModal';
+      fallback.className = 'tech-modal open';
+      fallback.innerHTML = '<div class="tech-modal-panel"><button type="button" class="tech-modal-close" aria-label="Fermer">×</button><div id="techModalContent"></div></div>';
+      document.body.appendChild(fallback);
+      fallback.addEventListener('click', function(e){
+        if(e.target === fallback || e.target.closest('.tech-modal-close')){
+          fallback.classList.remove('open','active','show');
+          fallback.style.display = 'none';
+        }
+      });
+    }
+    const fbContent = fallback.querySelector('#techModalContent') || fallback.querySelector('.modal-content, .modal-body, .content');
+    if(fbContent) fbContent.innerHTML = OFFICE_SPEC;
+    fallback.style.display = 'flex';
+    fallback.classList.add('open','active','show');
+    return true;
+  }
+
+  document.addEventListener('click', function(e){
+    const tech = e.target.closest('[data-section="solutions"] article .technical-spec-btn');
+    if(tech){
+      const card = tech.closest('article');
+      if(cleanText(card ? card.querySelector('h3') : null) === 'Assistant Office Excel'){
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        applyOfficeExcelCard();
+        openStandardTechPopup();
+        return false;
+      }
+    }
+
+    const demo = e.target.closest('[data-section="solutions"] article .demo-btn');
+    if(demo){
+      const card = demo.closest('article');
+      if(cleanText(card ? card.querySelector('h3') : null) === 'Assistant Office Excel'){
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        window.open(OFFICE_URL, '_blank', 'noopener');
+        return false;
+      }
+    }
+  }, true);
+
+  applyOfficeExcelCard();
+});
+</script>
+
+
+<script id="qitty-v123-open-button-labels-script">
+document.addEventListener('DOMContentLoaded', function(){
+  const titlesToOpen = new Set([
+    'Quboor',
+    'Jeu de cartes',
+    'Easy Apply — Candidature IA'
+  ]);
+
+  function cleanText(el){
+    return (el && el.textContent ? el.textContent : '').replace(/\s+/g,' ').trim();
+  }
+
+  function applyOpenLabels(){
+    document.querySelectorAll('[data-section="solutions"] article').forEach(function(card){
+      const title = cleanText(card.querySelector('h3'));
+      if(!titlesToOpen.has(title)) return;
+      const btn = card.querySelector('.demo-btn');
+      if(btn) btn.textContent = 'Ouvrir →';
+    });
+  }
+
+  applyOpenLabels();
 });
 </script>
 
